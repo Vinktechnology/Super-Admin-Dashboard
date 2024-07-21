@@ -1,0 +1,244 @@
+    "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+
+
+
+          HEADING backgroundImage :background-image: linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+          red color :linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
+          green color :"linear-gradient(to top, #0fd850 0%, #f9f047 100%);
+
+
+           <Chip
+              label="Verification Failed"
+              sx={{
+                fontWeight: "600",
+                background: "rgb(255, 236, 236)",
+                color: "rgb(232, 92, 92)",
+              }}
+            />
+
+            <Chip
+              label="Verified"
+              sx={{
+                fontWeight: "600",
+                background: "rgb(229, 245, 238)",
+                color: "rgb(39, 172, 112)",
+              }}
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from 'react';
+import { Formik, Form, Field, FieldArray } from 'formik';
+import * as Yup from 'yup';
+import ProductImages from './ProductImages'; // Import the ProductImages component
+
+const colorOptions = [
+    { id: 3, name: 'green', value: 'green', label: 'green' },
+    { id: 1, name: 'blue', value: 'blue', label: 'blue' },
+];
+
+const blouseOptions = [
+    { id: 1, name: 'semi-stitched', value: 'semi stiched', label: 'semi-stitched' },
+    { id: 2, name: 'stitched', value: 'stitched', label: 'stitched' },
+];
+
+const generateCombinations = (colors, blouses) => {
+    const combinations = [];
+    colors.forEach(color => {
+        blouses.forEach(blouse => {
+            combinations.push({
+                color: color.value,
+                blouse: blouse.value,
+                SKUID: '',
+                mrp: '',
+                sellingprice: '',
+                stock: '',
+                length: '',
+                breadth: '',
+                height: '',
+                width: '',
+                images: [] // Initialize an empty array for images
+            });
+        });
+    });
+    return combinations;
+};
+
+const initialValues = {
+    combinations: generateCombinations(colorOptions, blouseOptions),
+};
+
+const validationSchema = Yup.object().shape({
+    combinations: Yup.array().of(
+        Yup.object().shape({
+            SKUID: Yup.string().required('SKUID is required'),
+            mrp: Yup.number().required('MRP is required').positive('MRP must be positive').integer('MRP must be an integer'),
+            sellingprice: Yup.number().required('Selling Price is required').positive('Selling Price must be positive').integer('Selling Price must be an integer'),
+            stock: Yup.number().required('Stock is required').positive('Stock must be positive').integer('Stock must be an integer'),
+            length: Yup.number().required('Length is required').positive('Length must be positive'),
+            breadth: Yup.number().required('Breadth is required').positive('Breadth must be positive'),
+            height: Yup.number().required('Height is required').positive('Height must be positive'),
+            width: Yup.number().required('Width is required').positive('Width must be positive'),
+            images: Yup.array().of(Yup.string()) // Validate images as an array of strings (URLs)
+        })
+    )
+});
+
+const CombinationForm = () => {
+    return (
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={values => {
+                console.log('Form values:', values);
+            }}
+        >
+            {({ values, errors, touched }) => (
+                <Form>
+                    <FieldArray name="combinations">
+                        {() => (
+                            <div>
+                                {values.combinations.map((combination, index) => (
+                                    <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+                                        <div>
+                                            <label>Color:</label>
+                                            <Field name={`combinations.${index}.color`} readOnly />
+                                        </div>
+                                        <div>
+                                            <label>Blouse:</label>
+                                            <Field name={`combinations.${index}.blouse`} readOnly />
+                                        </div>
+                                        <div>
+                                            <label>SKUID:</label>
+                                            <Field name={`combinations.${index}.SKUID`} />
+                                            {errors.combinations?.[index]?.SKUID && touched.combinations?.[index]?.SKUID ? (
+                                                <div className="error">{errors.combinations[index].SKUID}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>MRP:</label>
+                                            <Field name={`combinations.${index}.mrp`} />
+                                            {errors.combinations?.[index]?.mrp && touched.combinations?.[index]?.mrp ? (
+                                                <div className="error">{errors.combinations[index].mrp}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Selling Price:</label>
+                                            <Field name={`combinations.${index}.sellingprice`} />
+                                            {errors.combinations?.[index]?.sellingprice && touched.combinations?.[index]?.sellingprice ? (
+                                                <div className="error">{errors.combinations[index].sellingprice}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Stock:</label>
+                                            <Field name={`combinations.${index}.stock`} />
+                                            {errors.combinations?.[index]?.stock && touched.combinations?.[index]?.stock ? (
+                                                <div className="error">{errors.combinations[index].stock}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Length:</label>
+                                            <Field name={`combinations.${index}.length`} />
+                                            {errors.combinations?.[index]?.length && touched.combinations?.[index]?.length ? (
+                                                <div className="error">{errors.combinations[index].length}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Breadth:</label>
+                                            <Field name={`combinations.${index}.breadth`} />
+                                            {errors.combinations?.[index]?.breadth && touched.combinations?.[index]?.breadth ? (
+                                                <div className="error">{errors.combinations[index].breadth}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Height:</label>
+                                            <Field name={`combinations.${index}.height`} />
+                                            {errors.combinations?.[index]?.height && touched.combinations?.[index]?.height ? (
+                                                <div className="error">{errors.combinations[index].height}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Width:</label>
+                                            <Field name={`combinations.${index}.width`} />
+                                            {errors.combinations?.[index]?.width && touched.combinations?.[index]?.width ? (
+                                                <div className="error">{errors.combinations[index].width}</div>
+                                            ) : null}
+                                        </div>
+                                        <div>
+                                            <label>Product Images:</label>
+                                            <Field name={`combinations.${index}.images`} component={ProductImages} index={index} />
+                                            {errors.combinations?.[index]?.images && touched.combinations?.[index]?.images ? (
+                                                <div className="error">{errors.combinations[index].images}</div>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </FieldArray>
+                    <button type="submit">Submit</button>
+                </Form>
+            )}
+        </Formik>
+    );
+};
+
+export default CombinationForm;
+
+
+
+
+
+import React from 'react';
+
+const ProductImages = ({ field, form, index }) => {
+    const handleImageChange = (event) => {
+        const files = event.target.files;
+        const fileArray = Array.from(files).map(file => URL.createObjectURL(file));
+        
+        form.setFieldValue(field.name, fileArray);
+    };
+
+    return (
+        <div>
+            <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+            />
+            <div>
+                {field.value && field.value.map((image, imgIndex) => (
+                    <img key={imgIndex} src={image} alt={`product-${index}-${imgIndex}`} style={{ width: '50px', height: '50px', margin: '5px' }} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+export default ProductImages;
