@@ -142,11 +142,11 @@ function LoginWithPassword() {
                 Forgot password?
               </Link>
             </Box>
-            <Box item>
+            {/* <Box item>
               <Link href="/register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Box>

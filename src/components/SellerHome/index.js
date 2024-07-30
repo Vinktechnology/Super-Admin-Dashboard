@@ -21,7 +21,6 @@ function Index() {
                 <HowToSell />
                 <FormInformation />
                 <Footer />
-                
             </Box>
     )
 }

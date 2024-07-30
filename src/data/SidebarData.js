@@ -26,13 +26,6 @@ export const SidebarData =[
     slug:"team"
 },
 {
-    title:"Products",
-    to:"/dashboard/product",
-    icon:<PeopleOutlinedIcon />,
-    typography :"Product",
-    slug:"product"
-},
-{
     title:"Manage Vendors",
     to:"/dashboard/vendors",
     icon:<ContactsOutlinedIcon />,
@@ -111,34 +104,6 @@ export const SidebarData =[
     icon:<HelpOutlineOutlinedIcon />,
     typography :"",
     slug:"faq"
-},
-{
-    title:"Bar Chart",
-    to:"/dashboard/bar",
-    icon:<BarChartOutlinedIcon />,
-    typography :"Charts",
-    slug:"bar"
-},
-{
-    title:"Pie Chart",
-    to:"/dashboard/pie",
-    icon:<PieChartOutlineOutlinedIcon />,
-    typography :"",
-    slug:"pie"
-},
-{
-    title:"Line Chart",
-    to:"/dashboard/line",
-    icon:<TimelineOutlinedIcon />,
-    typography :"",
-    slug:"line"
-},
-{
-    title:"Geography Chart",
-    to:"/dashboard/geography",
-    icon:<MapOutlinedIcon />,
-    typography :"",
-    slug:"geography"
 }
 
 ]

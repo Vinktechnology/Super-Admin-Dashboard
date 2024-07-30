@@ -47,10 +47,6 @@ const AppBarComponent = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  // Options for each category
-  const classOptions = ["Class A", "Class B", "Class C"];
-  const standardOptions = ["Standard 1", "Standard 2", "Standard 3"];
-  const divisionOptions = ["Division I", "Division II", "Division III"];
 
   const toolTipsOptions = [
     {

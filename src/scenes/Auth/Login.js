@@ -113,7 +113,6 @@ export default function Login() {
 
   return (
     <Box>
-      <Header />
       <Container component="main" maxWidth="xs">
         {signInWithOTP ? 
           Login_With_OTP
@@ -124,7 +123,6 @@ export default function Login() {
           marginTop: { xs: "25%", sm: "20%", md: "20%", lg: "10%", xl: "10%" },
         }}
       >
-        <Footer />
       </Box>
     </Box>
   );

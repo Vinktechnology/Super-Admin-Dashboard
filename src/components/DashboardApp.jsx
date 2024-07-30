@@ -12,6 +12,140 @@ import GeographyChart from "../../src/components/GeographyChart";
 import BarChart from "../../src/components/BarChart";
 import StatBox from "../../src/components/StatBox";
 import ProgressCircle from "../../src/components/ProgressCircle";
+import { Link } from "react-router-dom";
+
+const data = {
+  vendors_data: [
+    {
+      name: "Active Vendors",
+      count: 99000,
+      increment_by: "+10%",
+      link: "#",
+    },
+    {
+      name: "Inactive Vendors",
+      count: 100,
+      increment_by: "-3%",
+      link: "#",
+    },
+    {
+      name: "Pending Request Approval Vendor",
+      count: 30,
+      increment_by: "+20%",
+      link: "#",
+    },
+    {
+      name: "Total Vendors",
+      count: 100000,
+      increment_by: "+10%",
+      link: "#",
+    },
+  ],
+  clients_data: [
+    {
+      name: "Active Clients",
+      count: 99000,
+      increment_by: "+10%",
+      link: "#",
+    },
+    {
+      name: "Inactive Clients",
+      count: 100,
+      increment_by: "-3%",
+      link: "#",
+    },
+    {
+      name: "Pending Request Approval Clients",
+      count: 30,
+      increment_by: "+20%",
+      link: "#",
+    },
+    {
+      name: "Total Clients",
+      count: 100000,
+      increment_by: "+10%",
+      link: "#",
+    },
+  ],
+  products_data: [
+    {
+      name: "Active Products",
+      count: 99000,
+      increment_by: "+10%",
+      link: "#",
+    },
+    {
+      name: "Inactive Products",
+      count: 100,
+      increment_by: "-3%",
+      link: "#",
+    },
+    {
+      name: "QC Pending",
+      count: 30,
+      increment_by: "+20%",
+      link: "#",
+    },
+    {
+      name: "QC Rejected",
+      count: 100000,
+      increment_by: "+10%",
+      link: "#",
+    },
+  ],
+  orders_data: [
+    {
+      name: "Active Orders",
+      count: 99000,
+      increment_by: "+10%",
+      link: "#",
+    },
+    {
+      name: "Completed Orders",
+      count: 100,
+      increment_by: "-3%",
+      link: "#",
+    },
+    {
+      name: "Pending From Vendors",
+      count: 30,
+      increment_by: "+20%",
+      link: "#",
+    },
+    {
+      name: "Rejected Orders",
+      count: 100000,
+      increment_by: "+10%",
+      link: "#",
+    },
+  ],
+  transaction_data: [
+    {
+      name: "Active Transactions",
+      count: 99000,
+      increment_by: "+10%",
+      link: "#",
+    },
+    {
+      name: "Completed Transactions",
+      count: 100,
+      increment_by: "-3%",
+      link: "#",
+    },
+    {
+      name: "Pending From Transactions",
+      count: 30,
+      increment_by: "+20%",
+      link: "#",
+    },
+    {
+      name: "Rejected Transactions",
+      count: 100000,
+      increment_by: "+10%",
+      link: "#",
+    },
+  ],
+};
 
 const DashboardApp = () => {
   const theme = useTheme();
@@ -20,50 +154,221 @@ const DashboardApp = () => {
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
       </Box>
 
       <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
+        display="flex"
+        sx={{flexDirection:{xs:"column", sm:"column", md:"row", lg:"row", xl:"row"}}}
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
+
+      <Box sx={{ width:"100%",margin:"0px 5px 0px 5px"}}>
+        <Typography
+          variant="h3"
+          sx={{
+            color: "#141414",
+            fontWeight: "600",
+            margin: "1.5rem 0rem .3rem 0rem",
+          }}
         >
-          <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
+          Vendors Records
+        </Typography>
+        <hr />
         <Box
-          gridColumn="span 3"
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
+        >
+          {data?.vendors_data?.map((da, i) => (
+            <Box
+              key={i}
+              sx={{
+                gridColumn: {
+                  xs: "span 12",
+                  sm: "span 6",
+                  md: "span 6",
+                  lg: "span 6",
+                  xl: "span 3",
+                },
+              }}
+              backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={da.count}
+                subtitle={da.name}
+                progress="0.75"
+                increase={da.increment_by}
+                icon={
+                  <EmailIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
+      <Box sx={{width:"100%",margin:"0px 5px 0px 5px"}}>
+        <Typography
+          variant="h3"
+          sx={{
+            color: "#141414",
+            fontWeight: "600",
+            margin: "1.5rem 0rem .3rem 0rem",
+          }}
+        >
+          Clients Records
+        </Typography>
+        <hr />
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
+        >
+          {data?.clients_data?.map((da, i) => (
+            <Box
+              key={i}
+              sx={{
+                gridColumn: {
+                  xs: "span 12",
+                  sm: "span 6",
+                  md: "span 6",
+                  lg: "span 6",
+                  xl: "span 3",
+                },
+              }}
+              backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={da.count}
+                subtitle={da.name}
+                progress="0.75"
+                increase={da.increment_by}
+                icon={
+                  <EmailIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      </Box>
+
+
+      <Box>
+        <Typography
+          variant="h3"
+          sx={{
+            color: "#141414",
+            fontWeight: "600",
+            margin: "1.5rem 0rem .3rem 0rem",
+          }}
+        >
+          Orders Records
+        </Typography>
+        <hr />
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
+        >
+          {data?.orders_data?.map((da, i) => (
+            <Box
+              key={i}
+              sx={{
+                gridColumn: {
+                  xs: "span 12",
+                  sm: "span 6",
+                  md: "span 3",
+                  lg: "span 3",
+                  xl: "span 3",
+                },
+              }}
+              backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={da.count}
+                subtitle={da.name}
+                progress="0.75"
+                increase={da.increment_by}
+                icon={
+                  <EmailIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+          ))}
+        </Box>
+      </Box>
+      <Box>
+        <Typography
+          variant="h3"
+          sx={{
+            color: "#141414",
+            fontWeight: "600",
+            margin: "1.5rem 0rem .3rem 0rem",
+          }}
+        >
+          Transaction Records
+        </Typography>
+        <hr />
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(12, 1fr)"
+          gridAutoRows="140px"
+          gap="20px"
+        >
+          {data?.transaction_data?.map((da, i) => (
+            <Box
+              key={i}
+              sx={{
+                gridColumn: {
+                  xs: "span 12",
+                  sm: "span 6",
+                  md: "span 3",
+                  lg: "span 3",
+                  xl: "span 3",
+                },
+              }}
+              backgroundColor={colors.primary[400]}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <StatBox
+                title={da.count}
+                subtitle={da.name}
+                progress="0.75"
+                increase={da.increment_by}
+                icon={
+                  <EmailIcon
+                    sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
+                  />
+                }
+              />
+            </Box>
+          ))}
+
+          {/*        
+        <Box
+                 sx={{ gridColumn:{xs:"span 12", sm:"span 6", md:"span 3", lg:"span 3", xl:"span 3"}}}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -81,8 +386,8 @@ const DashboardApp = () => {
             }
           />
         </Box>
-        {/* <Box
-          gridColumn="span 3"
+        <Box
+        sx={{ gridColumn:{xs:"span 12", sm:"span 6", md:"span 3", lg:"span 3", xl:"span 3"}}}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -99,9 +404,9 @@ const DashboardApp = () => {
               />
             }
           />
-        </Box> */}
+        </Box>
         <Box
-          gridColumn="span 3"
+          sx={{ gridColumn:{xs:"span 12", sm:"span 6", md:"span 3", lg:"span 3", xl:"span 3"}}}
           backgroundColor={colors.primary[400]}
           display="flex"
           alignItems="center"
@@ -120,156 +425,7 @@ const DashboardApp = () => {
           />
         </Box>
 
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
-          >
-            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
-            </Typography>
-          </Box>
-          {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-
-        {/* ROW 3 */}
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          p="30px"
-        >
-          <Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ padding: "30px 30px 0 30px" }}
-          >
-            Sales Quantity
-          </Typography>
-          <Box height="250px" mt="-20px">
-            <BarChart isDashboard={true} />
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-          padding="30px"
-        >
-          <Typography
-            variant="h5"
-            fontWeight="600"
-            sx={{ marginBottom: "15px" }}
-          >
-            Geography Based Traffic
-          </Typography>
-          <Box height="200px">
-            <GeographyChart isDashboard={true} />
-          </Box>
+         */}
         </Box>
       </Box>
     </Box>

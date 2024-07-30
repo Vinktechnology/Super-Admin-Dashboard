@@ -134,13 +134,13 @@ function LoginWithOTP() {
         </Box>
       )}
 
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ width: "100%" }}>
           <Link href="/register" variant="body2">
             {"Don't have an account? Sign Up"}
           </Link>
         </Box>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
