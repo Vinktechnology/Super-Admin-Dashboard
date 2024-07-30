@@ -1,14 +1,13 @@
-import { Box,Button } from "@mui/material";
-import { DataGrid, GridToolbar ,GridActionsCellItem} from "@mui/x-data-grid";
+import { Box, Button } from "@mui/material";
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Product = () => {
   const theme = useTheme();
@@ -22,10 +21,9 @@ const Product = () => {
 
   const handleEdit = (id) => {
     // alert(`Edit row with ID: ${id}`);
-    navigate(`/dashboard/product/addproduct/${id}`)
+    navigate(`/dashboard/product/addproduct/${id}`);
     // Implement your edit functionality here
   };
-
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -69,10 +67,10 @@ const Product = () => {
       flex: 1,
     },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 150,
-      type: 'actions',
+      type: "actions",
       getActions: (params) => [
         <GridActionsCellItem
           icon={<EditIcon />}
@@ -91,29 +89,8 @@ const Product = () => {
 
   return (
     <Box p={2}>
-    
-
-<Box display="flex" justifyContent="space-between" alignItems="center">
-<Header
-        title="Product"
-        subtitle="Manage Product"
-      />
-
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-            onClick={()=>navigate("/dashboard/product/addproduct")}
-          >
-            <AddIcon sx={{ mr: "10px" }} />
-            Add Product
-          </Button>
-        </Box>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="Product" subtitle="Manage Product" />
       </Box>
       <Box
         m="10px 0 0 0"

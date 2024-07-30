@@ -26,6 +26,13 @@ export const SidebarData =[
     slug:"team"
 },
 {
+    title:"Products",
+    to:"/dashboard/product",
+    icon:<PeopleOutlinedIcon />,
+    typography :"Product",
+    slug:"product"
+},
+{
     title:"Manage Vendors",
     to:"/dashboard/vendors",
     icon:<ContactsOutlinedIcon />,
@@ -84,27 +91,27 @@ export const SidebarData =[
     typography :"",
     slug:"attribute"
 },
-{
-    title:"Profile Form",
-    to:"/dashboard/form",
-    icon:<PersonOutlinedIcon />,
-    typography :"Pages",
-    slug:"form"
-},
-{
-    title:"Calendar",
-    to:"/dashboard/calendar",
-    icon:<CalendarTodayOutlinedIcon />,
-    typography :"",
-    slug:"calendar"
-},
-{
-    title:"FAQ Page",
-    to:"/dashboard/faq",
-    icon:<HelpOutlineOutlinedIcon />,
-    typography :"",
-    slug:"faq"
-}
+// {
+//     title:"Profile Form",
+//     to:"/dashboard/form",
+//     icon:<PersonOutlinedIcon />,
+//     typography :"Pages",
+//     slug:"form"
+// },
+// {
+//     title:"Calendar",
+//     to:"/dashboard/calendar",
+//     icon:<CalendarTodayOutlinedIcon />,
+//     typography :"",
+//     slug:"calendar"
+// },
+// {
+//     title:"FAQ Page",
+//     to:"/dashboard/faq",
+//     icon:<HelpOutlineOutlinedIcon />,
+//     typography :"",
+//     slug:"faq"
+// }
 
 ]
 
