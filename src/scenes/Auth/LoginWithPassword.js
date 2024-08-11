@@ -17,10 +17,13 @@ import Card from "@mui/material/Card";
 import { tokens } from "../../../src/theme.js";
 import Header from "../../components/SellerHome/Header.js";
 import Footer from "../../components/SellerHome/Footer.js";
+import { useDispatch } from "react-redux";
+import { loginByEmailAsyncThunk } from "../../store/slices/auth/auth.slice.js";
 
 
 function LoginWithPassword() {
     const theme = useTheme();
+    const dispatch= useDispatch();
     const colors = tokens(theme.palette.mode);
     const navigate = useNavigate();
     const INIT_STATE = {
@@ -37,21 +40,18 @@ function LoginWithPassword() {
       });
   
     async function onSubmit(data) {
-      // dispatch(
-      //   loginByEmailAsyncThunk({
-      //     ...values,
-      //   })
-      // )
-      //   .unwrap()
-      //   .then(() => {
-      //     navigate({
-      //       pathname: "/",
-      //     });
-      //   });
-  
-      navigate({
-        pathname: "/dashboard",
-      });
+      dispatch(
+        loginByEmailAsyncThunk({
+          ...data,authType: "password-based",
+        })
+      )
+        .unwrap()
+        .then((da) => {
+          console.log("da",da);
+          navigate({
+            pathname: "/dashboard",
+          });
+        });
     }
 
     

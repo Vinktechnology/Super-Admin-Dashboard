@@ -8,9 +8,16 @@ import AddIcon from '@mui/icons-material/Add';
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllCategoryDataThunk } from "../../store/slices/category/category.slice";
+
 
 
 const Category = () => {
+
+  const dispatch = useDispatch();
+  const {categorydata} = useSelector(({category})=> category);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -26,10 +33,16 @@ const Category = () => {
     // Implement your edit functionality here
   };
 
+  useEffect(()=>{
+    dispatch(getAllCategoryDataThunk())
+  },[])
 
+  
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
+    { field: "_id", headerName: "ID", flex: 0.5 },
+    { field: "imageLink", headerName: "Image" ,
+      renderCell: (params) => <img style={{ borderRadius: "50%", height:"50px", width:"50px"}} src={params.value} />
+    },
     {
       field: "name",
       headerName: "Name",
@@ -37,35 +50,40 @@ const Category = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
+      field: "slug",
+      headerName: "Slug",
+      flex: 1,
+      cellClassName: "name-column--cell",
     },
     {
-      field: "phone",
-      headerName: "Phone Number",
+      field: "description",
+      headerName: "Description",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "isActive",
+      headerName: "Is Active",
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "createdAt",
+      headerName: "Created On",
       flex: 1,
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "createdBy",
+      headerName: "Created By",
       flex: 1,
     },
     {
-      field: "city",
-      headerName: "City",
+      field: "updatedAt",
+      headerName: "Updated On",
       flex: 1,
     },
     {
-      field: "zipCode",
-      headerName: "Zip Code",
+      field: "updatedBy",
+      headerName: "Updated By",
       flex: 1,
     },
     {
@@ -77,12 +95,12 @@ const Category = () => {
         <GridActionsCellItem
           icon={<EditIcon />}
           label="Edit"
-          onClick={() => handleEdit(params.id)}
+          onClick={() => handleEdit(params._id)}
         />,
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={() => handleDelete(params.id)}
+          onClick={() => handleDelete(params._id)}
           // showInMenu
         />,
       ],
@@ -148,7 +166,8 @@ const Category = () => {
         }}
       >
         <DataGrid
-          rows={mockDataContacts}
+          getRowId={(row) => row._id}
+          rows={categorydata}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

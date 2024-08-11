@@ -1,13 +1,10 @@
 //Auth
-export const googleLogin = "/social_login";
-export const emailLogin = "/user";
-export const signup = "/user/signup";
-export const validateEmailOTP = "/validate_email/otp";
-export const validateMobileOTP = "/validate_mobile/otp";
-export const resendEmailOTP = "/email/resend_otp";
-export const signInWithPhoneApi = "/mobile_login";
-export const validateTokenApi = "/user/validate_user_password_link";
-export const setPasswordApi = "/user/set_password";
+
+export const emailLoginApi = "/auth/login";
+
+// Category
+
+export const getAllCategoryApi ="/v1/category/all"
 
 //Users
 export const userApi = "/user";

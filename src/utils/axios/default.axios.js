@@ -6,18 +6,20 @@ export const defaultAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "X-Platform-Code": "admin"
   },
 });
 
 defaultAxios.interceptors.response.use(
   (response) => {
-    if (response.data?.status === 1) return response.data;
+  
+    if (response?.status) return response.data;
     return Promise.reject(response.data?.err);
   },
   (error) => {
     const { response } = error;
 
-    const message = response?.data?.err || "Something Went Wrong";
-    return Promise.reject(message);
+    const mes = response?.data?.message || "Something Went Wrong";
+    return Promise.reject(mes);
   }
 );
