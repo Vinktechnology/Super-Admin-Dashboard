@@ -6,6 +6,7 @@ export const emailLoginApi = "/auth/login";
 
 export const getAllCategoryApi ="/v1/category/all"
 export const addNewCategoryApi="/v1/category"
+export const updateCategoryStatusApi="/v1/category/active-status"
 
 //Users
 export const userApi = "/user";

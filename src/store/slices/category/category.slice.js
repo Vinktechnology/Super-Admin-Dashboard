@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
-  getAllCategoryData,addNewCategoryData,getCategoryByIdData,updateCategoryData
+  getAllCategoryData,addNewCategoryData,getCategoryByIdData,updateCategoryData,updateCategoryStatusData
 } from "./category.thunk";
 
 const INIT_STATE = {
@@ -27,6 +27,11 @@ export const getCategoryByIdThunk = createAsyncThunk(
 export const updateCategoryThunk = createAsyncThunk(
   "updateCategory",
   updateCategoryData
+);
+
+export const updateCategoryStatusThunk = createAsyncThunk(
+  "updateStatusCategory",
+  updateCategoryStatusData
 );
 
 
@@ -75,6 +80,15 @@ const categorySlice = createSlice({
         return state;
       })
       .addCase(updateCategoryThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(updateCategoryStatusThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(updateCategoryStatusThunk.fulfilled, (state, action) => {
+        return state;
+      })
+      .addCase(updateCategoryStatusThunk.rejected, (state) => {
         return state;
       })
   },

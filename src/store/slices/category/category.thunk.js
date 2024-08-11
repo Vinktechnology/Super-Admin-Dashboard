@@ -1,5 +1,5 @@
 import {
-  getAllCategoryApi,addNewCategoryApi
+  getAllCategoryApi,addNewCategoryApi,updateCategoryStatusApi
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
@@ -115,6 +115,34 @@ export const updateCategoryData = async (data, thunkApi) => {
     const responseData = response?.data;
 
     console.log("data of updated category response", response);
+    return responseData;
+   
+  } catch (err) {
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
+
+
+export const updateCategoryStatusData = async (data, thunkApi) => {
+  try {
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    console.log("data of status data category", data)
+    const response = await userAxios.put(`${updateCategoryStatusApi}/${data.id}`,{...data});
+    const responseData = response?.data;
+
+    console.log("data of updated status category response", response);
     return responseData;
    
   } catch (err) {

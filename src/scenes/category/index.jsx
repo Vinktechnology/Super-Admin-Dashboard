@@ -9,9 +9,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getAllCategoryDataThunk } from "../../store/slices/category/category.slice";
+import { getAllCategoryDataThunk ,updateCategoryStatusThunk} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
+import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const Category = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [toggleDATA, setToggleData] = useState(null);
+  const [deleteDATA, setDeleteData] = useState(null);
 
   //--------------- For Pagination starts here --------------------------
 
@@ -30,7 +34,11 @@ const Category = () => {
   //--------------- For Pagination ends here--------------------------
 
   const handleDelete = (id) => {
-    alert(`Edit row with ID: ${id}`);
+    setDeleteData({
+      activeStatus:"in-active",
+      id
+    })
+    setIsDeleteOpen(true);
   };
 
   const handleEdit = (id) => {
@@ -38,7 +46,10 @@ const Category = () => {
   };
 
   const toggleChange = (event, data) => {
-    console.log("TOGGLE DATA", event.target.checked, data);
+    setToggleData({
+      activeStatus:event.target.checked?"active":"in-active",
+      id:data.id
+    })
     setOpen(true);
   };
 
@@ -129,13 +140,32 @@ const Category = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     setOpen(false);
-    console.log("Status changed for:", isConfirmed);
     if (isConfirmed) {
-      // Add logic to update status in your store or backend
+      dispatch(updateCategoryStatusThunk({...toggleDATA}));
     }
   };
+
+  const fncHandleDeleteDialog = (isConfirmed) => {
+    setIsDeleteOpen(false);
+    if (isConfirmed) {
+      dispatch(updateCategoryStatusThunk({...deleteDATA}));
+    }
+  };
+
+
   return (
     <Box p={2}>
+
+
+
+<ConfirmDeleteDialogBox
+        title="Do you want delete the Category?"
+        body="Do you completely wants to delete the category. It may not be recoverable ?"
+        cancel="Cancel"
+        confirm="Confirm"
+        fncHandleDeleteDialog={fncHandleDeleteDialog}
+        isDeleteOpen={isDeleteOpen}
+      />
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
