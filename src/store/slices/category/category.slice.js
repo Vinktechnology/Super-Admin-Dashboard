@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
-  getAllCategoryData,
+  getAllCategoryData,addNewCategoryData,getCategoryByIdData,updateCategoryData
 } from "./category.thunk";
 
 const INIT_STATE = {
@@ -13,6 +13,24 @@ export const getAllCategoryDataThunk = createAsyncThunk(
   "getAllCategory",
   getAllCategoryData
 );
+
+export const addNewCategoryThunk = createAsyncThunk(
+  "addNewCategory",
+  addNewCategoryData
+);
+
+export const getCategoryByIdThunk = createAsyncThunk(
+  "getCategoryById",
+  getCategoryByIdData
+);
+
+export const updateCategoryThunk = createAsyncThunk(
+  "updateCategory",
+  updateCategoryData
+);
+
+
+
 
 const categorySlice = createSlice({
   name: "category",
@@ -29,6 +47,34 @@ const categorySlice = createSlice({
         return state;
       })
       .addCase(getAllCategoryDataThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(addNewCategoryThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(addNewCategoryThunk.fulfilled, (state, action) => {
+       state.categorydata.push(action.payload)
+        return state;
+      })
+      .addCase(addNewCategoryThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(getCategoryByIdThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(getCategoryByIdThunk.fulfilled, (state, action) => {
+        return state;
+      })
+      .addCase(getCategoryByIdThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(updateCategoryThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(updateCategoryThunk.fulfilled, (state, action) => {
+        return state;
+      })
+      .addCase(updateCategoryThunk.rejected, (state) => {
         return state;
       })
   },

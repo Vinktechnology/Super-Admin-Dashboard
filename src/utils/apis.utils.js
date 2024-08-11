@@ -5,6 +5,7 @@ export const emailLoginApi = "/auth/login";
 // Category
 
 export const getAllCategoryApi ="/v1/category/all"
+export const addNewCategoryApi="/v1/category"
 
 //Users
 export const userApi = "/user";

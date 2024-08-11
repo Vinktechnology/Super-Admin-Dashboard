@@ -1,9 +1,7 @@
 import {
-  getAllCategoryApi,
+  getAllCategoryApi,addNewCategoryApi
 } from "../../../utils/apis.utils";
-import { formatUserResponse } from "../../../utils/global/user.global";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
-import { setUserProfileDetails } from "../user/user.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
 
 
@@ -32,3 +30,108 @@ export const getAllCategoryData = async (data, thunkApi) => {
     thunkApi.dispatch(stopDashboardLoader());
   }
 };
+
+export const addNewCategoryData = async (data, thunkApi) => {
+  try {
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    const formData = new FormData();
+    formData.append("name", data.category);
+    formData.append("slug", data.slug);
+    formData.append("description", data.description);
+    formData.append("file", data.thumbnail);
+    formData.append("sampleImages", data.sampleimages);
+  
+    const response = await userAxios.post(addNewCategoryApi,formData,{
+      headers: {
+        "Content-Type": undefined
+      }});
+    const responseData = response;
+    thunkApi.dispatch(
+      showSuccessToast({
+        message: responseData?.message,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return responseData?.data?.newCategory;
+   
+  } catch (err) {
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
+
+export const getCategoryByIdData = async (data, thunkApi) => {
+  try {
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    const response = await userAxios.get(getAllCategoryApi);
+    const responseData = response?.data;
+    return responseData;
+   
+  } catch (err) {
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
+
+
+export const updateCategoryData = async (data, thunkApi) => {
+  try {
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    console.log("data of update category", data)
+    const formData = new FormData();
+    formData.append("name", data.category);
+    formData.append("slug", data.slug);
+    formData.append("description", data.description);
+    formData.append("file", data.thumbnail);
+    formData.append("sampleImages", data.sampleimages);
+    const response = await userAxios.put(`${addNewCategoryApi}/${data.id}`,formData,{
+      headers: {
+        "Content-Type": undefined
+      }});
+    const responseData = response?.data;
+
+    console.log("data of updated category response", response);
+    return responseData;
+   
+  } catch (err) {
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
+
+
+

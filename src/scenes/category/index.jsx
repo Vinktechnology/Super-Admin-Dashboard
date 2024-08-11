@@ -1,47 +1,60 @@
-import { Box,Button } from "@mui/material";
-import { DataGrid, GridToolbar ,GridActionsCellItem} from "@mui/x-data-grid";
+import { Box, Button } from "@mui/material";
+import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllCategoryDataThunk } from "../../store/slices/category/category.slice";
-
-
+import Switch from "@mui/material/Switch";
+import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 
 const Category = () => {
-
   const dispatch = useDispatch();
-  const {categorydata} = useSelector(({category})=> category);
+  const { categorydata } = useSelector(({ category }) => category);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  //--------------- For Pagination starts here --------------------------
+
+  useEffect(() => {
+    dispatch(getAllCategoryDataThunk());
+  }, []);
+
+  //--------------- For Pagination ends here--------------------------
 
   const handleDelete = (id) => {
-    // setRows(rows.filter((row) => row.id !== id));
     alert(`Edit row with ID: ${id}`);
   };
 
   const handleEdit = (id) => {
-    // alert(`Edit row with ID: ${id}`);
-    navigate(`/dashboard/category/addCategory/${id}`)
-    // Implement your edit functionality here
+    navigate(`/dashboard/category/addCategory/${id}`);
   };
 
-  useEffect(()=>{
-    dispatch(getAllCategoryDataThunk())
-  },[])
+  const toggleChange = (event, data) => {
+    console.log("TOGGLE DATA", event.target.checked, data);
+    setOpen(true);
+  };
 
-  
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
-    { field: "imageLink", headerName: "Image" ,
-      renderCell: (params) => <img style={{ borderRadius: "50%", height:"50px", width:"50px"}} src={params.value} />
+    {
+      field: "imageLink",
+      headerName: "Image",
+      renderCell: (params) => (
+        <a download={params.name} href={params.value} title="category">
+          <img
+            style={{ borderRadius: "50%", height: "50px", width: "50px" }}
+            src={params.value}
+          />
+        </a>
+      ),
     },
     {
       field: "name",
@@ -65,6 +78,13 @@ const Category = () => {
       field: "isActive",
       headerName: "Is Active",
       flex: 1,
+      renderCell: (params) => (
+        <Switch
+          onChange={(event) => toggleChange(event, params)}
+          defaultChecked={params.value}
+          color="warning"
+        />
+      ),
     },
     {
       field: "createdAt",
@@ -87,35 +107,45 @@ const Category = () => {
       flex: 1,
     },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 150,
-      type: 'actions',
+      type: "actions",
       getActions: (params) => [
         <GridActionsCellItem
           icon={<EditIcon />}
           label="Edit"
-          onClick={() => handleEdit(params._id)}
+          onClick={() => handleEdit(params.id)}
         />,
         <GridActionsCellItem
           icon={<DeleteIcon />}
           label="Delete"
-          onClick={() => handleDelete(params._id)}
+          onClick={() => handleDelete(params.id)}
           // showInMenu
         />,
       ],
     },
   ];
 
+  const fncHandleDialog = (isConfirmed) => {
+    setOpen(false);
+    console.log("Status changed for:", isConfirmed);
+    if (isConfirmed) {
+      // Add logic to update status in your store or backend
+    }
+  };
   return (
     <Box p={2}>
-    
-
-<Box display="flex" justifyContent="space-between" alignItems="center">
-<Header
-        title="Category"
-        subtitle="Manage Category"
+      <ConfirmDialogBox
+        title="Do you want to change the status?"
+        body="If you change the status then it may not be visible to some cases"
+        cancel="Cancel"
+        confirm="Confirm"
+        fncHandleDialog={fncHandleDialog}
+        isopen={open}
       />
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="Category" subtitle="Manage Category" />
 
         <Box>
           <Button
@@ -126,7 +156,7 @@ const Category = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={()=>navigate("/dashboard/category/addcategory")}
+            onClick={() => navigate("/dashboard/category/addcategory")}
           >
             <AddIcon sx={{ mr: "10px" }} />
             Add Category
@@ -169,7 +199,6 @@ const Category = () => {
           getRowId={(row) => row._id}
           rows={categorydata}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>

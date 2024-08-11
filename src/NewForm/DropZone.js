@@ -37,6 +37,7 @@ function DropZone({
 
     return (
       <Box style={styles}>
+        <label>{label}:</label>
         <Dropzone
       onChange={updateFiles}
       value={files}
