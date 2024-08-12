@@ -1,5 +1,5 @@
 import {
-  userApi,
+  checkusertokenvalidityApi
 } from "../../../utils/apis.utils";
 import {
   removeAccessToken,
@@ -11,27 +11,36 @@ import {
   startDashboardLoader,
   stopDashboardLoader,
 } from "../dashboard/dashboard.slice";
+import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 
 export const checkTokenValidity = async (__, thunkApi) => {
     try {
-      thunkApi.dispatch(startDashboardLoader());
-      const { userAxios } = thunkApi.extra.apiService;
-      const response = await userAxios.get(userApi);
-      const responseData = response.data;
-      if (responseData?.org_profiles && responseData?.org_profiles[0]?.org_id) {
-        storeOrgId(responseData?.org_profiles[0]?.org_id);
-      }
-      if (_.get(responseData, strings.email_verify)) {
-        const userDetails = formatUserResponse(responseData);
-        thunkApi.dispatch(setUserProfileDetails(userDetails));
-        thunkApi.dispatch(setUserAsLogin());
-        return;
-      }
-      removeAccessToken();
-      return Promise.reject();
+
+      // thunkApi.dispatch(startDashboardLoader());
+      const { user: userAxios } = thunkApi.extra.apiService;
+      const response = await userAxios.post(checkusertokenvalidityApi);
+  
+      if(response.status)
+        {
+          const userDetails = formatUserResponse( response.data.userDetails);
+          thunkApi.dispatch(setUserProfileDetails(userDetails));
+          return ;
+        }
+        // removeAccessToken();
+        return Promise.reject();
+     
     } catch (err) {
-      return Promise.reject(err);
-    } finally {
-      thunkApi.dispatch(stopDashboardLoader());
+      thunkApi.dispatch(
+        showFailureToast({
+          message: err,
+          vertical: "bottom",
+          horizontal: "center",
+        })
+      );
+      return Promise.reject();
+    }
+    finally
+    {
+      // thunkApi.dispatch(stopDashboardLoader());
     }
   };

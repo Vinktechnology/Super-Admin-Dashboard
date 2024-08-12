@@ -5,6 +5,9 @@ import { formatUserResponse } from "../../../utils/global/user.global";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import { setUserProfileDetails } from "../user/user.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
+import { setUserAsLogin } from "./auth.slice";
+
+
 
 
 export const signInWithEmail = async (data, thunkApi) => {
@@ -19,11 +22,12 @@ export const signInWithEmail = async (data, thunkApi) => {
 
       const userDetails = formatUserResponse(responseData.userDetails);
       thunkApi.dispatch(setUserProfileDetails(userDetails));
+      thunkApi.dispatch(setUserAsLogin())
       thunkApi.dispatch(
         showSuccessToast({
           message: "Logged in Successfully",
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: "top",
+          horizontal: "center",
         })
       );
       return responseData;
@@ -32,8 +36,8 @@ export const signInWithEmail = async (data, thunkApi) => {
     thunkApi.dispatch(
       showFailureToast({
         message: err,
-        vertical: "top",
-        horizontal: "right",
+        vertical: "bottom",
+        horizontal: "center",
       })
     );
     return Promise.reject();

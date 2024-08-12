@@ -36,6 +36,12 @@ const initSlice = createSlice({
       state.isLoading = false;
       return state;
     },
+    setUserAsLogin: (state) => {
+      debugger;
+      console.log("logged in");
+      state.isLoggedIn = true;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,6 +68,7 @@ export const {
   logout,
   startLoader,
   stopLoader,
+  setUserAsLogin
 } = initSlice.actions;
 
 export default initSlice.reducer;

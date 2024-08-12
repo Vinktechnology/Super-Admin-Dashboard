@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { getAllCategoryDataThunk ,updateCategoryStatusThunk} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
@@ -23,7 +24,6 @@ const Category = () => {
   const [open, setOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [toggleDATA, setToggleData] = useState(null);
-  const [deleteDATA, setDeleteData] = useState(null);
 
   //--------------- For Pagination starts here --------------------------
 
@@ -33,12 +33,8 @@ const Category = () => {
 
   //--------------- For Pagination ends here--------------------------
 
-  const handleDelete = (id) => {
-    setDeleteData({
-      activeStatus:"in-active",
-      id
-    })
-    setIsDeleteOpen(true);
+  const handleView = (id) => {
+    navigate(`/dashboard/category/view/${id}`);
   };
 
   const handleEdit = (id) => {
@@ -129,9 +125,9 @@ const Category = () => {
           onClick={() => handleEdit(params.id)}
         />,
         <GridActionsCellItem
-          icon={<DeleteIcon />}
+          icon={<VisibilityIcon />}
           label="Delete"
-          onClick={() => handleDelete(params.id)}
+          onClick={() => handleView(params.id)}
           // showInMenu
         />,
       ],
@@ -145,27 +141,11 @@ const Category = () => {
     }
   };
 
-  const fncHandleDeleteDialog = (isConfirmed) => {
-    setIsDeleteOpen(false);
-    if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({...deleteDATA}));
-    }
-  };
 
 
   return (
     <Box p={2}>
 
-
-
-<ConfirmDeleteDialogBox
-        title="Do you want delete the Category?"
-        body="Do you completely wants to delete the category. It may not be recoverable ?"
-        cancel="Cancel"
-        confirm="Confirm"
-        fncHandleDeleteDialog={fncHandleDeleteDialog}
-        isDeleteOpen={isDeleteOpen}
-      />
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"

@@ -7,10 +7,11 @@ const INIT_STATE = {
   isInitAuthCheckedDone: false,
 };
 
+
 export const checkForTokenValidityAsyncThunk = createAsyncThunk(
   "checkTokenValidity",
   checkTokenValidity
-);
+);  
 
 
 const initSlice = createSlice({
@@ -25,10 +26,6 @@ const initSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(checkForTokenValidityAsyncThunk.fulfilled, (state) => {
-          state.isInitAuthCheckedDone = true;
-          return state;
-        })
-        .addCase(checkForTokenValidityAsyncThunk.rejected, (state) => {
           state.isInitAuthCheckedDone = true;
           return state;
         })

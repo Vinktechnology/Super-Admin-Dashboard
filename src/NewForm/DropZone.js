@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Dropzone, FileMosaic } from "@files-ui/react";
 import { formErrorStyle } from '../utils/constant';
 import { Box } from '@mui/material';
@@ -19,10 +19,18 @@ function DropZone({
  
     const [files, setFiles] = useState([]);
 
-    const updateFiles = (incommingFiles) => {
-    console.log("incomming files", incommingFiles);
-    setFiles(incommingFiles);
+      // Effect to set initial value when value prop changes
+  useEffect(() => {
+    if (value && typeof value === "object" && value.length > 0) {
+      setFiles(value);
+    } else if (value && typeof value === "string") {
+      setFiles([{ id: value, name: value }]);
+    }
+  }, [value]);
 
+    const updateFiles = (incommingFiles) => {
+      console.log("incommingfiles", incommingFiles)
+    setFiles(incommingFiles);
     onChange({
         target: {
           name,
@@ -37,12 +45,14 @@ function DropZone({
 
     return (
       <Box style={styles}>
-        <label>{label}:</label>
         <Dropzone
       onChange={updateFiles}
       value={files}
       accept="image/*"
-      style={styles}
+      footer={true}
+      header={true}
+      label={label}
+      style={{height:"40px", minHeight:"113px"}}
     >
       {files.map((file) => (
         <FileMosaic key={file.id} {...file} onDelete={removeFile} info />

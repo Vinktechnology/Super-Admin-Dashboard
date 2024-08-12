@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux";
 import { Navigate, json } from "react-router-dom";
+import { getAccessToken } from "../../utils/global/auth.global";
 
 
 function LogoutAuthProtector({ children }) {
-    
+  const token = getAccessToken('token'); // or sessionStorage.getItem('token')
 
-  // const isLoggedIn = useSelector(({ auth }) => auth.isLoggedIn);
-  const isLoggedIn = false;
-
-  if (isLoggedIn) return <Navigate to="/dashboard" />;
+  if (token) {
+    return <Navigate to="/dashboard" replace />; // Redirect to dashboard if already authenticated
+  }
 
   return children;
 }

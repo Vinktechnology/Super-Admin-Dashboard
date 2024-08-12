@@ -51,7 +51,11 @@ function LoginWithPassword() {
           navigate({
             pathname: "/dashboard",
           });
-        });
+        })
+        .catch((error)=>
+        {
+          console.log(error)
+        })
     }
 
     

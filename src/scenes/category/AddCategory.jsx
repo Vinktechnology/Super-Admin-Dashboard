@@ -44,7 +44,7 @@ const AddCategory = () => {
             category: newRes.name || "",
             slug: newRes.slug || "",
             description: newRes.description || "",
-            thumbnail: newRes.thumbnail || "",
+            thumbnail: newRes.imageLink || "",
             sampleimages: newRes.sampleimages || [],
           });
         });
@@ -61,6 +61,7 @@ const AddCategory = () => {
 
   async function onSubmit(data) {
 
+    console.log("data from components",data);
     if(params.Id)
       {
         dispatch(
@@ -162,7 +163,7 @@ const AddCategory = () => {
 
             <Element
               eletype={inputType.dropzone}
-              label="Thumbnail"
+              label="Please choose Thumbnail of Category"
               placeholder="Please enter thumbnail"
               inputProps={{
                 onChange: handleChange,
@@ -179,7 +180,7 @@ const AddCategory = () => {
 
             <Element
               eletype={inputType.dropzone}
-              label="Sample Images"
+              label="Please choose Sample Images of Category"
               placeholder="Please enter Sample Images"
               inputProps={{
                 onChange: handleChange,

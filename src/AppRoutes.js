@@ -49,6 +49,8 @@ import ProfileAddress from "./scenes/profile/profileaddress";
 import ProductCategory from "./scenes/product/addproduct/ProductCategory";
 import ProductFeatures from "./scenes/product/addproduct/ProductFeatures";
 import ProductBrand from "./scenes/product/addproduct/ProductBrand";
+import ViewCategory from "./scenes/category/ViewCategory";
+import withAuth from "./hooks/withAuth";
 
 
 
@@ -106,6 +108,7 @@ function AppRoutes() {
           element: <Outlet />,
           children: [
             { path: "", element: <Category /> },
+            { path: "view/:Id", element: <ViewCategory /> },
             { path: "addcategory", element: <AddCategory /> },
             { path: "addcategory/:Id", element: <AddCategory /> },
           ],

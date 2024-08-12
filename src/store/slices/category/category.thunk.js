@@ -35,12 +35,18 @@ export const addNewCategoryData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
+    console.log("data",data);
     const formData = new FormData();
     formData.append("name", data.category);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
-    formData.append("file", data.thumbnail);
-    formData.append("sampleImages", data.sampleimages);
+    formData.append("file", data.thumbnail[0]?.file);
+
+    const sampdata = data?.sampleimages.map((da, i)=>  da.file)
+    console.log("sampdata", sampdata)
+    formData.append("sampleImages", data.sampdata);
+
+
   
     const response = await userAxios.post(addNewCategoryApi,formData,{
       headers: {
@@ -106,8 +112,10 @@ export const updateCategoryData = async (data, thunkApi) => {
     formData.append("name", data.category);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
-    formData.append("file", data.thumbnail);
-    formData.append("sampleImages", data.sampleimages);
+    formData.append("file", data.thumbnail[0]?.file);
+    const sampdata = data?.sampleimages.map((da, i)=>  da.file)
+    console.log("sampdata", sampdata)
+    formData.append("sampleImages", data.sampdata);
     const response = await userAxios.put(`${addNewCategoryApi}/${data.id}`,formData,{
       headers: {
         "Content-Type": undefined

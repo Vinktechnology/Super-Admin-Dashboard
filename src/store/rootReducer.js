@@ -5,6 +5,7 @@ import toastReducer from "./slices/toast/toast.slice";
 import userReducer from "./slices/user/user.slice";
 import dashboardReducer from "./slices/dashboard/dashboard.slice";
 import categoryReducer from "./slices/category/category.slice";
+import initReducer from "./slices/init/init.slice";
 const rootReducer = combineReducers({
   staticProduct: staticProdcutReducer,
   auth: authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   dashboard:dashboardReducer,
   category:categoryReducer,
+  init:initReducer
 });
 
 export default rootReducer;

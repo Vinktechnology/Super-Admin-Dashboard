@@ -14,7 +14,7 @@ defaultAxios.interceptors.response.use(
   (response) => {
   
     if (response?.status) return response.data;
-    return Promise.reject(response.data?.err);
+    return Promise.reject(response.message);
   },
   (error) => {
     const { response } = error;
