@@ -6,10 +6,10 @@ import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboar
 
 
 export const getAllCategoryData = async (data, thunkApi) => {
-  try {
+  try { 
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(getAllCategoryApi);
+    const response = await userAxios.get(`${getAllCategoryApi}?page=${data.page}&limit=${data.pageSize}`);
     const responseData = response?.data;
     return responseData;
    

@@ -9,15 +9,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import { getAllCategoryDataThunk ,updateCategoryStatusThunk} from "../../store/slices/category/category.slice";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  getAllCategoryDataThunk,
+  updateCategoryStatusThunk,
+} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 
 const Category = () => {
   const dispatch = useDispatch();
-  const { categorydata } = useSelector(({ category }) => category);
+  const { category, totalCount } = useSelector(({ category }) => category?.categorydata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -26,10 +29,11 @@ const Category = () => {
   const [toggleDATA, setToggleData] = useState(null);
 
   //--------------- For Pagination starts here --------------------------
-
+  const [page, setPage] = useState(1);  // Pages are zero-indexed
+  const [pageSize, setPageSize] = useState(5);
   useEffect(() => {
-    dispatch(getAllCategoryDataThunk());
-  }, []);
+    dispatch(getAllCategoryDataThunk({ page, pageSize }));
+  }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
 
@@ -43,9 +47,9 @@ const Category = () => {
 
   const toggleChange = (event, data) => {
     setToggleData({
-      activeStatus:event.target.checked?"active":"in-active",
-      id:data.id
-    })
+      activeStatus: event.target.checked ? "active" : "in-active",
+      id: data.id,
+    });
     setOpen(true);
   };
 
@@ -137,15 +141,12 @@ const Category = () => {
   const fncHandleDialog = (isConfirmed) => {
     setOpen(false);
     if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({...toggleDATA}));
+      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
     }
   };
 
-
-
   return (
     <Box p={2}>
-
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
@@ -205,10 +206,24 @@ const Category = () => {
           },
         }}
       >
-        <DataGrid
+        {/* <DataGrid
           getRowId={(row) => row._id}
           rows={categorydata}
           columns={columns}
+        /> */}
+
+        <DataGrid
+          getRowId={(row) => row._id}
+          rows={category}
+          columns={columns}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          pagination
+          page={page}
+          onPageChange={(newPage) => setPage(newPage)}
+          // rowCount={totalCategories} // Pass the total number of categories
+          rowCount={totalCount} // Pass the total number of categories
+          paginationMode="server" // Server-side pagination
         />
       </Box>
     </Box>

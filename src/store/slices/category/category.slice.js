@@ -5,7 +5,10 @@ import {
 } from "./category.thunk";
 
 const INIT_STATE = {
-  categorydata :[]
+  categorydata :{
+    category:[],
+    totalCount:0
+  }
 };
 
 
@@ -48,7 +51,8 @@ const categorySlice = createSlice({
         return state;
       })
       .addCase(getAllCategoryDataThunk.fulfilled, (state, action) => {
-        state.categorydata = action.payload.Categories;
+        state.categorydata.category = action.payload.Categories;
+        state.categorydata.totalCount = action.payload.noOfEntries;
         return state;
       })
       .addCase(getAllCategoryDataThunk.rejected, (state) => {
