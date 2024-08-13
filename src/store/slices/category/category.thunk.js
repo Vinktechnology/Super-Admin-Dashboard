@@ -35,16 +35,12 @@ export const addNewCategoryData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    console.log("data",data);
     const formData = new FormData();
     formData.append("name", data.category);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
     formData.append("file", data.thumbnail[0]?.file);
-
     const sampdata = data?.sampleimages.map((da, i)=>  da.file)
-    console.log("sampdata", sampdata)
-    console.log("data.thumbnail[0]?.file", data.thumbnail[0]?.file);
     formData.append("sampleImages",sampdata);
    
 

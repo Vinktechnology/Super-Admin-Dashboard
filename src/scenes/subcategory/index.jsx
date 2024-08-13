@@ -10,19 +10,15 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  getAllCategoryDataThunk,
-  updateCategoryStatusThunk,
-} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
-import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
+import { getAllSubCategoryDataThunk, updateSubCategoryStatusThunk } from "../../store/slices/subcategory/subcategory.slice.js";
 
 const SubCategory = () => {
   const dispatch = useDispatch();
-  const { category, totalCount } = useSelector(({ category }) => category?.categorydata);
+  const { subcategory, totalCount } = useSelector(({ subcategory }) => subcategory?.subcategorydata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -35,7 +31,7 @@ const SubCategory = () => {
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(5);
   useEffect(() => {
-    dispatch(getAllCategoryDataThunk({ page, pageSize }));
+    dispatch(getAllSubCategoryDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -109,6 +105,13 @@ const SubCategory = () => {
       cellClassName: "name-column--cell",
     },
     {
+      field: "categoryId",
+      headerName: "Category Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: (params) => params?.value?.name,
+    },
+    {
       field: "description",
       headerName: "Description",
       flex: 1,
@@ -174,7 +177,7 @@ const SubCategory = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
+      dispatch(updateSubCategoryStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -248,7 +251,7 @@ const SubCategory = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={category}
+          rows={subcategory}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

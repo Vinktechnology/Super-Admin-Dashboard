@@ -17,10 +17,10 @@ export const getAllActiveCategoryApi="/v1/category/active"
 
 // SUBCategory
 
-export const getAllSubCategoryApi ="/v1/category/all"
-export const getSubCategoryByIdApi ="/v1/category"
+export const getAllSubCategoryApi ="/v1/subCategory/all"
+export const getSubCategoryByIdApi ="/v1/subCategory"
 export const addNewSubCategoryApi="/v1/subCategory"
-export const updateSubCategoryStatusApi="/v1/category/active-status"
+export const updateSubCategoryStatusApi="/v1/subCategory/active-status"
 export const getAllActiveSubCategoryApi="/v1/subCategory/active"
 
 

@@ -130,7 +130,7 @@ function ImageSlider({sampleImages ,handleClose, open, title}) {
                         }}
                     >
                         <img
-                            src={image.imageUrl}
+                            src={image}
                             style={{ width: "100%", maxHeight: "100%" }}
                             alt={`Sample ${index}`}
                         />

@@ -4,79 +4,22 @@ import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { inputType } from "../../utils/enum";
-import Element from "../../Form/Element";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import { useFormik } from "formik";
-import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import {
-  addNewCategoryThunk,
-  getCategoryByIdThunk,
-  updateCategoryThunk,
-} from "../../store/slices/category/category.slice.js";
-import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
+import { getSubCategoryByIdDataThunk } from "../../store/slices/subcategory/subcategory.slice.js";
 
-
-
-
-
-
-const sampleImages =[{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
-},
-{
-    name:"front view",
-    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
-},
-]
 
 const ViewSubCategory = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const isNonMobile = useMediaQuery("(min-width:600px)");
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = (index) => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-
   useEffect(() => {
     if (params.Id) {
-      dispatch(getCategoryByIdThunk(params.Id))
+      dispatch(getSubCategoryByIdDataThunk(params.Id))
         .unwrap()
         .then((da) => {
           setViewData(da);
@@ -86,7 +29,6 @@ const ViewSubCategory = () => {
 
   return (
     <Box m="20px">
-        <ImageSlider title="Sample Images" sampleImages={sampleImages} handleClickOpen={handleClickOpen} handleClose={handleClose} open={open} />
 
         
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -358,35 +300,6 @@ wordWrap:"break-word"
 
           </Box>
         </Box>
-                  {/* ----for sample images-- */}
-                  <Box sx={{marginTop:"1rem"}}>
-                    <Typography sx={{    color: colors.grey[400],
-                    fontSize: "1.3rem",
-                    padding:"0px 0px 0px .8rem",
-                    fontWeight: "600",}}>Sample Images</Typography>
-                    <hr />
-                  <Grid container spacing={0}>
-              <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }} onClick={() => handleClickOpen()}>
-              <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
-                </Grid>
-                <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
-                </Grid>
-                <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
-                </Grid>
-
-                <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-              <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
-                </Grid>
-                <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
-                </Grid>
-                <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
-                </Grid>
-                </Grid>
-                </Box>
       </Box>
     </Box>
   );

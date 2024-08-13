@@ -130,7 +130,7 @@ const Tag = () => {
       field: "createdAt",
       headerName: "Created On",
       flex: 1,
-      renderCell: (params) => globalFormatDate(params?.value),
+            renderCell: (params) => globalFormatDate(params?.value),
     },
     {
       field: "createdBy",

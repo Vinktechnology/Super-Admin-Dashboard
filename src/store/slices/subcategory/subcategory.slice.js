@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
-  getAllCategoryData,addNewCategoryData,getCategoryByIdData,updateCategoryData,updateCategoryStatusData
+  getAllSubCategoryData,addNewSubCategoryData,getSubCategoryByIdData,updateSubCategoryData,updateSubCategoryStatusData
 } from "./subcategory.thunk";
 
 const INIT_STATE = {
@@ -12,29 +12,29 @@ const INIT_STATE = {
 };
 
 
-export const getAllCategoryDataThunk = createAsyncThunk(
-  "getAllCategory",
-  getAllCategoryData
+export const getAllSubCategoryDataThunk = createAsyncThunk(
+  "getAllSubCategory",
+  getAllSubCategoryData
 );
 
-export const addNewCategoryThunk = createAsyncThunk(
-  "addNewCategory",
-  addNewCategoryData
+export const addNewSubCategoryThunk = createAsyncThunk(
+  "addNewSubCategory",
+  addNewSubCategoryData
 );
 
-export const getCategoryByIdThunk = createAsyncThunk(
-  "getCategoryById",
-  getCategoryByIdData
+export const getSubCategoryByIdDataThunk = createAsyncThunk(
+  "getSubCategoryById",
+  getSubCategoryByIdData
 );
 
-export const updateCategoryThunk = createAsyncThunk(
-  "updateCategory",
-  updateCategoryData
+export const updateSubCategoryThunk = createAsyncThunk(
+  "updateSubCategory",
+  updateSubCategoryData
 );
 
-export const updateCategoryStatusThunk = createAsyncThunk(
-  "updateStatusCategory",
-  updateCategoryStatusData
+export const updateSubCategoryStatusThunk = createAsyncThunk(
+  "updateSubStatusCategory",
+  updateSubCategoryStatusData
 );
 
 
@@ -47,52 +47,51 @@ const subcategorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAllCategoryDataThunk.pending, (state) => {
+      .addCase(getAllSubCategoryDataThunk.pending, (state) => {
         return state;
       })
-      .addCase(getAllCategoryDataThunk.fulfilled, (state, action) => {
-        state.subcategory.category = action.payload.Categories;
-        state.subcategory.totalCount = action.payload.noOfEntries;
+      .addCase(getAllSubCategoryDataThunk.fulfilled, (state, action) => {
+        state.subcategorydata.subcategory = action.payload.SubCategories;
+        state.subcategorydata.totalCount = action.payload.noOfEntries;
         return state;
       })
-      .addCase(getAllCategoryDataThunk.rejected, (state) => {
+      .addCase(getAllSubCategoryDataThunk.rejected, (state) => {
         return state;
       })
-      .addCase(addNewCategoryThunk.pending, (state) => {
+      .addCase(addNewSubCategoryThunk.pending, (state) => {
         return state;
       })
-      .addCase(addNewCategoryThunk.fulfilled, (state, action) => {
-       state.subcategory.push(action.payload)
+      .addCase(addNewSubCategoryThunk.fulfilled, (state, action) => {
         return state;
       })
-      .addCase(addNewCategoryThunk.rejected, (state) => {
+      .addCase(addNewSubCategoryThunk.rejected, (state) => {
         return state;
       })
-      .addCase(getCategoryByIdThunk.pending, (state) => {
+      .addCase(getSubCategoryByIdDataThunk.pending, (state) => {
         return state;
       })
-      .addCase(getCategoryByIdThunk.fulfilled, (state, action) => {
+      .addCase(getSubCategoryByIdDataThunk.fulfilled, (state, action) => {
         return state;
       })
-      .addCase(getCategoryByIdThunk.rejected, (state) => {
+      .addCase(getSubCategoryByIdDataThunk.rejected, (state) => {
         return state;
       })
-      .addCase(updateCategoryThunk.pending, (state) => {
+      .addCase(updateSubCategoryThunk.pending, (state) => {
         return state;
       })
-      .addCase(updateCategoryThunk.fulfilled, (state, action) => {
+      .addCase(updateSubCategoryThunk.fulfilled, (state, action) => {
         return state;
       })
-      .addCase(updateCategoryThunk.rejected, (state) => {
+      .addCase(updateSubCategoryThunk.rejected, (state) => {
         return state;
       })
-      .addCase(updateCategoryStatusThunk.pending, (state) => {
+      .addCase(updateSubCategoryStatusThunk.pending, (state) => {
         return state;
       })
-      .addCase(updateCategoryStatusThunk.fulfilled, (state, action) => {
+      .addCase(updateSubCategoryStatusThunk.fulfilled, (state, action) => {
         return state;
       })
-      .addCase(updateCategoryStatusThunk.rejected, (state) => {
+      .addCase(updateSubCategoryStatusThunk.rejected, (state) => {
         return state;
       })
   },

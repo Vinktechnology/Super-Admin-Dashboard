@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../src/theme.js";
-import { Link as RouterLink, useNavigate,useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
@@ -12,7 +12,12 @@ import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import { addNewCategoryThunk , getCategoryByIdThunk, updateCategoryThunk} from "../../store/slices/category/category.slice.js";
+import { getAllCategoriesGlobalApi } from "../../utils/global/user.global.js";
+import {
+  addNewSubCategoryThunk,
+  getSubCategoryByIdDataThunk,
+  updateSubCategoryThunk,
+} from "../../store/slices/subcategory/subcategory.slice.js";
 
 const SubCategory = () => {
   const dispatch = useDispatch();
@@ -20,7 +25,9 @@ const SubCategory = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [ddlCategoryData, setDdlCategoryData] = useState([]);
   const [initialValues, setInitialValues] = useState({
+    subcategory: "",
     category: "",
     slug: "",
     description: "",
@@ -30,26 +37,31 @@ const SubCategory = () => {
 
   const navigate = useNavigate();
 
-
-
-  useEffect(()=>{
-    if(params.Id)
-      {
-        dispatch(getCategoryByIdThunk(params.Id))
-        .unwrap()
-        .then((da) => {
-          console.log(" data of id",da)
-        
-          setInitialValues({
-            category: da.name || "",
-            slug: da.slug || "",
-            description: da.description || "",
-            thumbnail: da.imageLink || "",
-            sampleimages: da.sampleimages || [],
-          });
+  useEffect(() => {
+    getAllCategoriesGlobalApi()
+      .then((result) => {
+        const catDDLData = result?.data?.Categories?.map((d, i) => {
+          return { value: d._id, label: d.name };
         });
-      }
-  },[params.Id])
+        setDdlCategoryData(catDDLData);
+
+        if (params.Id) {
+          dispatch(getSubCategoryByIdDataThunk(params.Id))
+            .unwrap()
+            .then((da) => {
+              setInitialValues({
+                subcategory: da.name || "",
+                category: da.categoryId?._id || "",
+                slug: da.slug || "",
+                description: da.description || "",
+                thumbnail: da.imageLink || "",
+                sampleimages: da.sampleimages || [],
+              });
+            });
+        }
+      })
+      .catch((e) => {});
+  }, [params.Id]);
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     useFormik({
@@ -60,45 +72,45 @@ const SubCategory = () => {
     });
 
   async function onSubmit(data) {
+    if (params.Id) {
+      dispatch(
+        updateSubCategoryThunk({
+          ...data,
+          id: params.Id,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          navigate({
+            pathname: "/dashboard/subcategory",
+          });
+        });
+    } else {
+      console.log("Data", data);
 
-    console.log("data from components",data);
-    if(params.Id)
-      {
-        dispatch(
-          updateCategoryThunk({
-            ...data,id:params.Id
-          })
-        )
-          .unwrap()
-          .then(() => {
-            navigate({
-              pathname: "/dashboard/category",
-            });
+      dispatch(
+        addNewSubCategoryThunk({
+          ...data,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          navigate({
+            pathname: "/dashboard/subcategory",
           });
-      }
-      else
-      {
-        dispatch(
-          addNewCategoryThunk({
-            ...data,
-          })
-        )
-          .unwrap()
-          .then(() => {
-            navigate({
-              pathname: "/dashboard/category",
-            });
-          });
-      }
-   
+        });
+    }
   }
-
 
   return (
     <Box m="20px">
- 
-      <Header title={params.Id?"EDIT SUB CATEGORY":"CREATE  SUB CATEGORY" } subtitle={params.Id?"Edit a Sub Category":"Create a New Sub Category" }  />
-    
+      <Header
+        title={params.Id ? "EDIT SUB CATEGORY" : "CREATE  SUB CATEGORY"}
+        subtitle={
+          params.Id ? "Edit a Sub Category" : "Create a New Sub Category"
+        }
+      />
+
       <Card
         sx={{
           maxWidth: "100%",
@@ -121,21 +133,21 @@ const SubCategory = () => {
           >
             <Element
               eletype={inputType.input}
-              label="Category"
-              placeholder="Please enter Category"
+              label="*SubCategory"
+              placeholder="Please enter Sub Category"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "category",
+                name: "subcategory",
               }}
-              errorText={touched.category && errors.category}
-              value={values.category}
+              errorText={touched.subcategory && errors.subcategory}
+              value={values.subcategory}
               styles={{ gridColumn: "span 2" }}
             />
 
             <Element
               eletype={inputType.input}
-              label="Slug"
+              label="*Slug"
               placeholder="Please enter Slug"
               inputProps={{
                 onChange: handleChange,
@@ -148,8 +160,23 @@ const SubCategory = () => {
             />
 
             <Element
+              eletype={inputType.select}
+              label="*Category"
+              placeholder="*Please select a Category"
+              inputProps={{
+                onChange: handleChange,
+                onBlur: handleBlur,
+                name: "category",
+              }}
+              errorText={touched.category && errors.category}
+              value={values.category}
+              styles={{ gridColumn: "span 2" }}
+              options={ddlCategoryData}
+            />
+
+            <Element
               eletype={inputType.textarea}
-              label="Description"
+              label="*Description"
               placeholder="Please enter Description"
               inputProps={{
                 onChange: handleChange,
@@ -201,7 +228,7 @@ const SubCategory = () => {
             }}
             variant="contained"
           >
-            {params.Id? "Edit":" Add"}Sub Category
+            {params.Id ? "Edit" : " Add"}Sub Category
           </Button>
         </CardActions>
       </Card>

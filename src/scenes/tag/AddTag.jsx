@@ -35,9 +35,6 @@ const AddTag = () => {
 
   useEffect(()=>{
 
-    
-
-    
 
     getAllCategoriesGlobalApi()
     .then((result) => {

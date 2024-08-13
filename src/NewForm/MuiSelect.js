@@ -16,10 +16,9 @@ function MuiSelect({
   onChange,
   name,
 }) {
-  const [selOption, setSelectedOption] = React.useState("");
+
 
   const handleChange = (event) => {
-    setSelectedOption(event.target.value);
     onChange({
       target: {
         name,
@@ -33,7 +32,7 @@ function MuiSelect({
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          value={selOption}
+          value={value}
           onChange={handleChange}
         >
           {options?.map((item) => (
