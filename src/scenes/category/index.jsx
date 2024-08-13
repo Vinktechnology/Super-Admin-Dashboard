@@ -17,6 +17,7 @@ import {
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
+import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const Category = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [toggleDATA, setToggleData] = useState(null);
+  const [switchChecked, setSwitchChecked] = useState({}); // Keep track of switch states
+
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(1);  // Pages are zero-indexed
@@ -36,6 +39,22 @@ const Category = () => {
 
   //--------------- For Pagination ends here--------------------------
 
+  //--------------- For SingleImageView ------------------------------
+  const [openSingle, setOpenSingleImage] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  const handleClickSingleImageOpen = (data) => {
+    setImageUrl(data);
+    setOpenSingleImage(true);
+    };
+  
+    const handleCloseSingleImage = () => {
+      setOpenSingleImage(false);
+    };
+
+  //--------------- For SingleImageView ------------------------------
+
+
+
   const handleView = (id) => {
     navigate(`/dashboard/category/view/${id}`);
   };
@@ -44,11 +63,21 @@ const Category = () => {
     navigate(`/dashboard/category/addCategory/${id}`);
   };
 
+
+
+
   const toggleChange = (event, data) => {
+    const isChecked = event.target.checked;
     setToggleData({
-      activeStatus: event.target.checked ? "active" : "in-active",
+      activeStatus: isChecked ? "active" : "in-active",
       id: data.id,
     });
+
+    setSwitchChecked(prevState => ({
+      ...prevState,
+      [data.id]: isChecked,
+    }));
+
     setOpen(true);
   };
 
@@ -58,12 +87,12 @@ const Category = () => {
       field: "imageLink",
       headerName: "Image",
       renderCell: (params) => (
-        <a download={params.name} href={params.value} title="category">
+        <Box onClick={()=>handleClickSingleImageOpen(params.value)}>
           <img
             style={{ borderRadius: "50%", height: "50px", width: "50px" }}
             src={params.value}
           />
-        </a>
+        </Box>
       ),
     },
     {
@@ -91,7 +120,7 @@ const Category = () => {
       renderCell: (params) => (
         <Switch
           onChange={(event) => toggleChange(event, params)}
-          defaultChecked={params.value}
+          checked={switchChecked[params.id] ?? params.value}
           color="warning"
         />
       ),
@@ -138,14 +167,20 @@ const Category = () => {
   ];
 
   const fncHandleDialog = (isConfirmed) => {
-    setOpen(false);
     if (isConfirmed) {
       dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
+    } else {
+      setSwitchChecked(prevState => ({
+        ...prevState,
+        [toggleDATA.id]: !switchChecked[toggleDATA.id], // Reset to the previous state if canceled
+      }));
     }
+    setOpen(false);
   };
 
   return (
     <Box p={2}>
+      <SingleImageView  title="Zoom View" imageUrl={imageUrl} handleClickSingleImageOpen={handleClickSingleImageOpen} handleCloseSingleImage={handleCloseSingleImage} openSingle={openSingle} />
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
@@ -205,12 +240,6 @@ const Category = () => {
           },
         }}
       >
-        {/* <DataGrid
-          getRowId={(row) => row._id}
-          rows={categorydata}
-          columns={columns}
-        /> */}
-
         <DataGrid
           getRowId={(row) => row._id}
           rows={category}
@@ -220,7 +249,6 @@ const Category = () => {
           pagination
           page={page}
           onPageChange={(newPage) => setPage(newPage)}
-          // rowCount={totalCategories} // Pass the total number of categories
           rowCount={totalCount} // Pass the total number of categories
           paginationMode="server" // Server-side pagination
         />

@@ -17,6 +17,42 @@ import {
   getCategoryByIdThunk,
   updateCategoryThunk,
 } from "../../store/slices/category/category.slice.js";
+import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
+
+
+
+
+
+
+const sampleImages =[{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/6034412f-841c-4f2f-af7e-471affabb8a6_lady.png"
+},
+{
+    name:"front view",
+    imageUrl:"https://vink-api.s3.ap-south-1.amazonaws.com/vinks/e2b197f4-2d3b-4289-ad27-999453ba1dd5_sample-pic.jpg"
+},
+]
 
 const ViewCategory = () => {
   const dispatch = useDispatch();
@@ -26,6 +62,16 @@ const ViewCategory = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = (index) => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
 
   useEffect(() => {
     if (params.Id) {
@@ -39,6 +85,9 @@ const ViewCategory = () => {
 
   return (
     <Box m="20px">
+        <ImageSlider title="Sample Images" sampleImages={sampleImages} handleClickOpen={handleClickOpen} handleClose={handleClose} open={open} />
+
+        
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="CATEGORY DATA" subtitle="View a Category" />
 
@@ -69,12 +118,16 @@ const ViewCategory = () => {
         }}
       >
         <Box
-          sx={{ padding: "1rem" }}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="top"
+          sx={{ padding: "1rem",
+            display:"flex",
+            justifyContent:"space-between",
+            alignItems:"top",
+            flexDirection:{xs:"column",sm:"column",md:"row",lg:"row", xl:"row" }
+
+           }}
+         
         >
-          <Box  sx={{ width: "40%" }}>
+          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"40%",lg:"40%",xl:"40%",} }}>
         <Box>
             <Typography sx={{
                     color: colors.grey[400],
@@ -88,11 +141,11 @@ const ViewCategory = () => {
         <Box sx={{
                     textAlign:"center"
                   }}>
-            <img src={viewdata?.imageLink} />
+            <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
         </Box>
 
           </Box>
-          <Box sx={{width:"60%"}}>
+          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"60%",lg:"60%",xl:"60%",} }}>
             <Box
               sx={{ padding: "1rem" }}
               display="flex"
@@ -105,6 +158,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Slug
@@ -114,6 +168,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.slug}
@@ -125,6 +180,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Description
@@ -134,6 +190,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.description}
@@ -153,6 +210,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Created By
@@ -162,6 +220,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.createdBy}
@@ -173,6 +232,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Created On
@@ -182,6 +242,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.createdAt}
@@ -201,6 +262,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Updated By
@@ -210,6 +272,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.updatedBy}
@@ -221,6 +284,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Updated On
@@ -230,6 +294,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.updatedAt}
@@ -249,6 +314,7 @@ const ViewCategory = () => {
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                   Is Active
@@ -258,6 +324,7 @@ const ViewCategory = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
                  {viewdata?.isActive?"Active":"In-Active"}
@@ -297,24 +364,24 @@ const ViewCategory = () => {
                     fontWeight: "600",}}>Sample Images</Typography>
                     <hr />
                   <Grid container spacing={0}>
-              <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-              <img src={viewdata?.imageLink} />
+              <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }} onClick={() => handleClickOpen()}>
+              <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
                 </Grid>
                 <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink} />
+                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
                 </Grid>
                 <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink} />
+                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
                 </Grid>
 
                 <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-              <img src={viewdata?.imageLink} />
+              <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
                 </Grid>
                 <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink} />
+                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
                 </Grid>
                 <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }}>
-                <img src={viewdata?.imageLink} />
+                <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }}/>
                 </Grid>
                 </Grid>
                 </Box>

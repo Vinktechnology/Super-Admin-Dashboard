@@ -146,11 +146,16 @@ export const updateCategoryStatusData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    console.log("data of status data category", data)
     const response = await userAxios.put(`${updateCategoryStatusApi}/${data.id}`,{...data});
     const responseData = response?.data;
 
-    console.log("data of updated status category response", response);
+    thunkApi.dispatch(
+      showSuccessToast({
+        message: response.message,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );    
     return responseData;
    
   } catch (err) {

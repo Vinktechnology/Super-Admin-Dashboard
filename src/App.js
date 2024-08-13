@@ -4,6 +4,7 @@ import AppRoutes from "./AppRoutes";
 import Toast from "./components/Toast/Toast";
 import Loader from "./components/Loader/Loader";
 
+
 function App() {
   const [theme, colorMode] = useMode();
 
