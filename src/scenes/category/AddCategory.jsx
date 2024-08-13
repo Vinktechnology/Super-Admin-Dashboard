@@ -39,13 +39,13 @@ const AddCategory = () => {
         .unwrap()
         .then((da) => {
           console.log(" data of id",da)
-          const newRes = da?.Categories[1];
+        
           setInitialValues({
-            category: newRes.name || "",
-            slug: newRes.slug || "",
-            description: newRes.description || "",
-            thumbnail: newRes.imageLink || "",
-            sampleimages: newRes.sampleimages || [],
+            category: da.name || "",
+            slug: da.slug || "",
+            description: da.description || "",
+            thumbnail: da.imageLink || "",
+            sampleimages: da.sampleimages || [],
           });
         });
       }

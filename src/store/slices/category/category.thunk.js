@@ -1,5 +1,5 @@
 import {
-  getAllCategoryApi,addNewCategoryApi,updateCategoryStatusApi
+  getAllCategoryApi,addNewCategoryApi,updateCategoryStatusApi,getCategoryByIdApi
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
@@ -82,8 +82,8 @@ export const getCategoryByIdData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(getAllCategoryApi);
-    const responseData = response?.data;
+    const response = await userAxios.get(`${getCategoryByIdApi}/${data}`);
+    const responseData = response?.data?.categoryData;
     return responseData;
    
   } catch (err) {

@@ -25,7 +25,6 @@ const Category = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [toggleDATA, setToggleData] = useState(null);
 
   //--------------- For Pagination starts here --------------------------
