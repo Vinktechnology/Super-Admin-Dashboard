@@ -1,4 +1,7 @@
 import { defaultAxios } from "../axios/default.axios";
+import { userAxios } from "../axios/user.axios";
+import { getAllActiveCategoryApi, getAllActiveSubCategoryApi } from "../apis.utils";
+
 
 export const formatUserResponse = (response) => {
   return {
@@ -21,3 +24,13 @@ export const formatUserResponse = (response) => {
     mobile: response.mobile,
   };
 };
+
+export const getAllCategoriesGlobalApi=()=>
+  {
+      return userAxios.get(getAllActiveCategoryApi);
+  }
+
+export const getAllSubCategoriesGlobalApi=()=>
+    {
+        return userAxios.post(getAllActiveSubCategoryApi);
+    }

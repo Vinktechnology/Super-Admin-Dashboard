@@ -18,6 +18,7 @@ import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
+import { globalFormatDate } from "../../utils/formatTime.js";
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Category = () => {
 
 
   //--------------- For Pagination starts here --------------------------
-  const [page, setPage] = useState(1);  // Pages are zero-indexed
+  const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(5);
   useEffect(() => {
     dispatch(getAllCategoryDataThunk({ page, pageSize }));
@@ -129,21 +130,26 @@ const Category = () => {
       field: "createdAt",
       headerName: "Created On",
       flex: 1,
+      renderCell: (params) => globalFormatDate(params?.value),
+      
     },
     {
       field: "createdBy",
       headerName: "Created By",
       flex: 1,
+      renderCell: (params) => params?.value?.fullName,
     },
     {
       field: "updatedAt",
       headerName: "Updated On",
       flex: 1,
+      renderCell: (params) => globalFormatDate(params?.value),
     },
     {
       field: "updatedBy",
       headerName: "Updated By",
       flex: 1,
+      renderCell: (params) => params?.value?.fullName,
     },
     {
       field: "actions",

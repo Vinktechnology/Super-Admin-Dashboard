@@ -1,6 +1,7 @@
 //Auth
 
 export const emailLoginApi = "/auth/login";
+export const checkusertokenvalidityApi= "/auth/validate-token"
 
 // Category
 
@@ -8,7 +9,30 @@ export const getAllCategoryApi ="/v1/category/all"
 export const getCategoryByIdApi ="/v1/category"
 export const addNewCategoryApi="/v1/category"
 export const updateCategoryStatusApi="/v1/category/active-status"
-export const checkusertokenvalidityApi= "/auth/validate-token"
+export const getAllActiveCategoryApi="/v1/category/active"
+
+
+
+
+
+// SUBCategory
+
+export const getAllSubCategoryApi ="/v1/category/all"
+export const getSubCategoryByIdApi ="/v1/category"
+export const addNewSubCategoryApi="/v1/subCategory"
+export const updateSubCategoryStatusApi="/v1/category/active-status"
+export const getAllActiveSubCategoryApi="/v1/subCategory/active"
+
+
+
+// Tag
+
+export const getAllTagApi ="/v1/tags/all"
+export const getTagByIdApi ="/v1/category"
+export const addNewTagApi="/v1/subCategory"
+export const updateTagStatusApi="/v1/category/active-status"
+
+
 
 
 

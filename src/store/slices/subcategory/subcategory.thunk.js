@@ -44,9 +44,7 @@ export const addNewCategoryData = async (data, thunkApi) => {
 
     const sampdata = data?.sampleimages.map((da, i)=>  da.file)
     console.log("sampdata", sampdata)
-    console.log("data.thumbnail[0]?.file", data.thumbnail[0]?.file);
-    formData.append("sampleImages",sampdata);
-   
+    formData.append("sampleImages", data.sampdata);
 
 
   

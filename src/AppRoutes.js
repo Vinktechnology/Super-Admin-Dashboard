@@ -50,7 +50,9 @@ import ProductCategory from "./scenes/product/addproduct/ProductCategory";
 import ProductFeatures from "./scenes/product/addproduct/ProductFeatures";
 import ProductBrand from "./scenes/product/addproduct/ProductBrand";
 import ViewCategory from "./scenes/category/ViewCategory";
+import ViewSubCategory from "./scenes/subcategory/ViewSubCategory";
 import withAuth from "./hooks/withAuth";
+import ViewTag from "./scenes/tag/ViewTag";
 
 
 
@@ -118,6 +120,7 @@ function AppRoutes() {
           element: <Outlet />,
           children: [
             { path: "", element: <SubCategory /> },
+            { path: "view/:Id", element: <ViewSubCategory /> },
             { path: "addsubcategory", element: <AddSubCategory /> },
             { path: "addsubcategory/:Id", element: <AddSubCategory /> },
           ],
@@ -127,6 +130,7 @@ function AppRoutes() {
           element: <Outlet />,
           children: [
             { path: "", element: <Tag /> },
+            { path: "view/:Id", element: <ViewTag /> },
             { path: "addtag", element: <AddTag /> },
             { path: "addtag/:Id", element: <AddTag /> },
           ],

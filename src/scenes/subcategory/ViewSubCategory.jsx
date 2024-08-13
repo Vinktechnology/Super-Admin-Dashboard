@@ -55,7 +55,7 @@ const sampleImages =[{
 },
 ]
 
-const ViewCategory = () => {
+const ViewSubCategory = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
@@ -90,7 +90,7 @@ const ViewCategory = () => {
 
         
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="CATEGORY DATA" subtitle="View a Category" />
+        <Header title="SUB CATEGORY DATA" subtitle="View a Sub Category" />
 
         <Box>
           <Button
@@ -101,9 +101,9 @@ const ViewCategory = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/category")}
+            onClick={() => navigate("/dashboard/subcategory")}
           >
-            Back to Category
+            Back to SubCategory
           </Button>
         </Box>
       </Box>
@@ -299,6 +299,7 @@ wordWrap:"break-word"
                   }}
                 >
                  {globalFormatDate(viewdata?.updatedAt)}
+      
                 </Typography>
               </Box>
             </Box>
@@ -391,4 +392,4 @@ wordWrap:"break-word"
   );
 };
 
-export default ViewCategory;
+export default ViewSubCategory;
