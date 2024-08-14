@@ -35,7 +35,7 @@ function MuiMultiSelect({
     errorText,
     options,
     inputProps,
-    // value,
+    value,
     styles,
     onChange,
     name}) {
@@ -62,7 +62,7 @@ function MuiMultiSelect({
           id="demo-multiple-chip"
           multiple
           fullWidth
-          value={selectedData}
+          value={value}
           onChange={handleChange}
           input={<FilledInput id="select-multiple-chip" label={label} />}
           renderValue={(selected) => 

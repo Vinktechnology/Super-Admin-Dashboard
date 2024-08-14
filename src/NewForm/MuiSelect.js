@@ -17,7 +17,6 @@ function MuiSelect({
   name,
 }) {
 
-
   const handleChange = (event) => {
     onChange({
       target: {

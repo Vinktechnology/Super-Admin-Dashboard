@@ -52,7 +52,7 @@ const tagsSlice = createSlice({
         return state;
       })
       .addCase(getAllTagsThunk.fulfilled, (state, action) => {
-        state.tagsdata.tags = action.payload.Categories;
+        state.tagsdata.tags = action.payload.tags;
         state.tagsdata.totalCount = action.payload.noOfEntries;
         return state;
       })
@@ -63,7 +63,6 @@ const tagsSlice = createSlice({
         return state;
       })
       .addCase(addNewTagThunk.fulfilled, (state, action) => {
-       state.tagsdata.push(action.payload)
         return state;
       })
       .addCase(addNewTagThunk.rejected, (state) => {

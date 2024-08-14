@@ -53,7 +53,7 @@ import ViewCategory from "./scenes/category/ViewCategory";
 import ViewSubCategory from "./scenes/subcategory/ViewSubCategory";
 import withAuth from "./hooks/withAuth";
 import ViewTag from "./scenes/tag/ViewTag";
-
+import MultipleSelectPlaceholder from "./NewForm/Test";
 
 
 function AppRoutes() {
@@ -180,6 +180,8 @@ function AppRoutes() {
       ),
     },
     { path: "register", element: <Register /> },
+    { path: "test", element: <MultipleSelectPlaceholder /> },
+    
     // { path: "forgot-password", element: <ForgotPassword /> },
     // { path: "reset-password", element: <NewPassword /> },
     // { path: "404", element: <NotFound /> },

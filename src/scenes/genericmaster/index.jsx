@@ -10,17 +10,19 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+  getAllCategoryDataThunk,
+  updateCategoryStatusThunk,
+} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
-import { getAllTagsThunk, updateTagStatusThunk } from "../../store/slices/tags/tags.slice.js";
 
-const Tag = () => {
+const Category = () => {
   const dispatch = useDispatch();
-
-  const { tags, totalCount } = useSelector(({ tag }) => tag?.tagsdata);
+  const { category, totalCount } = useSelector(({ category }) => category?.categorydata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -31,9 +33,9 @@ const Tag = () => {
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllTagsThunk({ page, pageSize }));
+    dispatch(getAllCategoryDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -55,11 +57,11 @@ const Tag = () => {
 
 
   const handleView = (id) => {
-    navigate(`/dashboard/tag/view/${id}`);
+    navigate(`/dashboard/category/view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/dashboard/tag/addTag/${id}`);
+    navigate(`/dashboard/category/addCategory/${id}`);
   };
 
 
@@ -128,7 +130,8 @@ const Tag = () => {
       field: "createdAt",
       headerName: "Created On",
       flex: 1,
-            renderCell: (params) => globalFormatDate(params?.value),
+      renderCell: (params) => globalFormatDate(params?.value),
+      
     },
     {
       field: "createdBy",
@@ -171,7 +174,7 @@ const Tag = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateTagStatusThunk({ ...toggleDATA }));
+      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -193,7 +196,7 @@ const Tag = () => {
         isopen={open}
       />
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Tag" subtitle="Manage Tag" />
+        <Header title="Category" subtitle="Manage Category" />
 
         <Box>
           <Button
@@ -204,10 +207,10 @@ const Tag = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/tag/addtag")}
+            onClick={() => navigate("/dashboard/category/addcategory")}
           >
             <AddIcon sx={{ mr: "10px" }} />
-            Add Tag
+            Add Category
           </Button>
         </Box>
       </Box>
@@ -245,7 +248,7 @@ const Tag = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={tags}
+          rows={category}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -260,4 +263,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default Category;

@@ -30,7 +30,8 @@ export const getAllCategoriesGlobalApi=()=>
       return userAxios.get(getAllActiveCategoryApi);
   }
 
-export const getAllSubCategoriesGlobalApi=()=>
+export const getAllSubCategoriesGlobalApi=(api)=>
     {
-        return userAxios.post(getAllActiveSubCategoryApi);
+        const CategoryId = api.map((d,i)=> d.id)
+        return userAxios.get(getAllActiveSubCategoryApi+"?categoryIds="+CategoryId.toString());
     }

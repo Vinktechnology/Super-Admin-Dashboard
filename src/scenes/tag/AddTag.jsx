@@ -1,19 +1,26 @@
-import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
-import { tokens } from "../../../src/theme.js";
-import { Link as RouterLink, useNavigate,useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { Box, Button, useTheme } from "@mui/material";
+import { tokens } from "../../../src/theme.js";
+import { useNavigate, useParams } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import {
+  getAllCategoriesGlobalApi,
+  getAllSubCategoriesGlobalApi,
+} from "../../utils/global/user.global.js";
+import {
+  addNewTagThunk,
+  getTagByIdThunk,
+  updateTagThunk,
+} from "../../store/slices/tags/tags.slice.js";
 import Header from "../../components/Header";
-import { inputType } from "../../utils/enum";
 import Element from "../../Form/Element";
+import { inputType } from "../../utils/enum";
+import { TagSchema } from "../../utils/validation.js";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { useFormik } from "formik";
-import { CatgorySchema } from "../../utils/validation.js";
-import { useDispatch } from "react-redux";
-import { getAllCategoriesGlobalApi, getAllSubCategoriesGlobalApi } from "../../utils/global/user.global.js";
-import { addNewTagThunk, getTagByIdThunk, updateTagThunk } from "../../store/slices/tags/tags.slice.js";
 
 const AddTag = () => {
   const dispatch = useDispatch();
@@ -21,100 +28,148 @@ const AddTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [catgoryDDL, setCategoryDDL] = useState([]);
+  const [subcatgoryDDL, setSubCategoryDDL] = useState([]);
+  const [subcatVal, setSubCatVal] = useState([]);
   const [initialValues, setInitialValues] = useState({
-    tag:"",
+    tag: "",
     slug: "",
-    category: "",
-    subcategory:"",
+    category: [],
+    subcategory: [],
     description: "",
-    thumbnail: ""
+    thumbnail: "",
   });
 
   const navigate = useNavigate();
-
-
-
-  useEffect(()=>{
-
-
-    getAllCategoriesGlobalApi()
-    .then((result) => {
-     console.log(result);
-    })
-    .catch((e) => {
-    
-    });
-
-    getAllSubCategoriesGlobalApi()
-    .then((result) => {
-      console.log(result);
-    })
-    .catch((e) => {
-    
-    });
-
-    if(params.Id)
-      {
-        dispatch(getTagByIdThunk(params.Id))
-        .unwrap()
-        .then((da) => {
-          setInitialValues({
-            category: da.name || "",
-            slug: da.slug || "",
-            description: da.description || "",
-            thumbnail: da.imageLink || "",
-          });
-        });
-      }
-  },[params.Id])
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     useFormik({
       enableReinitialize: true,
       initialValues,
       onSubmit: onSubmit,
-      validationSchema: CatgorySchema,
+      validationSchema: TagSchema,
     });
 
+  useEffect(() => {
+    // Fetch all categories
+    getAllCategoriesGlobalApi()
+      .then((result) => {
+        const ddlcat = result.data?.Categories?.map((da) => ({
+          label: da?.name,
+          value: da?.name,
+          name: da?.name,
+          id: da?._id,
+        }));
+        setCategoryDDL(ddlcat);
+      })
+      .catch((e) => {});
+
+    if (params.Id) {
+      // Fetch existing tag details
+      dispatch(getTagByIdThunk(params.Id))
+        .unwrap()
+        .then((da) => {
+          const catval = da.categoryIds?.map((da) => ({
+            label: da?.name,
+            value: da?.name,
+            name: da?.name,
+            id: da?._id,
+          }));
+
+          const subcatval = da.subCategoryIds?.map((da) => ({
+            label: da?.name,
+            value: da?.name,
+            name: da?.name,
+            id: da?._id,
+          }));
+
+          setSubCatVal(subcatval);
+          setInitialValues({
+            tag: da.name || "",
+            category: catval || [],
+            subcategory: subcatval || [],
+            slug: da.slug || "",
+            description: da.description || "",
+            thumbnail: da.imageLink || "",
+          });
+        });
+    }
+  }, [params.Id]);
+
+  useEffect(() => {
+    // Fetch subcategories based on selected categories
+ 
+    if (values.category.length > 0) {
+      getAllSubCategoriesGlobalApi(values.category)
+        .then((result) => {
+          const ddlsubcat = result.data?.SubCategories?.map((da) => ({
+            label: da?.name,
+            value: da?.name,
+            name: da?.name,
+            id: da?._id,
+          }));
+          setSubCategoryDDL(ddlsubcat);
+        })
+        .catch((e) => {});
+    } else {
+      handleChange({
+        target: {
+          name: "subcategory",
+          value: [],
+        },
+      });
+      setSubCategoryDDL([]);
+    }
+  }, [values.category]);
+
+  useEffect(() => {
+    // Set the value of subcategory after the dropdown is bound
+    if (subcatgoryDDL.length > 0 && subcatVal.length > 0) {
+      handleChange({
+        target: {
+          name: "subcategory",
+          value: subcatVal,
+        },
+      });
+    }
+  }, [subcatgoryDDL]);
+
   async function onSubmit(data) {
-
-    if(params.Id)
-      {
-        dispatch(
-          updateTagThunk({
-            ...data,id:params.Id
-          })
-        )
-          .unwrap()
-          .then(() => {
-            navigate({
-              pathname: "/dashboard/tag",
-            });
+    if (params.Id) {
+      dispatch(
+        updateTagThunk({
+          ...data,
+          id: params.Id,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          navigate({
+            pathname: "/dashboard/tag",
           });
-      }
-      else
-      {
-        dispatch(
-          addNewTagThunk({
-            ...data,
-          })
-        )
-          .unwrap()
-          .then(() => {
-            navigate({
-              pathname: "/dashboard/tag",
-            });
+        });
+    } else {
+      dispatch(
+        addNewTagThunk({
+          ...data,
+        })
+      )
+        .unwrap()
+        .then(() => {
+          navigate({
+            pathname: "/dashboard/tag",
           });
-      }
-   
+        });
+    }
   }
-
 
   return (
     <Box m="20px">
- 
-      <Header title={params.Id?"EDIT TAG":"CREATE TAG" } subtitle={params.Id?"Edit a Tag":"Create a New Tag" }  />
-    
+      <Header
+        title={params.Id ? "EDIT TAG" : "CREATE TAG"}
+        subtitle={params.Id ? "Edit a Tag" : "Create a New Tag"}
+      />
+
       <Card
         sx={{
           maxWidth: "100%",
@@ -144,8 +199,8 @@ const AddTag = () => {
                 onBlur: handleBlur,
                 name: "tag",
               }}
-              errorText={touched.category && errors.category}
-              value={values.category}
+              errorText={touched.tag && errors.tag}
+              value={values.tag}
               styles={{ gridColumn: "span 2" }}
             />
 
@@ -161,6 +216,36 @@ const AddTag = () => {
               errorText={touched.slug && errors.slug}
               value={values.slug}
               styles={{ gridColumn: "span 2" }}
+            />
+
+            <Element
+              eletype={inputType.multiselect}
+              label="*Category"
+              placeholder="Please select a Category"
+              inputProps={{
+                onChange: handleChange,
+                onBlur: handleBlur,
+                name: "category",
+              }}
+              errorText={touched.category && errors.category}
+              value={values.category}
+              styles={{ gridColumn: "span 2" }}
+              options={catgoryDDL}
+            />
+
+            <Element
+              eletype={inputType.multiselect}
+              label="*SubCategory"
+              placeholder="Please select a SubCategory"
+              inputProps={{
+                onChange: handleChange,
+                onBlur: handleBlur,
+                name: "subcategory",
+              }}
+              errorText={touched.subcategory && errors.subcategory}
+              value={values.subcategory}
+              styles={{ gridColumn: "span 2" }}
+              options={subcatgoryDDL}
             />
 
             <Element
@@ -217,7 +302,7 @@ const AddTag = () => {
             }}
             variant="contained"
           >
-            {params.Id? "Edit":" Add"} Tag
+            {params.Id ? "Edit" : " Add"} Tag
           </Button>
         </CardActions>
       </Card>

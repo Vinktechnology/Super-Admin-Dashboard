@@ -40,8 +40,10 @@ export const addNewTagsData = async (data, thunkApi) => {
     formData.append("name", data.tag);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
-    formData.append("categoryId", data.category);
-    formData.append("subCategoryId", data.subcategory);
+    const catData = data?.category?.map((d,i)=> d.id);
+    const subcatData = data?.subcategory?.map((d,i)=> d.id);
+    formData.append("categoryId", catData);
+    formData.append("subCategoryId", subcatData);
     formData.append("file", data.thumbnail[0]?.file);
   
     const response = await userAxios.post(addNewTagApi,formData,{
@@ -79,7 +81,7 @@ export const getTagByIdData = async (data, thunkApi) => {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
     const response = await userAxios.get(`${getTagByIdApi}/${data}`);
-    const responseData = response?.data?.categoryData;
+    const responseData = response?.data?.tagData;
     return responseData;
    
   } catch (err) {
