@@ -32,7 +32,6 @@ const SubCategory = () => {
     slug: "",
     description: "",
     thumbnail: "",
-    sampleimages: [],
   });
 
   const navigate = useNavigate();
@@ -55,7 +54,6 @@ const SubCategory = () => {
                 slug: da.slug || "",
                 description: da.description || "",
                 thumbnail: da.imageLink || "",
-                sampleimages: da.sampleimages || [],
               });
             });
         }

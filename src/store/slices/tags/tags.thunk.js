@@ -1,16 +1,15 @@
 import {
-  getAllCategoryApi,addNewCategoryApi,updateCategoryStatusApi,getCategoryByIdApi
+  getAllTagApi,addNewTagApi,updateTagStatusApi,getTagByIdApi
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
-import { gridColumnsTotalWidthSelector } from "@mui/x-data-grid";
 
 
-export const getAllCategoryData = async (data, thunkApi) => {
+export const getAllTagsData = async (data, thunkApi) => {
   try { 
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(`${getAllCategoryApi}?page=${data.page}&limit=${data.pageSize}`);
+    const response = await userAxios.get(`${getAllTagApi}?page=${data.page}&limit=${data.pageSize}`);
     const responseData = response?.data;
     return responseData;
    
@@ -32,19 +31,20 @@ export const getAllCategoryData = async (data, thunkApi) => {
   }
 };
 
-export const addNewCategoryData = async (data, thunkApi) => {
+export const addNewTagsData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
+    console.log("data",data);
     const formData = new FormData();
-    formData.append("name", data.category);
+    formData.append("name", data.tag);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
+    formData.append("categoryId", data.category);
+    formData.append("subCategoryId", data.subcategory);
     formData.append("file", data.thumbnail[0]?.file);
-    data?.sampleimages.forEach((da, index) => {
-      formData.append('sampleImages', da.file); 
-    });
-    const response = await userAxios.post(addNewCategoryApi,formData,{
+  
+    const response = await userAxios.post(addNewTagApi,formData,{
       headers: {
         "Content-Type": undefined
       }});
@@ -74,11 +74,11 @@ export const addNewCategoryData = async (data, thunkApi) => {
   }
 };
 
-export const getCategoryByIdData = async (data, thunkApi) => {
+export const getTagByIdData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(`${getCategoryByIdApi}/${data}`);
+    const response = await userAxios.get(`${getTagByIdApi}/${data}`);
     const responseData = response?.data?.categoryData;
     return responseData;
    
@@ -99,7 +99,7 @@ export const getCategoryByIdData = async (data, thunkApi) => {
 };
 
 
-export const updateCategoryData = async (data, thunkApi) => {
+export const updateTagData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
@@ -109,10 +109,10 @@ export const updateCategoryData = async (data, thunkApi) => {
     formData.append("slug", data.slug);
     formData.append("description", data.description);
     formData.append("file", data.thumbnail[0]?.file);
-    data?.sampleimages.forEach((da, index) => {
-      formData.append('sampleImages', da.file); // 'sampleImages' is the key, 'file' is the File object
-    });
-    const response = await userAxios.put(`${addNewCategoryApi}/${data.id}`,formData,{
+    const sampdata = data?.sampleimages.map((da, i)=>  da.file)
+    console.log("sampdata", sampdata)
+    formData.append("sampleImages", data.sampdata);
+    const response = await userAxios.put(`${addNewTagApi}/${data.id}`,formData,{
       headers: {
         "Content-Type": undefined
       }});
@@ -138,11 +138,11 @@ export const updateCategoryData = async (data, thunkApi) => {
 };
 
 
-export const updateCategoryStatusData = async (data, thunkApi) => {
+export const updateTagStatusData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.put(`${updateCategoryStatusApi}/${data.id}`,{...data});
+    const response = await userAxios.put(`${updateTagStatusApi}/${data.id}`,{...data});
     const responseData = response?.data;
 
     thunkApi.dispatch(

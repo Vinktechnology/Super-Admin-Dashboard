@@ -12,8 +12,8 @@ import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import { addNewCategoryThunk , getCategoryByIdThunk, updateCategoryThunk} from "../../store/slices/category/category.slice.js";
 import { getAllCategoriesGlobalApi, getAllSubCategoriesGlobalApi } from "../../utils/global/user.global.js";
+import { addNewTagThunk, getTagByIdThunk, updateTagThunk } from "../../store/slices/tags/tags.slice.js";
 
 const AddTag = () => {
   const dispatch = useDispatch();
@@ -22,11 +22,12 @@ const AddTag = () => {
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [initialValues, setInitialValues] = useState({
-    category: "",
+    tag:"",
     slug: "",
+    category: "",
+    subcategory:"",
     description: "",
-    thumbnail: "",
-    sampleimages: [],
+    thumbnail: ""
   });
 
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const AddTag = () => {
 
     if(params.Id)
       {
-        dispatch(getCategoryByIdThunk(params.Id))
+        dispatch(getTagByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
           setInitialValues({
@@ -62,7 +63,6 @@ const AddTag = () => {
             slug: da.slug || "",
             description: da.description || "",
             thumbnail: da.imageLink || "",
-            sampleimages: da.sampleimages || [],
           });
         });
       }
@@ -81,7 +81,7 @@ const AddTag = () => {
     if(params.Id)
       {
         dispatch(
-          updateCategoryThunk({
+          updateTagThunk({
             ...data,id:params.Id
           })
         )
@@ -95,7 +95,7 @@ const AddTag = () => {
       else
       {
         dispatch(
-          addNewCategoryThunk({
+          addNewTagThunk({
             ...data,
           })
         )
@@ -137,12 +137,12 @@ const AddTag = () => {
           >
             <Element
               eletype={inputType.input}
-              label="Category"
-              placeholder="Please enter Category"
+              label="*Tag"
+              placeholder="Please enter Tag"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "category",
+                name: "tag",
               }}
               errorText={touched.category && errors.category}
               value={values.category}
@@ -151,7 +151,7 @@ const AddTag = () => {
 
             <Element
               eletype={inputType.input}
-              label="Slug"
+              label="*Slug"
               placeholder="Please enter Slug"
               inputProps={{
                 onChange: handleChange,
@@ -165,7 +165,7 @@ const AddTag = () => {
 
             <Element
               eletype={inputType.textarea}
-              label="Description"
+              label="*Description"
               placeholder="Please enter Description"
               inputProps={{
                 onChange: handleChange,
@@ -179,7 +179,7 @@ const AddTag = () => {
 
             <Element
               eletype={inputType.dropzone}
-              label="Please choose Thumbnail of Category"
+              label="Please choose Thumbnail of Tag"
               placeholder="Please enter thumbnail"
               inputProps={{
                 onChange: handleChange,
@@ -188,23 +188,6 @@ const AddTag = () => {
               }}
               errorText={touched.thumbnail && errors.thumbnail}
               value={values.thumbnail}
-              styles={{
-                gridColumn: "span 2",
-                backgroundColor: "rgba(0, 0, 0, 0.06)",
-              }}
-            />
-
-            <Element
-              eletype={inputType.dropzone}
-              label="Please choose Sample Images of Category"
-              placeholder="Please enter Sample Images"
-              inputProps={{
-                onChange: handleChange,
-                onBlur: handleBlur,
-                name: "sampleimages",
-              }}
-              errorText={touched.sampleimages && errors.sampleimages}
-              value={values.sampleimages}
               styles={{
                 gridColumn: "span 2",
                 backgroundColor: "rgba(0, 0, 0, 0.06)",

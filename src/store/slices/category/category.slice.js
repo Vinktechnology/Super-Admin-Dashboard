@@ -62,7 +62,6 @@ const categorySlice = createSlice({
         return state;
       })
       .addCase(addNewCategoryThunk.fulfilled, (state, action) => {
-       state.categorydata.push(action.payload)
         return state;
       })
       .addCase(addNewCategoryThunk.rejected, (state) => {

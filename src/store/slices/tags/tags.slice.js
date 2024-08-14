@@ -2,7 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
   getAllTagsData,addNewTagsData,getTagByIdData,updateTagData,updateTagStatusData
-} from "./tag.thunk";
+} from "./tags.thunk";
+
 
 const INIT_STATE = {
   tagsdata :{
@@ -12,7 +13,7 @@ const INIT_STATE = {
 };
 
 
-export const getAllTagsDataThunk = createAsyncThunk(
+export const getAllTagsThunk = createAsyncThunk(
   "getAllTags",
   getAllTagsData
 );
@@ -47,15 +48,15 @@ const tagsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAllTagsDataThunk.pending, (state) => {
+      .addCase(getAllTagsThunk.pending, (state) => {
         return state;
       })
-      .addCase(getAllTagsDataThunk.fulfilled, (state, action) => {
+      .addCase(getAllTagsThunk.fulfilled, (state, action) => {
         state.tagsdata.tags = action.payload.Categories;
         state.tagsdata.totalCount = action.payload.noOfEntries;
         return state;
       })
-      .addCase(getAllTagsDataThunk.rejected, (state) => {
+      .addCase(getAllTagsThunk.rejected, (state) => {
         return state;
       })
       .addCase(addNewTagThunk.pending, (state) => {

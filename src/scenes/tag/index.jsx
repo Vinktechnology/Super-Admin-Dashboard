@@ -10,15 +10,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  getAllCategoryDataThunk,
-  updateCategoryStatusThunk,
-} from "../../store/slices/category/category.slice";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
+import { getAllTagsThunk, updateTagStatusThunk } from "../../store/slices/tags/tags.slice.js";
 
 const Tag = () => {
   const dispatch = useDispatch();
@@ -35,7 +32,7 @@ const Tag = () => {
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(5);
   useEffect(() => {
-    dispatch(getAllCategoryDataThunk({ page, pageSize }));
+    dispatch(getAllTagsThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -173,7 +170,7 @@ const Tag = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
+      dispatch(updateTagStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,

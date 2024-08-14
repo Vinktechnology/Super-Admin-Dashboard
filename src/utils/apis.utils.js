@@ -28,9 +28,9 @@ export const getAllActiveSubCategoryApi="/v1/subCategory/active"
 // Tag
 
 export const getAllTagApi ="/v1/tags/all"
-export const getTagByIdApi ="/v1/category"
-export const addNewTagApi="/v1/subCategory"
-export const updateTagStatusApi="/v1/category/active-status"
+export const getTagByIdApi ="/v1/tags"
+export const addNewTagApi="/v1/tags"
+export const updateTagStatusApi="/v1/tags/active-status"
 
 
 
