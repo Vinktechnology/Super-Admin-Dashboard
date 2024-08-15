@@ -34,6 +34,26 @@ export const updateTagStatusApi="/v1/tags/active-status"
 
 
 
+// generic-product-master
+
+export const getAllGenericMasterApi ="/v1/generic-product-master/all"
+export const getGenericMasterByIdApi ="/v1/generic-product-master"
+export const addNewGenericMasterApi="/v1/generic-product-master"
+export const updateGenericMasterStatusApi="/v1/generic-product-master/active-status"
+
+// procurement master
+
+export const getAllProcurementApi ="/v1/product-master/procurement-pack/all"
+export const getProcurementByIdApi ="/v1/product-master/procurement-pack"
+export const addNewProcurementApi="/v1/product-master/procurement-pack"
+export const updateProcurementStatusApi="/v1/product-master/procurement-pack/active-status"
+
+// procurement master
+export const getAllhsntaxcodeApi ="/v1/product-master/code/all"
+export const gethsntaxcodeByIdApi ="/v1/product-master/code"
+export const addNewhsntaxcodeApi="/v1/product-master/code"
+export const updatehsntaxcodeStatusApi="/v1/product-master/code/active-status"
+
 
 
 

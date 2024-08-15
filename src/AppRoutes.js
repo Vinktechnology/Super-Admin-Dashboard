@@ -32,6 +32,15 @@ import SubCategory from "./scenes/subcategory";
 import AddSubCategory from "./scenes/subcategory/AddSubCategory";
 import Tag from "./scenes/tag";
 import AddTag from "./scenes/tag/AddTag";
+import GenericMaster from "./scenes/genericmaster";
+import AddGenericMaster from "./scenes/genericmaster/AddGenericMaster";
+import ViewGenericMaster from "./scenes/genericmaster/ViewGenericMaster";
+import Procurement from "./scenes/procurement";
+import HSNTaxCode from "./scenes/hsntaxcode";
+import AddHSNTaxCode from "./scenes/hsntaxcode/AddHSNTaxCode";
+import ViewHSNTaxCode from "./scenes/hsntaxcode/ViewHSNTaxCode";
+import AddProcurement from "./scenes/procurement/AddProcurement";
+import ViewProcurement from "./scenes/procurement/ViewProcurement";
 import Attribute from "./scenes/attribute";
 import AddAttribute from "./scenes/attribute/AddAttribute";
 import Product from "./scenes/product";
@@ -133,6 +142,36 @@ function AppRoutes() {
             { path: "view/:Id", element: <ViewTag /> },
             { path: "addtag", element: <AddTag /> },
             { path: "addtag/:Id", element: <AddTag /> },
+          ],
+        },
+        {
+          path: "genericmaster",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <GenericMaster /> },
+            { path: "view/:Id", element: <ViewGenericMaster /> },
+            { path: "addgeneric", element: <AddGenericMaster /> },
+            { path: "addgeneric/:Id", element: <AddGenericMaster /> },
+          ],
+        },
+        {
+          path: "procurement",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <Procurement /> },
+            { path: "view/:Id", element: <ViewProcurement /> },
+            { path: "addprocurement", element: <AddProcurement /> },
+            { path: "addprocurement/:Id", element: <AddProcurement /> },
+          ],
+        },
+        {
+          path: "hsntaxcode",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <HSNTaxCode /> },
+            { path: "view/:Id", element: <ViewHSNTaxCode /> },
+            { path: "addhsntaxcode", element: <AddHSNTaxCode /> },
+            { path: "addhsntaxcode/:Id", element: <AddHSNTaxCode /> },
           ],
         },
         {

@@ -8,6 +8,9 @@ import categoryReducer from "./slices/category/category.slice";
 import subcategoryReducer from "./slices/subcategory/subcategory.slice"
 import tagReducer from "./slices/tags/tags.slice";
 import initReducer from "./slices/init/init.slice";
+import GenericMasterReducer from "./slices/genericmaster/genericmaster.slice";
+import procurementReducer from "./slices/procurement/procurement.slice";
+import hsntaxcodeReducer from "./slices/hsntaxcode/hsntaxcode.slice";
 const rootReducer = combineReducers({
   staticProduct: staticProdcutReducer,
   auth: authReducer,
@@ -18,6 +21,9 @@ const rootReducer = combineReducers({
   init:initReducer,
   subcategory:subcategoryReducer,
   tag:tagReducer,
+  genericmaster:GenericMasterReducer,
+  procurement:procurementReducer,
+  hsntaxcode:hsntaxcodeReducer
 });
 
 export default rootReducer;

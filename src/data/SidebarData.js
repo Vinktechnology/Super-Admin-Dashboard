@@ -85,6 +85,27 @@ export const SidebarData =[
     slug:"tag"
 },
 {
+    title:"Generic Master",
+    to:"/dashboard/genericmaster",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"genericmaster"
+},
+{
+    title:"Procurement & PackOf",
+    to:"/dashboard/procurement",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"procurement"
+},
+{
+    title:"HSN & TAX Code",
+    to:"/dashboard/hsntaxcode",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"hsntaxcode"
+},
+{
     title:"Attribute",
     to:"/dashboard/attribute",
     icon:<ContactsOutlinedIcon />,

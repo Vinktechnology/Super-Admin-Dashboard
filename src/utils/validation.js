@@ -80,6 +80,15 @@ export const CatgorySchema = yup.object().shape({
   slug: yup.string().required("*Slug is required"),
 });
 
+
+export const GenericMasterSchema = yup.object().shape({
+  masterName: yup.string().required("*Master Name is required"),
+  masterSlug: yup.string().required("*Master Slug is required"),
+  description: yup.string().required("*Description is required"),
+});
+
+
+
 export const SubCatgorySchema = yup.object().shape({
   subcategory: yup.string().required("*Sub-Category is required"),
   description: yup.string().required("*Description is required"),

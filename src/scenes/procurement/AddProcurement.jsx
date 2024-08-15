@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../src/theme.js";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useNavigate,useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
@@ -10,101 +10,105 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
-import { GenericMasterSchema } from "../../utils/validation.js";
+import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import { addNewGenericMasterThunk, getGenericMasterByIdThunk, updateGenericMasterThunk } from "../../store/slices/genericmaster/genericmaster.slice.js";
+import { addNewProcurementThunk, getProcurementByIdThunk, updateProcurementThunk } from "../../store/slices/procurement/procurement.slice.js";
 
-const ddlCategoryData=[{
-  label:"Yes",
-  value:"yes",
+const ddlDropdownData = [{
+  label:"Procurement",
+  value:"procurement",
   id:1
 },
 {
-  label:"No",
-  value:"no",
-  id:2
+  label:"Minimum order Quantity",
+  value:"pack-of",
+  id:1
 }
 ]
 
-const AddGenericMaster = () => {
+const AddProcurement = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [initialValues, setInitialValues] = useState({
-    masterName: "",
-    masterSlug: "",
-    isCategoryInvolved: "no",
+    name: "",
+    slug: "",
     description: "",
+    type:""
   });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (params.Id) {
-      dispatch(getGenericMasterByIdThunk(params.Id))
+
+
+  useEffect(()=>{
+    if(params.Id)
+      {
+        dispatch(getProcurementByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
-          const cat =  da.isCategoryInvolved==true?"yes":"no"
-
+          console.log(" data of id",da)
+        
           setInitialValues({
-            masterName: da.masterName || "",
-            masterSlug: da.masterSlug || "",
-            isCategoryInvolved: cat || "no",
-            description: da.description,
+            name: da?.name || "",
+            slug:da?.slug||  "",
+            description:da?.description ||"",
+            type:da?.type||""
           });
         });
-    }
-  }, [params.Id]);
+      }
+  },[params.Id])
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
     useFormik({
       enableReinitialize: true,
       initialValues,
       onSubmit: onSubmit,
-      validationSchema: GenericMasterSchema,
+      // validationSchema: CatgorySchema,
     });
 
   async function onSubmit(data) {
 
+    console.log("data from components",data);
+    if(params.Id)
+      {
+        dispatch(
+          updateProcurementThunk({
+            ...data,id:params.Id
+          })
+        )
+          .unwrap()
+          .then(() => {
+            navigate({
+              pathname: "/dashboard/procurement",
+            });
+          });
+      }
+      else
+      {
+        dispatch(
+          addNewProcurementThunk({
+            ...data,
+          })
+        )
+          .unwrap()
+          .then(() => {
+            navigate({
+              pathname: "/dashboard/procurement",
+            });
+          });
+      }
    
-    const isCategoryInvolved = data.isCategoryInvolved=="yes"?true:false
-    if (params.Id) {
-      dispatch(
-        updateGenericMasterThunk({
-          ...data,isCategoryInvolved,
-          id: params.Id,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          navigate({
-            pathname: "/dashboard/genericmaster",
-          });
-        });
-    } else {
-      dispatch(
-        addNewGenericMasterThunk({
-          ...data,isCategoryInvolved,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          navigate({
-            pathname: "/dashboard/genericmaster",
-          });
-        });
-    }
   }
+
 
   return (
     <Box m="20px">
-      <Header
-        title={params.Id ? "EDIT GENERIC MASTER" : "CREATE GENERIC MASTER"}
-        subtitle={params.Id ? "Edit a Generic Master" : "Create a New Generic Master"}
-      />
-
+ 
+      <Header title={params.Id?"EDIT PROCUREMENT":"CREATE PROCUREMENT" } subtitle={params.Id?"Edit a Procurement":"Create a New Procurement" }  />
+    
       <Card
         sx={{
           maxWidth: "100%",
@@ -126,48 +130,46 @@ const AddGenericMaster = () => {
             }}
           >
             <Element
-              eletype={inputType.input}
-              label="*Master Name"
-              placeholder="Please enter Master Name"
+              eletype={inputType.number}
+              label="*Name"
+              placeholder="Please enter Name"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "masterName",
+                name: "name",
               }}
-              errorText={touched.masterName && errors.masterName}
-              value={values.masterName}
+              errorText={touched.name && errors.name}
+              value={values.name}
               styles={{ gridColumn: "span 2" }}
             />
 
             <Element
               eletype={inputType.input}
-              label="*Slug"
+              label="Slug"
               placeholder="Please enter Slug"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "masterSlug",
+                name: "slug",
               }}
-              errorText={touched.masterSlug && errors.masterSlug}
-              value={values.masterSlug}
+              errorText={touched.slug && errors.slug}
+              value={values.slug}
               styles={{ gridColumn: "span 2" }}
             />
-
-<Element
+            
+            <Element
               eletype={inputType.select}
-              label="*Is Category Involved"
-              placeholder="*Please select a Category"
+              label="*Select a Master"
+              placeholder="*Please select a Master"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "isCategoryInvolved",
+                name: "type",
               }}
-              errorText={
-                touched.isCategoryInvolved && errors.isCategoryInvolved
-              }
-              value={values.isCategoryInvolved}
+              errorText={touched.type && errors.type}
+              value={values.type}
               styles={{ gridColumn: "span 2" }}
-              options={ddlCategoryData}
+              options={ddlDropdownData}
             />
 
             <Element
@@ -184,7 +186,6 @@ const AddGenericMaster = () => {
               styles={{ gridColumn: "span 2" }}
             />
 
-           
           </Box>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "end" }}>
@@ -195,7 +196,7 @@ const AddGenericMaster = () => {
             }}
             onClick={() => {
               navigate({
-                pathname: "/dashboard/genericmaster",
+                pathname: "/dashboard/procurement",
               });
             }}
           >
@@ -209,7 +210,7 @@ const AddGenericMaster = () => {
             }}
             variant="contained"
           >
-            {params.Id ? "Edit" : " Add"} Generic Master
+            {params.Id? "Edit":" Add"} Procurement
           </Button>
         </CardActions>
       </Card>
@@ -217,4 +218,4 @@ const AddGenericMaster = () => {
   );
 };
 
-export default AddGenericMaster;
+export default AddProcurement;

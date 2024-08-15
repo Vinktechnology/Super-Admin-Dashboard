@@ -1,4 +1,4 @@
-import { Box, Button , Chip} from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -15,11 +15,11 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
-import { getAllGenericMasterThunk, updateGenericMasterStatusThunk } from "../../store/slices/genericmaster/genericmaster.slice.js";
+import { getAllHSNTaxCodeThunk, updateHSNTaxCodeStatusThunk } from "../../store/slices/hsntaxcode/hsntaxcode.slice.js";
 
-const GenericMaster = () => {
+const HSNTaxCode = () => {
   const dispatch = useDispatch();
-  const { genericmaster, totalCount } = useSelector(({ genericmaster }) => genericmaster?.genericmasterdata);
+  const { hsntaxcode, totalCount } = useSelector(({ hsntaxcode }) => hsntaxcode?.hsntaxcodedata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -31,22 +31,35 @@ const GenericMaster = () => {
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
+  const [type, setType] = useState("gst")
   useEffect(() => {
-    dispatch(getAllGenericMasterThunk({ page, pageSize }));
+    dispatch(getAllHSNTaxCodeThunk({ page, pageSize,type }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
 
+  //--------------- For SingleImageView ------------------------------
+  const [openSingle, setOpenSingleImage] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  const handleClickSingleImageOpen = (data) => {
+    setImageUrl(data);
+    setOpenSingleImage(true);
+    };
+  
+    const handleCloseSingleImage = () => {
+      setOpenSingleImage(false);
+    };
 
+  //--------------- For SingleImageView ------------------------------
 
 
 
   const handleView = (id) => {
-    navigate(`/dashboard/genericmaster/view/${id}`);
+    navigate(`/dashboard/hsntaxcode/view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/dashboard/genericmaster/addgeneric/${id}`);
+    navigate(`/dashboard/hsntaxcode/addhsntaxcode/${id}`);
   };
 
 
@@ -67,49 +80,31 @@ const GenericMaster = () => {
     setOpen(true);
   };
 
-
-
-
-
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "masterName",
+      field: "name",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "masterSlug",
+      field: "slug",
       headerName: "Slug",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "isCategoryInvolved",
-      headerName: "Is Category Involved",
+      field: "type",
+      headerName: "Master Name",
       flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: (params) => params.value?  <Chip
-      label="Yes"
-      sx={{
-        fontWeight: "600",
-        background: "rgb(229, 245, 238)",
-        color: "rgb(39, 172, 112)",
-      }}
-    /> :
-
-    <Chip
-    label="No"
-    sx={{
-      fontWeight: "600",
-      background: "rgb(255, 236, 236)",
-      color: "rgb(232, 92, 92)",
-    }}
-  />
-      
-      
-      
+    },
+    {
+      field: "taxRate",
+      headerName: "Tax Rate",
+      flex: 1,
+      cellClassName: "name-column--cell",
     },
     {
       field: "description",
@@ -177,7 +172,7 @@ const GenericMaster = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateGenericMasterStatusThunk({ ...toggleDATA }));
+      dispatch(updateHSNTaxCodeStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -189,6 +184,7 @@ const GenericMaster = () => {
 
   return (
     <Box p={2}>
+      <SingleImageView  title="Zoom View" imageUrl={imageUrl} handleClickSingleImageOpen={handleClickSingleImageOpen} handleCloseSingleImage={handleCloseSingleImage} openSingle={openSingle} />
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
@@ -198,7 +194,7 @@ const GenericMaster = () => {
         isopen={open}
       />
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Generic Master" subtitle="Manage Generic Master" />
+        <Header title="HSN & Tax Code" subtitle="Manage HSN & Tax Code" />
 
         <Box>
           <Button
@@ -209,10 +205,10 @@ const GenericMaster = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/genericmaster/addgeneric")}
+            onClick={() => navigate("/dashboard/hsntaxcode/addhsntaxcode")}
           >
             <AddIcon sx={{ mr: "10px" }} />
-            Add Generic Master
+            Add HSN & Tax Code
           </Button>
         </Box>
       </Box>
@@ -250,7 +246,7 @@ const GenericMaster = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={genericmaster}
+          rows={hsntaxcode}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -265,4 +261,4 @@ const GenericMaster = () => {
   );
 };
 
-export default GenericMaster;
+export default HSNTaxCode;

@@ -25,6 +25,8 @@ function MuiSelect({
       },
     });
   };
+
+  console.log("value select mui",value)
   return (
       <FormControl variant="filled" sx={styles}>
         <InputLabel id="demo-simple-select-filled-label">{label}</InputLabel>

@@ -1,33 +1,24 @@
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  useTheme,
-  Chip
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../src/theme.js";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import { useDispatch } from "react-redux";
 import { globalFormatDate } from "../../utils/formatTime.js";
-import { getGenericMasterByIdThunk } from "../../store/slices/genericmaster/genericmaster.slice.js";
+import { getProcurementByIdThunk } from "../../store/slices/procurement/procurement.slice.js";
 
-const ViewGenericMaster = () => {
+const ViewProcurement = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const isNonMobile = useMediaQuery("(min-width:600px)");
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     if (params.Id) {
-      dispatch(getGenericMasterByIdThunk(params.Id))
+      dispatch(getProcurementByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
           setViewData(da);
@@ -37,8 +28,11 @@ const ViewGenericMaster = () => {
 
   return (
     <Box m="20px">
+     
+
+        
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="GENERIC MASTER DATA" subtitle="View a Generic Master" />
+        <Header title="Procurement DATA" subtitle="View a Procurement" />
 
         <Box>
           <Button
@@ -49,9 +43,9 @@ const ViewGenericMaster = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/genericmaster")}
+            onClick={() => navigate("/dashboard/procurement")}
           >
-            Back to Generic Master
+            Back to Procurement
           </Button>
         </Box>
       </Box>
@@ -67,235 +61,63 @@ const ViewGenericMaster = () => {
         }}
       >
         <Box
-          sx={{
-            padding: "1rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "top",
-            flexDirection: {
-              xs: "column",
-              sm: "column",
-              md: "row",
-              lg: "row",
-              xl: "row",
-            },
-          }}
+          sx={{ padding: "1rem",
+            display:"flex",
+            justifyContent:"space-between",
+            alignItems:"top",
+            flexDirection:{xs:"column",sm:"column",md:"row",lg:"row", xl:"row" }
+
+           }}
+         
         >
-          <Box
-            sx={{
-              width: {
-                xs: "100%",
-                sm: "100%",
-                md: "40%",
-                lg: "40%",
-                xl: "40%",
-              },
-            }}
-          >
-            <Box>
-              <Typography
-                sx={{
-                  color: colors.grey[400],
-                  fontSize: "1.3rem",
-                  fontWeight: "600",
-                  textAlign: "center",
-                  margin: "0px 0px 10px 0px",
-                }}
-              >
-                {viewdata?.masterName}
-              </Typography>
+          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"40%",lg:"40%",xl:"40%",} ,    display:"flex", alignItems:"center",justifyContent:"center",}}>
+        <Box>
+            <Typography sx={{
+                    color: colors.grey[400],
+                    fontSize: "1.3rem",
+                    fontWeight: "600",
+                    textAlign:"center",
+                    margin:"0px 0px 10px 0px"
+                  }}>
+            {viewdata?.name}</Typography>
             </Box>
-            <Box
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {/* <img
-                src={viewdata?.imageLink}
-                style={{ width: "100%", maxHeight: "100%" }}
-              /> */}
-            </Box>
+
           </Box>
+          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"60%",lg:"60%",xl:"60%",} }}>
+
           <Box
-            sx={{
-              width: {
-                xs: "100%",
-                sm: "100%",
-                md: "60%",
-                lg: "60%",
-                xl: "60%",
-              },
-            }}
-          >
-            <Box
               sx={{ padding: "1rem" }}
               display="flex"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{ width: "50%" }}>
+                  <Box sx={{width:"50%"}}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap: "break-word",
                   }}
                 >
-                  Slug
+                  Master Name
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap: "break-word",
                   }}
                 >
-                  {viewdata?.masterSlug}
+                 {viewdata?.type}
                 </Typography>
               </Box>
-              <Box sx={{ width: "50%" }}>
+              <Box sx={{width:"50%"}}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Description
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {viewdata?.description}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{ padding: "1rem" }}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Created By
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {viewdata?.createdBy?.fullName}
-                </Typography>
-              </Box>
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Created On
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {globalFormatDate(viewdata?.createdAt)}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{ padding: "1rem" }}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Updated By
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {viewdata?.updatedBy?.fullName}
-                </Typography>
-              </Box>
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Updated On
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {globalFormatDate(viewdata?.updatedAt)}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{ padding: "1rem" }}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
+                    wordWrap:"break-word"
                   }}
                 >
                   Is Active
@@ -305,51 +127,174 @@ const ViewGenericMaster = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap: "break-word",
+                    wordWrap:"break-word"
                   }}
                 >
-                  {viewdata?.isActive ? "Active" : "In-Active"}
+                 {viewdata?.isActive?"Active":"In-Active"}
                 </Typography>
               </Box>
-              <Box sx={{ width: "50%" }}>
+          
+            
+            </Box>
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{width:"50%"}}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap:"break-word"
                   }}
                 >
-                  Is Category Involved
+                  Slug
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+wordWrap:"break-word"
                   }}
                 >
-                  {viewdata?.isCategoryInvolved ? (
-                    <Chip
-                      label="Yes"
-                      sx={{
-                        fontWeight: "600",
-                        background: "rgb(229, 245, 238)",
-                        color: "rgb(39, 172, 112)",
-                      }}
-                    />
-                  ) : (
-                    <Chip
-                      label="No"
-                      sx={{
-                        fontWeight: "600",
-                        background: "rgb(255, 236, 236)",
-                        color: "rgb(232, 92, 92)",
-                      }}
-                    />
-                  )}
+                 {viewdata?.slug}
+                </Typography>
+              </Box>
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Description
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {viewdata?.description}
                 </Typography>
               </Box>
             </Box>
+
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Created By
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {viewdata?.createdBy?.fullName}
+                </Typography>
+              </Box>
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Created On
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {globalFormatDate(viewdata?.createdAt)}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Updated By
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {viewdata?.updatedBy?.fullName}
+                </Typography>
+              </Box>
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Updated On
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {globalFormatDate(viewdata?.updatedAt)}
+                </Typography>
+              </Box>
+            </Box>
+
+            
+
+
           </Box>
         </Box>
       </Box>
@@ -357,4 +302,4 @@ const ViewGenericMaster = () => {
   );
 };
 
-export default ViewGenericMaster;
+export default ViewProcurement;
