@@ -15,11 +15,11 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
-import { getAllHSNTaxCodeThunk, updateHSNTaxCodeStatusThunk } from "../../store/slices/hsntaxcode/hsntaxcode.slice.js";
+import { getAllGenericMasterDaDataThunk , updateGenericMasterStatusDaDataThunk} from "../../store/slices/genericmasterdata/genericmasterdata.slice.js";
 
-const HSNTaxCode = () => {
+const GenericMasterData = () => {
   const dispatch = useDispatch();
-  const { hsntaxcode, totalCount } = useSelector(({ hsntaxcode }) => hsntaxcode?.hsntaxcodedata);
+  const { genericmasterda, totalCount } = useSelector(({ genericmasterdata }) => genericmasterdata?.genericmasterdatada);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -31,35 +31,22 @@ const HSNTaxCode = () => {
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
-  const [type, setType] = useState("hsn")
   useEffect(() => {
-    dispatch(getAllHSNTaxCodeThunk({ page, pageSize,type }));
+    dispatch(getAllGenericMasterDaDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
 
-  //--------------- For SingleImageView ------------------------------
-  const [openSingle, setOpenSingleImage] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
-  const handleClickSingleImageOpen = (data) => {
-    setImageUrl(data);
-    setOpenSingleImage(true);
-    };
-  
-    const handleCloseSingleImage = () => {
-      setOpenSingleImage(false);
-    };
 
-  //--------------- For SingleImageView ------------------------------
 
 
 
   const handleView = (id) => {
-    navigate(`/dashboard/hsntaxcode/view/${id}`);
+    navigate(`/dashboard/genericmasterdata/view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/dashboard/hsntaxcode/addhsntaxcode/${id}`);
+    navigate(`/dashboard/genericmasterdata/addGenericMasterData/${id}`);
   };
 
 
@@ -99,12 +86,14 @@ const HSNTaxCode = () => {
       headerName: "Master Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) => params?.value?.masterName,
     },
     {
-      field: "taxRate",
-      headerName: "Tax Rate",
+      field: "categoryId",
+      headerName: "Category",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) => params?.value?.fullName,
     },
     {
       field: "description",
@@ -172,7 +161,7 @@ const HSNTaxCode = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateHSNTaxCodeStatusThunk({ ...toggleDATA }));
+      dispatch(updateGenericMasterStatusDaDataThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -184,8 +173,7 @@ const HSNTaxCode = () => {
 
   return (
     <Box p={2}>
-      <SingleImageView  title="Zoom View" imageUrl={imageUrl} handleClickSingleImageOpen={handleClickSingleImageOpen} handleCloseSingleImage={handleCloseSingleImage} openSingle={openSingle} />
-      <ConfirmDialogBox
+       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
         cancel="Cancel"
@@ -194,7 +182,7 @@ const HSNTaxCode = () => {
         isopen={open}
       />
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="HSN & Tax Code" subtitle="Manage HSN & Tax Code" />
+        <Header title="Generic Master Data" subtitle="Manage Generic Master Data" />
 
         <Box>
           <Button
@@ -205,10 +193,10 @@ const HSNTaxCode = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/hsntaxcode/addhsntaxcode")}
+            onClick={() => navigate("/dashboard/genericmasterdata/addgenericmasterdata")}
           >
             <AddIcon sx={{ mr: "10px" }} />
-            Add HSN & Tax Code
+            Add Generic Master Data
           </Button>
         </Box>
       </Box>
@@ -246,7 +234,7 @@ const HSNTaxCode = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={hsntaxcode}
+          rows={genericmasterda}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -261,4 +249,4 @@ const HSNTaxCode = () => {
   );
 };
 
-export default HSNTaxCode;
+export default GenericMasterData;

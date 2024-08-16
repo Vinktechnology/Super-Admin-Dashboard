@@ -9,6 +9,7 @@ import subcategoryReducer from "./slices/subcategory/subcategory.slice"
 import tagReducer from "./slices/tags/tags.slice";
 import initReducer from "./slices/init/init.slice";
 import GenericMasterReducer from "./slices/genericmaster/genericmaster.slice";
+import GenericMasterDataReducer from "./slices/genericmasterdata/genericmasterdata.slice";
 import procurementReducer from "./slices/procurement/procurement.slice";
 import hsntaxcodeReducer from "./slices/hsntaxcode/hsntaxcode.slice";
 const rootReducer = combineReducers({
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   subcategory:subcategoryReducer,
   tag:tagReducer,
   genericmaster:GenericMasterReducer,
+  genericmasterdata:GenericMasterDataReducer,
   procurement:procurementReducer,
   hsntaxcode:hsntaxcodeReducer
 });

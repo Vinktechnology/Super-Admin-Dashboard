@@ -35,6 +35,9 @@ import AddTag from "./scenes/tag/AddTag";
 import GenericMaster from "./scenes/genericmaster";
 import AddGenericMaster from "./scenes/genericmaster/AddGenericMaster";
 import ViewGenericMaster from "./scenes/genericmaster/ViewGenericMaster";
+import GenericMasterData from "./scenes/genericmasterdata";
+import AddGenericMasterData from "./scenes/genericmasterdata/AddGenericMasterData";
+import ViewGenericMasterData from "./scenes/genericmasterdata/ViewGenericMasterData"; 
 import Procurement from "./scenes/procurement";
 import HSNTaxCode from "./scenes/hsntaxcode";
 import AddHSNTaxCode from "./scenes/hsntaxcode/AddHSNTaxCode";
@@ -152,6 +155,16 @@ function AppRoutes() {
             { path: "view/:Id", element: <ViewGenericMaster /> },
             { path: "addgeneric", element: <AddGenericMaster /> },
             { path: "addgeneric/:Id", element: <AddGenericMaster /> },
+          ],
+        },
+        {
+          path: "genericmasterdata",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <GenericMasterData /> },
+            { path: "view/:Id", element: <ViewGenericMasterData /> },
+            { path: "addgenericmasterdata", element: <AddGenericMasterData /> },
+            { path: "addgenericmasterdata/:Id", element: <AddGenericMasterData /> },
           ],
         },
         {

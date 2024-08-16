@@ -92,6 +92,13 @@ export const SidebarData =[
     slug:"genericmaster"
 },
 {
+    title:"Generic Master Data",
+    to:"/dashboard/genericmasterdata",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"genericmasterdata"
+},
+{
     title:"Procurement & PackOf",
     to:"/dashboard/procurement",
     icon:<ContactsOutlinedIcon />,
@@ -105,13 +112,13 @@ export const SidebarData =[
     typography :"",
     slug:"hsntaxcode"
 },
-{
-    title:"Attribute",
-    to:"/dashboard/attribute",
-    icon:<ContactsOutlinedIcon />,
-    typography :"",
-    slug:"attribute"
-},
+// {
+//     title:"Attribute",
+//     to:"/dashboard/attribute",
+//     icon:<ContactsOutlinedIcon />,
+//     typography :"",
+//     slug:"attribute"
+// },
 // {
 //     title:"Profile Form",
 //     to:"/dashboard/form",
