@@ -31,7 +31,7 @@ const Procurement = () => {
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
-  const [type, setType] = useState("pack-of")
+  const [type, setType] = useState("")
   useEffect(() => {
     dispatch(getAllProcurementDataThunk({ page, pageSize,type }));
   }, [page, pageSize, dispatch]);
@@ -102,6 +102,7 @@ const Procurement = () => {
       headerName: "Master Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) =>params?.value?.masterName
     },
     {
       field: "description",

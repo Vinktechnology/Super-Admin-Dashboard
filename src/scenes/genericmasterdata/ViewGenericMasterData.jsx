@@ -104,6 +104,58 @@ const ViewGenericMasterData= () => {
 
           </Box>
           <Box  sx={{ width:{xs:"100%",sm:"100%",md:"60%",lg:"60%",xl:"60%",} }}>
+
+          <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+                  <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Master Name
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                 {viewdata?.type?.masterName}
+                </Typography>
+              </Box>
+              <Box sx={{width:"50%"}}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                  Is Active
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap:"break-word"
+                  }}
+                >
+                 {viewdata?.isActive?"Active":"In-Active"}
+                </Typography>
+              </Box>
+          
+            
+            </Box>
             <Box
               sx={{ padding: "1rem" }}
               display="flex"
@@ -275,7 +327,7 @@ wordWrap:"break-word"
                     wordWrap:"break-word"
                   }}
                 >
-                  Is Active
+                 Category
                 </Typography>
                 <Typography
                   sx={{
@@ -285,7 +337,7 @@ wordWrap:"break-word"
                     wordWrap:"break-word"
                   }}
                 >
-                 {viewdata?.isActive?"Active":"In-Active"}
+                 {viewdata?.categoryId?.fullName}
                 </Typography>
               </Box>
               <Box sx={{width:"50%"}}>

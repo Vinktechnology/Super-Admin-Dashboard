@@ -31,7 +31,7 @@ const HSNTaxCode = () => {
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
-  const [type, setType] = useState("hsn")
+  const [type, setType] = useState("")
   useEffect(() => {
     dispatch(getAllHSNTaxCodeThunk({ page, pageSize,type }));
   }, [page, pageSize, dispatch]);
@@ -99,6 +99,7 @@ const HSNTaxCode = () => {
       headerName: "Master Name",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) =>params?.value?.masterName,
     },
     {
       field: "taxRate",

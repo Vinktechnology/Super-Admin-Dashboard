@@ -29,7 +29,7 @@ const SubCategory = () => {
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
     dispatch(getAllSubCategoryDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);

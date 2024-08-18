@@ -81,6 +81,15 @@ const ViewHSNTaxCode = () => {
                     margin:"0px 0px 10px 0px"
                   }}>
             {viewdata?.name}</Typography>
+            <Typography sx={{
+                    color: colors.grey[400],
+                    fontSize: "1.3rem",
+                    fontWeight: "600",
+                    textAlign:"center",
+                    margin:"0px 0px 10px 0px"
+                  }}> Category : 
+            {viewdata?.categoryId?.name}</Typography>
+
             </Box>
 
           </Box>
@@ -109,7 +118,7 @@ const ViewHSNTaxCode = () => {
                     fontWeight: "600",
                   }}
                 >
-                 {viewdata?.type}
+                 {viewdata?.type?.masterName}
                 </Typography>
               </Box>
                 <Box sx={{width:"50%"}}>

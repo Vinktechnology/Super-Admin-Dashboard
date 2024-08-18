@@ -77,7 +77,7 @@ const AddGenericMasterData = () => {
                 categoryId: da.categoryId?._id || "",
                 slug: da.slug || "",
                 description: da.description || "",
-                type: da?.type || "",
+                type: da?.type?._id || "",
               });
             });
         }

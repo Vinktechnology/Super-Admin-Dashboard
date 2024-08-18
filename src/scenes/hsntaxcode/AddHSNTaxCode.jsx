@@ -13,20 +13,9 @@ import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
 import { addNewHSNTaxCodeThunk, getHSNTaxCodeByIdThunk, updateHSNTaxCodeThunk } from "../../store/slices/hsntaxcode/hsntaxcode.slice.js";
-import { getAllCategoriesGlobalApi } from "../../utils/global/user.global.js";
+import { getAllCategoriesGlobalApi, getAllGenericMasterNamesGlobalApi } from "../../utils/global/user.global.js";
 
 
-const ddlDropdownData = [{
-  label:"HSN",
-  value:"hsn",
-  id:1
-},
-{
-  label:"GST",
-  value:"gst",
-  id:1
-}
-]
 
 const AddHSNTaxCode = () => {
   const dispatch = useDispatch();
@@ -35,6 +24,7 @@ const AddHSNTaxCode = () => {
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [ddlCategoryData, setDdlCategoryData] = useState([]);
+  const [ddlGenericMasterData, setGenericMasterData] = useState([]);
   const [initialValues, setInitialValues] = useState({
     name: "",
     slug: "",
@@ -65,10 +55,34 @@ const AddHSNTaxCode = () => {
             name: da?.name || "",
             slug:da?.slug||  "",
             description:da?.description ||"",
-            type:da?.type||"",
+            type:da?.type._id||"",
             taxRate: da?.taxRate||"",
             category:da?.categoryId?._id ||""
           });
+              });
+          }
+        })
+        .catch((e) => {});
+
+        getAllGenericMasterNamesGlobalApi()
+        .then((result) => {
+          const genericddl = result?.data?.genericProductMasters?.map((d, i) => {
+            return { value: d._id, label: d.masterName };
+          });
+          setGenericMasterData(genericddl);
+  
+          if (params.Id) {
+            dispatch(getHSNTaxCodeByIdThunk(params.Id))
+              .unwrap()
+              .then((da) => {
+                setInitialValues({
+                  name: da.name || "",
+                  category: da.categoryId?._id || "",
+                  slug: da.slug || "",
+                  taxRate: da?.taxRate||"",
+                  description: da.description || "",
+                  type: da?.type?._id || "",
+                });
               });
           }
         })
@@ -212,7 +226,7 @@ const AddHSNTaxCode = () => {
               errorText={touched.type && errors.type}
               value={values.type}
               styles={{ gridColumn: "span 2" }}
-              options={ddlDropdownData}
+              options={ddlGenericMasterData}
             />
 
             <Element

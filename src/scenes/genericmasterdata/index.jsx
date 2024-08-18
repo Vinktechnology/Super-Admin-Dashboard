@@ -30,7 +30,7 @@ const GenericMasterData = () => {
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(50);
   useEffect(() => {
     dispatch(getAllGenericMasterDaDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);

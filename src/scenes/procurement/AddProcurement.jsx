@@ -13,18 +13,8 @@ import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
 import { addNewProcurementThunk, getProcurementByIdThunk, updateProcurementThunk } from "../../store/slices/procurement/procurement.slice.js";
+import { getAllGenericMasterNamesGlobalApi } from "../../utils/global/user.global.js";
 
-const ddlDropdownData = [{
-  label:"Procurement",
-  value:"procurement",
-  id:1
-},
-{
-  label:"Minimum order Quantity",
-  value:"pack-of",
-  id:1
-}
-]
 
 const AddProcurement = () => {
   const dispatch = useDispatch();
@@ -32,6 +22,7 @@ const AddProcurement = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const [ddlGenericMasterData, setGenericMasterData] = useState([]);
   const [initialValues, setInitialValues] = useState({
     name: "",
     slug: "",
@@ -44,21 +35,27 @@ const AddProcurement = () => {
 
 
   useEffect(()=>{
-    if(params.Id)
-      {
-        dispatch(getProcurementByIdThunk(params.Id))
-        .unwrap()
-        .then((da) => {
-          console.log(" data of id",da)
-        
-          setInitialValues({
-            name: da?.name || "",
-            slug:da?.slug||  "",
-            description:da?.description ||"",
-            type:da?.type||""
-          });
+      getAllGenericMasterNamesGlobalApi()
+      .then((result) => {
+        const genericddl = result?.data?.genericProductMasters?.map((d, i) => {
+          return { value: d._id, label: d.masterName };
         });
-      }
+        setGenericMasterData(genericddl);
+
+        if (params.Id) {
+          dispatch(getProcurementByIdThunk(params.Id))
+            .unwrap()
+            .then((da) => {
+              setInitialValues({
+                name: da?.name || "",
+                slug:da?.slug||  "",
+                description:da?.description ||"",
+                type:da?.type?._id||""
+              });
+            });
+        }
+      })
+      .catch((e) => {});
   },[params.Id])
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
@@ -156,10 +153,9 @@ const AddProcurement = () => {
               value={values.slug}
               styles={{ gridColumn: "span 2" }}
             />
-            
-            <Element
+        <Element
               eletype={inputType.select}
-              label="*Select a Master"
+              label="*Please select a Master"
               placeholder="*Please select a Master"
               inputProps={{
                 onChange: handleChange,
@@ -169,7 +165,7 @@ const AddProcurement = () => {
               errorText={touched.type && errors.type}
               value={values.type}
               styles={{ gridColumn: "span 2" }}
-              options={ddlDropdownData}
+              options={ddlGenericMasterData}
             />
 
             <Element

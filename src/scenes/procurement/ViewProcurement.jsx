@@ -108,7 +108,7 @@ const ViewProcurement = () => {
                     fontWeight: "600",
                   }}
                 >
-                 {viewdata?.type}
+                 {viewdata?.type?.masterName}
                 </Typography>
               </Box>
               <Box sx={{width:"50%"}}>
