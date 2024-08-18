@@ -131,6 +131,7 @@ const ViewGenericMasterData= () => {
                  {viewdata?.type?.masterName}
                 </Typography>
               </Box>
+
               <Box sx={{width:"50%"}}>
                 <Typography
                   sx={{
@@ -140,7 +141,7 @@ const ViewGenericMasterData= () => {
                     wordWrap:"break-word"
                   }}
                 >
-                  Is Active
+                 Category
                 </Typography>
                 <Typography
                   sx={{
@@ -150,7 +151,7 @@ const ViewGenericMasterData= () => {
                     wordWrap:"break-word"
                   }}
                 >
-                 {viewdata?.isActive?"Active":"In-Active"}
+                 {viewdata?.categoryId?.name?viewdata?.categoryId?.name:"Both"}
                 </Typography>
               </Box>
           
@@ -318,7 +319,7 @@ wordWrap:"break-word"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+            <Box sx={{width:"50%"}}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
@@ -327,7 +328,7 @@ wordWrap:"break-word"
                     wordWrap:"break-word"
                   }}
                 >
-                 Category
+                  Is Active
                 </Typography>
                 <Typography
                   sx={{
@@ -337,7 +338,7 @@ wordWrap:"break-word"
                     wordWrap:"break-word"
                   }}
                 >
-                 {viewdata?.categoryId?.fullName}
+                 {viewdata?.isActive?"Active":"In-Active"}
                 </Typography>
               </Box>
               <Box sx={{width:"50%"}}>

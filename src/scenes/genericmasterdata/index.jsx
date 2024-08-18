@@ -93,7 +93,7 @@ const GenericMasterData = () => {
       headerName: "Category",
       flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: (params) => params?.value?.fullName,
+      renderCell: (params) => params?.value?.name?params?.value?.name:"Both",
     },
     {
       field: "description",
