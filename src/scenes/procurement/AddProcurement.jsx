@@ -67,8 +67,6 @@ const AddProcurement = () => {
     });
 
   async function onSubmit(data) {
-
-    console.log("data from components",data);
     if(params.Id)
       {
         dispatch(

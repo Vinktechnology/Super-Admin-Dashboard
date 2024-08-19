@@ -94,7 +94,8 @@ export const updateProcurementData = async (data, thunkApi) => {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
 
-    const response = await userAxios.put(`${addNewProcurementApi}/${data.id}`,{...data});
+    const  {id,...rest} = data;
+    const response = await userAxios.put(`${addNewProcurementApi}/${data.id}`,{...rest});
     const responseData = response?.data;
 
     console.log("data of updated category response", response);
