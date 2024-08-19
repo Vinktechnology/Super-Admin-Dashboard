@@ -28,11 +28,12 @@ const Topbar = ({closeSidebar}) => {
   const options =[{
     name:"Profile",
     label:"profile",
-    url:"dashboard/profile"
+    url:"/dashboard/profile"
   },
   {
     name:"Logout",
-    label:"logout"
+    label:"logout",
+    url:"/"
   },
 ]
 
