@@ -18,7 +18,7 @@ export const loginByEmailAsyncThunk = createAsyncThunk(
   signInWithEmail
 );
 
-const initSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState: INIT_STATE,
   reducers: {
@@ -69,6 +69,6 @@ export const {
   startLoader,
   stopLoader,
   setUserAsLogin
-} = initSlice.actions;
+} = authSlice.actions;
 
-export default initSlice.reducer;
+export default authSlice.reducer;
