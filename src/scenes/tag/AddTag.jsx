@@ -28,14 +28,9 @@ const AddTag = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const [catgoryDDL, setCategoryDDL] = useState([]);
-  const [subcatgoryDDL, setSubCategoryDDL] = useState([]);
-  const [subcatVal, setSubCatVal] = useState([]);
   const [initialValues, setInitialValues] = useState({
     tag: "",
     slug: "",
-    category: [],
-    subcategory: [],
     description: "",
     thumbnail: "",
   });
@@ -51,43 +46,14 @@ const AddTag = () => {
     });
 
   useEffect(() => {
-    // Fetch all categories
-    getAllCategoriesGlobalApi()
-      .then((result) => {
-        const ddlcat = result.data?.Categories?.map((da) => ({
-          label: da?.name,
-          value: da?.name,
-          name: da?.name,
-          id: da?._id,
-        }));
-        setCategoryDDL(ddlcat);
-      })
-      .catch((e) => {});
-
     if (params.Id) {
       // Fetch existing tag details
       dispatch(getTagByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
-          const catval = da.categoryIds?.map((da) => ({
-            label: da?.name,
-            value: da?.name,
-            name: da?.name,
-            id: da?._id,
-          }));
-
-          const subcatval = da.subCategoryIds?.map((da) => ({
-            label: da?.name,
-            value: da?.name,
-            name: da?.name,
-            id: da?._id,
-          }));
-
-          setSubCatVal(subcatval);
+          
           setInitialValues({
             tag: da.name || "",
-            category: catval || [],
-            subcategory: subcatval || [],
             slug: da.slug || "",
             description: da.description || "",
             thumbnail: da.imageLink || "",
@@ -96,43 +62,7 @@ const AddTag = () => {
     }
   }, [params.Id]);
 
-  useEffect(() => {
-    // Fetch subcategories based on selected categories
- 
-    if (values.category.length > 0) {
-      getAllSubCategoriesGlobalApi(values.category)
-        .then((result) => {
-          const ddlsubcat = result.data?.SubCategories?.map((da) => ({
-            label: da?.name,
-            value: da?.name,
-            name: da?.name,
-            id: da?._id,
-          }));
-          setSubCategoryDDL(ddlsubcat);
-        })
-        .catch((e) => {});
-    } else {
-      handleChange({
-        target: {
-          name: "subcategory",
-          value: [],
-        },
-      });
-      setSubCategoryDDL([]);
-    }
-  }, [values.category]);
-
-  useEffect(() => {
-    // Set the value of subcategory after the dropdown is bound
-    if (subcatgoryDDL.length > 0 && subcatVal.length > 0) {
-      handleChange({
-        target: {
-          name: "subcategory",
-          value: subcatVal,
-        },
-      });
-    }
-  }, [subcatgoryDDL]);
+  
 
   async function onSubmit(data) {
     if (params.Id) {
@@ -216,36 +146,6 @@ const AddTag = () => {
               errorText={touched.slug && errors.slug}
               value={values.slug}
               styles={{ gridColumn: "span 2" }}
-            />
-
-            <Element
-              eletype={inputType.multiselect}
-              label="*Category"
-              placeholder="Please select a Category"
-              inputProps={{
-                onChange: handleChange,
-                onBlur: handleBlur,
-                name: "category",
-              }}
-              errorText={touched.category && errors.category}
-              value={values.category}
-              styles={{ gridColumn: "span 2" }}
-              options={catgoryDDL}
-            />
-
-            <Element
-              eletype={inputType.multiselect}
-              label="*SubCategory"
-              placeholder="Please select a SubCategory"
-              inputProps={{
-                onChange: handleChange,
-                onBlur: handleBlur,
-                name: "subcategory",
-              }}
-              errorText={touched.subcategory && errors.subcategory}
-              value={values.subcategory}
-              styles={{ gridColumn: "span 2" }}
-              options={subcatgoryDDL}
             />
 
             <Element

@@ -35,15 +35,10 @@ export const addNewTagsData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    console.log("data",data);
     const formData = new FormData();
     formData.append("name", data.tag);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
-    const catData = data?.category?.map((d,i)=> d.id);
-    const subcatData = data?.subcategory?.map((d,i)=> d.id);
-    formData.append("categoryId", catData);
-    formData.append("subCategoryId", subcatData);
     formData.append("file", data.thumbnail[0]?.file);
   
     const response = await userAxios.post(addNewTagApi,formData,{
@@ -105,15 +100,11 @@ export const updateTagData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    console.log("data of update category", data)
     const formData = new FormData();
-    formData.append("name", data.category);
+    formData.append("name", data.tag);
     formData.append("slug", data.slug);
     formData.append("description", data.description);
     formData.append("file", data.thumbnail[0]?.file);
-    const sampdata = data?.sampleimages.map((da, i)=>  da.file)
-    console.log("sampdata", sampdata)
-    formData.append("sampleImages", data.sampdata);
     const response = await userAxios.put(`${addNewTagApi}/${data.id}`,formData,{
       headers: {
         "Content-Type": undefined

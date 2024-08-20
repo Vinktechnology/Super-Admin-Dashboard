@@ -179,58 +179,7 @@ const ViewTag = () => {
               </Box>
             </Box>
 
-            <Box
-              sx={{ padding: "1rem" }}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Category
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {viewdata?.categoryIds?.map((d,i)=> d.name).join(" , ")}
-                </Typography>
-              </Box>
-              <Box sx={{ width: "50%" }}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                  Sub-Category
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap: "break-word",
-                  }}
-                >
-                   {viewdata?.subCategoryIds?.map((d,i)=> d.name).join(" , ")}
-                </Typography>
-              </Box>
-            </Box>
-
+         
             <Box
               sx={{ padding: "1rem" }}
               display="flex"
