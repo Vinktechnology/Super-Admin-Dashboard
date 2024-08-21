@@ -5,39 +5,101 @@ import {
   Container,
   Chip,
   Divider,
+  Button,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { tokens } from "../../../theme";
 import { useParams } from "react-router-dom";
 import Header from "../../../components/Header";
+import { useDispatch } from "react-redux";
+import {
+  approveVendorDataThunk,
+  getVendorByIdThunk,
+} from "../../../store/slices/vendor/vendor.slice";
+import ConfirmDialogBox from "../../../components/ConfirmDialogBox/ConfirmDialogBox";
 
 function Index() {
-  const { Id } = useParams();
-  const [value, setValue] = useState(0);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const params = useParams();
+  const dispatch = useDispatch();
+  const [viewdata, setViewData] = useState(null);
   const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
+
+  const handleRejection = () => {
+    alert("Rejected the vendor");
+  };
+
+  const handleApproval = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  useEffect(() => {
+    if (params.Id) {
+      dispatch(getVendorByIdThunk(params.Id))
+        .unwrap()
+        .then((da) => {
+          console.log("da", da);
+          setViewData(da);
+        });
+    }
+  }, [params.Id]);
+
+  const fncHandleDialog = (isConfirmed) => {
+    const apprData = {
+      approveStatus: isConfirmed ? "approved" : "rejected",
+      reason: "",
+      id: params.Id,
+    };
+
+    if (isConfirmed) {
+      dispatch(approveVendorDataThunk(apprData));
+    }
     setOpen(false);
   };
 
-  const handleRejection=()=>
-  {
-    alert("Rejected the vendor")
-  }
-
-  const handleApproval=()=>
-    {
-      alert("Approved the vendor")
-    }
   return (
     <Container>
-      <Header title="Vendor Profile" subtitle="Manage Vendor Profile" />
+      <ConfirmDialogBox
+        title="Are you sure you want to approve the vendor?"
+        body="If you Approved the vendor, then a mail will be sent to the vendor about the approval and he will be able to login into the vendor dashboard."
+        cancel="Cancel"
+        confirm="Confirm"
+        fncHandleDialog={fncHandleDialog}
+        isopen={open}
+      />
+
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="Vendor Profile" subtitle="Manage Vendor Profile" />
+
+        <Box>
+          {viewdata?.approvalStatus == "approved" ? (
+            <Chip
+              label={viewdata?.approvalStatus}
+              sx={{
+                fontWeight: "600",
+                background: "rgb(229, 245, 238)",
+                color: "rgb(39, 172, 112)",
+                fontSize: "2rem",
+                height: "auto",
+                width: "auto",
+              }}
+            />
+          ) : (
+            <Chip
+              label={viewdata?.approvalStatus}
+              sx={{
+                fontWeight: "600",
+                background: "rgb(255, 236, 236)",
+                color: "rgb(232, 92, 92)",
+                fontSize: "2rem",
+                height: "auto",
+                width: "auto",
+              }}
+            />
+          )}
+        </Box>
+      </Box>
       {/* /////////////////////-------------------------Mobile and Email Verification Starts----------------------------/////////////////////////////// */}
 
       <Box
@@ -98,7 +160,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              +919716500323
+              {viewdata?.mobile}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -137,7 +199,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              vikrantitpro@gmail.com
+              {viewdata?.email}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -198,7 +260,7 @@ function Index() {
           }}
         >
           <Box>
-             <Typography
+            <Typography
               sx={{
                 color: colors.grey[700],
                 fontSize: "15px",
@@ -214,7 +276,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              07AAJCV0146L1Z4
+              {viewdata?.gstNumber}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -237,7 +299,7 @@ function Index() {
           }}
         >
           <Box>
-          <Typography
+            <Typography
               sx={{
                 color: colors.grey[700],
                 fontSize: "15px",
@@ -334,7 +396,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Vikrant kaushik
+              {viewdata?.fullName}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -373,7 +435,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Vikrant2106
+              {viewdata?.displayName}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -489,7 +551,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              110045
+              {viewdata?.pickUpAddress?.[0]?.pinCode}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -528,8 +590,11 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              RZ-26-P/4A, 3rd Floor, Gali No-31, Indra Park, Palam Village,
-              South West Delhi , Sudhir Doctor Clinic, NEW DELHI, DELHI
+              {viewdata?.pickUpAddress?.[0]?.addressLine1} ,
+              {viewdata?.pickUpAddress?.[0]?.addressLine2} <br />
+              {viewdata?.pickUpAddress?.[0]?.city} <br />
+              {viewdata?.pickUpAddress?.[0]?.state} <br />
+              {viewdata?.pickUpAddress?.[0]?.pinCode}
             </Typography>
           </Box>
         </Box>
@@ -596,7 +661,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              20191279082
+              {viewdata?.bankDetails?.accountNumber}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -635,7 +700,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              SBIN0000733
+              {viewdata?.bankDetails?.ifscCode}
             </Typography>
           </Box>
         </Box>
@@ -664,7 +729,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Mr. VIKRANT KAUSHIK
+              {viewdata?.fullName}
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
@@ -689,15 +754,15 @@ function Index() {
         </Box>
       </Box>
       {/* /////////////////////------------------------- BANK DETAILS STARTS----------------------------/////////////////////////////// */}
-   
-         {/* /////////////////////-------------------------Approved or Rejected DETAILS----------------------------/////////////////////////////// */}
 
-         <Box
+      {/* /////////////////////-------------------------Approved or Rejected DETAILS----------------------------/////////////////////////////// */}
+
+      <Box
         sx={{
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
           minHeight: { xs: "20vh", sm: "15vh", md: "15vh", lg: "15vh" },
           margin: "15px",
-          marginBottom:"5rem",
+          marginBottom: "5rem",
           paddingBottom: "3rem",
           "&:hover": {
             backgroundColor: "transparent",
@@ -734,38 +799,60 @@ function Index() {
             justifyContent: "end",
           }}
         >
-          <Box sx={{margin:".6rem"}}>
-          <Chip
+          <Box sx={{ margin: ".6rem" }}>
+            <Chip
               label="Reject"
               onClick={handleRejection}
               sx={{
                 fontWeight: "600",
-                fontSize:{xs:"1rem", sm:"1rem", md:"1.4rem", lg:"1.4rem", xl:"1.4rem"},
-                padding:{xs:"1.5rem", sm:"1.5rem", md:"1.5rem", lg:"1.5rem", xl:"1.5rem"},
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.4rem",
+                  lg: "1.4rem",
+                  xl: "1.4rem",
+                },
+                padding: {
+                  xs: "1.5rem",
+                  sm: "1.5rem",
+                  md: "1.5rem",
+                  lg: "1.5rem",
+                  xl: "1.5rem",
+                },
                 background: "rgb(255, 236, 236)",
                 color: "rgb(232, 92, 92)",
               }}
             />
           </Box>
-          
+
           <Box sx={{ marginTop: ".6rem" }}>
             <Chip
-              label="Approve" 
+              label="Approve"
               onClick={handleApproval}
               sx={{
                 fontWeight: "600",
-                fontSize:{xs:"1rem", sm:"1rem", md:"1.4rem", lg:"1.4rem", xl:"1.4rem"},
-                padding:{xs:"1.5rem", sm:"1.5rem", md:"1.5rem", lg:"1.5rem", xl:"1.5rem"},
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.4rem",
+                  lg: "1.4rem",
+                  xl: "1.4rem",
+                },
+                padding: {
+                  xs: "1.5rem",
+                  sm: "1.5rem",
+                  md: "1.5rem",
+                  lg: "1.5rem",
+                  xl: "1.5rem",
+                },
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
             />
           </Box>
         </Box>
-        
       </Box>
       {/* /////////////////////------------------------- PICKUP DETAILS----------------------------/////////////////////////////// */}
-
     </Container>
   );
 }

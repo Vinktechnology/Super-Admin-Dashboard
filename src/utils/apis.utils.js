@@ -62,6 +62,17 @@ export const getGenericMasterDataByIdApi ="/v1/product-master"
 export const addNewGenericMasterDataApi="/v1/product-master"
 export const updateGenericMasterDataStatusApi="/v1/product-master/active-status"
 
+
+// vendor
+export const getAllVendorsApi ="/v1/vendor/all"
+export const getVendorsByIdApi ="/v1/vendor/details"
+export const addNewVendorsApi="/v1/vendor"
+export const updateVendorsStatusApi="/v1/vendor/active-status"
+export const approvalVendorApi="/v1/vendor/approve-status"
+
+
+
+
 //Users
 export const userApi = "/user";
 export const getBusinessProfileApi = "/client/business_profile";
@@ -71,3 +82,5 @@ export const addBusinessProfile = "/client/business_profile";
 export const editBusinessProfile = "/client/business_profile";
 export const addBusinessAddress = "/client/business_address";
 export const editBusinessAddress = "/client/business_address";
+
+

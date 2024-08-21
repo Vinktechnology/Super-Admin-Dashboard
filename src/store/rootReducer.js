@@ -12,6 +12,7 @@ import GenericMasterReducer from "./slices/genericmaster/genericmaster.slice";
 import GenericMasterDataReducer from "./slices/genericmasterdata/genericmasterdata.slice";
 import procurementReducer from "./slices/procurement/procurement.slice";
 import hsntaxcodeReducer from "./slices/hsntaxcode/hsntaxcode.slice";
+import vendorReducer from "./slices/vendor/vendor.slice";
 const rootReducer = combineReducers({
   staticProduct: staticProdcutReducer,
   auth: authReducer,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   genericmaster:GenericMasterReducer,
   genericmasterdata:GenericMasterDataReducer,
   procurement:procurementReducer,
-  hsntaxcode:hsntaxcodeReducer
+  hsntaxcode:hsntaxcodeReducer,
+  vendor:vendorReducer
 });
 
 export default rootReducer;
