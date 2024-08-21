@@ -16,7 +16,11 @@ import {
   approveVendorDataThunk,
   getVendorByIdThunk,
 } from "../../../store/slices/vendor/vendor.slice";
-import ConfirmDialogBox from "../../../components/ConfirmDialogBox/ConfirmDialogBox";
+
+
+
+import VendorApprovalDialogBox from "../../../modals/VendorApprovalDialogBox.js";
+import ConfirmDialogBox from "../../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 
 function Index() {
   const theme = useTheme();
@@ -25,9 +29,13 @@ function Index() {
   const dispatch = useDispatch();
   const [viewdata, setViewData] = useState(null);
   const [open, setOpen] = useState(false);
+  const [isVendorDialogOpen, setIsVendorDialogOpen] = useState(false);
+
+  
+
 
   const handleRejection = () => {
-    alert("Rejected the vendor");
+    setIsVendorDialogOpen(true)
   };
 
   const handleApproval = () => {
@@ -58,6 +66,160 @@ function Index() {
     setOpen(false);
   };
 
+  const fncRejectionHandleDialog = (isConfirmed) => {
+
+    const apprData = {
+      approveStatus: isConfirmed?.isSubmit && "rejected",
+      reason: isConfirmed.reason,
+      id: params.Id,
+    };
+
+    console.log("isConfirmed",isConfirmed)
+    console.log("apprData",apprData)
+    if (isConfirmed?.isSubmit) {
+      dispatch(approveVendorDataThunk(apprData))
+      .unwrap()
+      .then((da) => {
+          window.location.reload();
+      });
+    }
+    setIsVendorDialogOpen(false);
+  };
+
+  
+
+  const fncRenderApprovalSection =()=>
+    {
+      if(viewdata?.approvalStatus == "pending")
+        {
+          return   <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            display: "flex",
+            justifyContent: "end",
+          }}
+        >
+          <Box sx={{ margin: ".6rem" }}>
+            <Chip
+              label="Reject"
+              onClick={handleRejection}
+              sx={{
+                fontWeight: "600",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.4rem",
+                  lg: "1.4rem",
+                  xl: "1.4rem",
+                },
+                padding: {
+                  xs: "1.5rem",
+                  sm: "1.5rem",
+                  md: "1.5rem",
+                  lg: "1.5rem",
+                  xl: "1.5rem",
+                },
+                background: "rgb(255, 236, 236)",
+                color: "rgb(232, 92, 92)",
+              }}
+            />
+          </Box>
+
+          <Box sx={{ marginTop: ".6rem" }}>
+            <Chip
+              label="Approve"
+              onClick={handleApproval}
+              sx={{
+                fontWeight: "600",
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "1.4rem",
+                  lg: "1.4rem",
+                  xl: "1.4rem",
+                },
+                padding: {
+                  xs: "1.5rem",
+                  sm: "1.5rem",
+                  md: "1.5rem",
+                  lg: "1.5rem",
+                  xl: "1.5rem",
+                },
+                background: "rgb(229, 245, 238)",
+                color: "rgb(39, 172, 112)",
+              }}
+            />
+          </Box>
+        </Box>
+
+        }
+        else if(viewdata?.approvalStatus == "rejected")
+          {
+            return  <Box
+              sx={{
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "15px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Rejection Reason
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "15px",
+                    fontWeight: "600",
+                  }}
+                >
+                 Vendor is Rejected
+                </Typography>
+              </Box>
+            </Box>
+          }
+          else if(viewdata?.approvalStatus == "approved")
+            {
+              return  <Box
+                sx={{
+                  paddingLeft: "1rem",
+                  paddingRight: "1rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box>
+                  <Typography
+                    sx={{
+                      color: colors.grey[700],
+                      fontSize: "15px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Approved Reason
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: colors.grey[400],
+                      fontSize: "15px",
+                      fontWeight: "600",
+                    }}
+                  >
+                   Vendor is Approved
+                  </Typography>
+                </Box>
+              </Box>
+            }
+    }
+
   return (
     <Container>
       <ConfirmDialogBox
@@ -67,6 +229,15 @@ function Index() {
         confirm="Confirm"
         fncHandleDialog={fncHandleDialog}
         isopen={open}
+      />
+
+<VendorApprovalDialogBox
+        title="Are you sure you want to approve the vendor?"
+        body="If you Approved the vendor, then a mail will be sent to the vendor about the approval and he will be able to login into the vendor dashboard."
+        cancel="Cancel"
+        confirm="Confirm"
+        fncHandleDialog={fncRejectionHandleDialog}
+        isopen={isVendorDialogOpen}
       />
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -164,14 +335,25 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
+
+            {viewdata?.isMobileVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            />
+            />:
+            <Chip
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
+       
           </Box>
         </Box>
         <Box
@@ -200,17 +382,29 @@ function Index() {
               }}
             >
               {viewdata?.email}
+              
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
+
+          {viewdata?.isEmailVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            />
+            />:
+            <Chip
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
+          
           </Box>
         </Box>
       </Box>
@@ -280,14 +474,23 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
+          {viewdata?.isGstVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            />
+            />:
+            <Chip
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
           </Box>
         </Box>
         <Box
@@ -323,14 +526,23 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
+          {viewdata?.isGstVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            />
+            />:
+            <Chip
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
           </Box>
         </Box>
       </Box>
@@ -400,14 +612,7 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
-              label="Verified"
-              sx={{
-                fontWeight: "600",
-                background: "rgb(229, 245, 238)",
-                color: "rgb(39, 172, 112)",
-              }}
-            />
+        
           </Box>
         </Box>
         <Box
@@ -439,14 +644,7 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
-              label="Verified"
-              sx={{
-                fontWeight: "600",
-                background: "rgb(229, 245, 238)",
-                color: "rgb(39, 172, 112)",
-              }}
-            />
+         
           </Box>
         </Box>
         <Box
@@ -478,14 +676,7 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
-              label="Verified"
-              sx={{
-                fontWeight: "600",
-                background: "rgb(229, 245, 238)",
-                color: "rgb(39, 172, 112)",
-              }}
-            />
+           
           </Box>
         </Box>
       </Box>
@@ -665,14 +856,23 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
+          {viewdata?.bankDetails?.isVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            />
+            />:
+            <Chip
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
           </Box>
         </Box>
         <Box
@@ -733,23 +933,23 @@ function Index() {
             </Typography>
           </Box>
           <Box sx={{ marginTop: ".6rem" }}>
-            {/* <Chip
+          {viewdata?.bankDetails?.isVerified?<Chip
               label="Verified"
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
                 color: "rgb(39, 172, 112)",
               }}
-            /> */}
-
+            />:
             <Chip
-              label="Verification Failed"
-              sx={{
-                fontWeight: "600",
-                background: "rgb(255, 236, 236)",
-                color: "rgb(232, 92, 92)",
-              }}
-            />
+            label="Not Verified"
+            sx={{
+              fontWeight: "600",
+              background: "rgb(255, 236, 236)",
+              color: "rgb(232, 92, 92)",
+            }}
+          />
+          }
           </Box>
         </Box>
       </Box>
@@ -791,66 +991,13 @@ function Index() {
           </Box>
         </Box>
         <Divider sx={{ marginBottom: "1rem" }} />
-        <Box
-          sx={{
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            display: "flex",
-            justifyContent: "end",
-          }}
-        >
-          <Box sx={{ margin: ".6rem" }}>
-            <Chip
-              label="Reject"
-              onClick={handleRejection}
-              sx={{
-                fontWeight: "600",
-                fontSize: {
-                  xs: "1rem",
-                  sm: "1rem",
-                  md: "1.4rem",
-                  lg: "1.4rem",
-                  xl: "1.4rem",
-                },
-                padding: {
-                  xs: "1.5rem",
-                  sm: "1.5rem",
-                  md: "1.5rem",
-                  lg: "1.5rem",
-                  xl: "1.5rem",
-                },
-                background: "rgb(255, 236, 236)",
-                color: "rgb(232, 92, 92)",
-              }}
-            />
-          </Box>
 
-          <Box sx={{ marginTop: ".6rem" }}>
-            <Chip
-              label="Approve"
-              onClick={handleApproval}
-              sx={{
-                fontWeight: "600",
-                fontSize: {
-                  xs: "1rem",
-                  sm: "1rem",
-                  md: "1.4rem",
-                  lg: "1.4rem",
-                  xl: "1.4rem",
-                },
-                padding: {
-                  xs: "1.5rem",
-                  sm: "1.5rem",
-                  md: "1.5rem",
-                  lg: "1.5rem",
-                  xl: "1.5rem",
-                },
-                background: "rgb(229, 245, 238)",
-                color: "rgb(39, 172, 112)",
-              }}
-            />
-          </Box>
-        </Box>
+        {
+         
+          fncRenderApprovalSection()
+        }
+         
+      
       </Box>
       {/* /////////////////////------------------------- PICKUP DETAILS----------------------------/////////////////////////////// */}
     </Container>

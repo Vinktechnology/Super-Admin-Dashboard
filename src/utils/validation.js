@@ -18,6 +18,12 @@ export const LoginWithOTPSchema = yup.object().shape({
   // password: yup.string().required("*Password is required"),
 });
 
+export const ReasonSchema = yup.object().shape({
+  reason: yup.string().required("*Reason is required"),
+});
+
+
+
 
 export const RegisterStep2Schema = yup.object().shape({
   username: yup.string().required("*Username is required"),
