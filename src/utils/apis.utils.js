@@ -72,6 +72,13 @@ export const approvalVendorApi="/v1/vendor/approve-status"
 
 
 
+// Brand & Product
+export const getAllActiveUserBrandsApi="/v1/vendor/brands";
+export const validateUserBrandApi="/v1/product"
+export const updateProductApi="/v1/product"
+export const getAllProductsApi="/v1/product/all"
+export const getProductsByIdApi="/v1/product/details"
+export const updateProductStatusApi="/v1/product/active-status"
 
 //Users
 export const userApi = "/user";

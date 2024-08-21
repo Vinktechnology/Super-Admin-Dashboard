@@ -47,10 +47,9 @@ import ViewProcurement from "./scenes/procurement/ViewProcurement";
 import Attribute from "./scenes/attribute";
 import AddAttribute from "./scenes/attribute/AddAttribute";
 import Product from "./scenes/product";
-import AddProduct from "./scenes/product/addproduct";
 import AddTeam from "./scenes/team/AddTeam";
-import SellerHome from "./components/SellerHome";
 import VendorDisplay from "./scenes/vendors/vendordisplay";
+import ProductDisplay from "./scenes/product/productdisplay";
 import Profile from "./scenes/profile";
 import ProfileAccount from "./scenes/profile/profileaccount";
 import ProfileBank from "./scenes/profile/profilebank";
@@ -58,9 +57,6 @@ import ProfileBusiness from "./scenes/profile/profilebusiness";
 import ProfileCalendar from "./scenes/profile/profilecalendar";
 import ProfileSetting from "./scenes/profile/profilesetting";
 import ProfileAddress from "./scenes/profile/profileaddress";
-import ProductCategory from "./scenes/product/addproduct/ProductCategory";
-import ProductFeatures from "./scenes/product/addproduct/ProductFeatures";
-import ProductBrand from "./scenes/product/addproduct/ProductBrand";
 import ViewCategory from "./scenes/category/ViewCategory";
 import ViewSubCategory from "./scenes/subcategory/ViewSubCategory";
 import withAuth from "./hooks/withAuth";
@@ -196,22 +192,29 @@ function AppRoutes() {
             { path: "addattribute/:Id", element: <AddAttribute /> },
           ],
         },
+        // {
+        //   path: "product",
+        //   element: <Outlet />,
+        //   children: [
+        //     { path: "", element: <Product /> },
+        //     { path: "addproduct", element: <AddProduct />,
+        //       children:[
+        //         {path:"productcategory", element:<ProductCategory /> },
+        //         {path:"productbrand", element:<ProductBrand /> },
+        //         {path:"productfeatures", element:<ProductFeatures /> },
+        //       ]
+        //      },
+        //     { path: "addproduct/:Id", element: <AddProduct /> },
+        //   ],
+        // },
         {
           path: "product",
           element: <Outlet />,
           children: [
             { path: "", element: <Product /> },
-            { path: "addproduct", element: <AddProduct />,
-              children:[
-                {path:"productcategory", element:<ProductCategory /> },
-                {path:"productbrand", element:<ProductBrand /> },
-                {path:"productfeatures", element:<ProductFeatures /> },
-              ]
-             },
-            { path: "addproduct/:Id", element: <AddProduct /> },
+            { path: ":Id", element: <ProductDisplay /> },
           ],
         },
-        
         {
           path: "team",
           element: <Outlet />,
