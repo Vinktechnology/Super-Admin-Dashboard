@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Chip } from "@mui/material";
 import { DataGrid, GridToolbar, GridActionsCellItem } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
@@ -20,9 +20,6 @@ const Vendor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-  const [toggleDATA, setToggleData] = useState(null);
-  const [switchChecked, setSwitchChecked] = useState({}); // Keep track of switch states
 
 
   //--------------- For Pagination starts here --------------------------
@@ -36,30 +33,10 @@ const Vendor = () => {
 
 
 
-
   const handleView = (id) => {
     navigate(`/dashboard/vendors/${id}`)
   };
 
-
-
-
-
-
-  const toggleChange = (event, data) => {
-    const isChecked = event.target.checked;
-    setToggleData({
-      activeStatus: isChecked ? "active" : "in-active",
-      id: data.id,
-    });
-
-    setSwitchChecked(prevState => ({
-      ...prevState,
-      [data.id]: isChecked,
-    }));
-
-    setOpen(true);
-  };
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
@@ -67,30 +44,35 @@ const Vendor = () => {
       field: "fullName",
       headerName: "Name",
       flex: 1,
+      width: 150,
       cellClassName: "name-column--cell",
     },
     {
       field: "mobile",
       headerName: "Mobile No",
       flex: 1,
+      width: 150,
       cellClassName: "name-column--cell",
     },
     {
       field: "email",
       headerName: "Email",
       flex: 1,
+      width: 150,
       cellClassName: "name-column--cell",
     },
     {
       field: "gstNumber",
       headerName: "GST Number",
       flex: 1,
+      width: 150,
       cellClassName: "name-column--cell",
     },
     {
       field: "displayName",
       headerName: "Display Name",
       flex: 1,
+      width: 150,
       cellClassName: "name-column--cell",
     },
 
@@ -122,13 +104,31 @@ const Vendor = () => {
     {
       field: "approvalStatus",
       headerName: "Approval Status",
-      flex: 1,
-      renderCell: (params) => (params.value  ),
+      flex: 2,
+      width: 250,
+      renderCell: (params) => params.value=="approved"?  <Chip
+      label={ params.value}
+      sx={{
+        fontWeight: "600",
+        background: "rgb(229, 245, 238)",
+        color: "rgb(39, 172, 112)",
+      }}
+    /> :
+
+    <Chip
+    label={ params.value}
+    sx={{
+      fontWeight: "600",
+      background: "rgb(255, 236, 236)",
+      color: "rgb(232, 92, 92)",
+    }}
+  />
     },
     {
       field: "createdAt",
       headerName: "Created On",
       flex: 1,
+      width: 150,
       renderCell: (params) => globalFormatDate(params?.value),
       
     },
@@ -136,18 +136,21 @@ const Vendor = () => {
       field: "createdBy",
       headerName: "Created By",
       flex: 1,
+      width: 150,
       renderCell: (params) => params?.value?.fullName,
     },
     {
       field: "updatedAt",
       headerName: "Updated On",
       flex: 1,
+      width: 150,
       renderCell: (params) => globalFormatDate(params?.value),
     },
     {
       field: "updatedBy",
       headerName: "Updated By",
       flex: 1,
+      width: 150,
       renderCell: (params) => params?.value?.fullName,
     },
     {
@@ -166,28 +169,9 @@ const Vendor = () => {
     },
   ];
 
-  const fncHandleDialog = (isConfirmed) => {
-    if (isConfirmed) {
-      dispatch(updateVendorStatusThunk({ ...toggleDATA }));
-    } else {
-      setSwitchChecked(prevState => ({
-        ...prevState,
-        [toggleDATA.id]: !switchChecked[toggleDATA.id], // Reset to the previous state if canceled
-      }));
-    }
-    setOpen(false);
-  };
 
   return (
     <Box p={2}>
-      <ConfirmDialogBox
-        title="Do you want to change the status?"
-        body="If you change the status then it may not be visible to some cases"
-        cancel="Cancel"
-        confirm="Confirm"
-        fncHandleDialog={fncHandleDialog}
-        isopen={open}
-      />
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Vendors" subtitle="Manage Vendors" />
 
@@ -236,6 +220,7 @@ const Vendor = () => {
           onPageChange={(newPage) => setPage(newPage)}
           rowCount={totalCount} // Pass the total number of categories
           paginationMode="server" // Server-side pagination
+          components={{ Toolbar: GridToolbar }}
         />
       </Box>
     </Box>
