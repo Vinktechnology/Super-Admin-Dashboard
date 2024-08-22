@@ -17,12 +17,11 @@ import {
   approveVendorDataThunk,
   getVendorByIdThunk,
 } from "../../../store/slices/vendor/vendor.slice";
-
-import VendorApprovalDialogBox from "../../../modals/VendorApprovalDialogBox.js";
 import ConfirmDialogBox from "../../../components/ConfirmDialogBox/ConfirmDialogBox.js";
-import { getProductsIdThunk } from "../../../store/slices/product/product.slice.js";
+import { approveProductDataThunk, getProductsIdThunk } from "../../../store/slices/product/product.slice.js";
 import { renderArrayColumns } from "../../../utils/utilityfunction.js";
 import ImageSlider from "../../../components/ImageSlider/ImageSlider.js";
+import ProductApprovalDialogBox from "../../../modals/ProductApprovalDialogBox.js";
 
 function Index() {
   const theme = useTheme();
@@ -72,10 +71,8 @@ function Index() {
       id: params.Id,
     };
 
-    console.log("isConfirmed", isConfirmed);
-    console.log("apprData", apprData);
     if (isConfirmed?.isSubmit) {
-      dispatch(approveVendorDataThunk(apprData))
+      dispatch(approveProductDataThunk(apprData))
         .unwrap()
         .then((da) => {
           window.location.reload();
@@ -94,7 +91,7 @@ function Index() {
   };
 
   const fncRenderApprovalSection = () => {
-    if (viewdata?.approvalStatus == "pending") {
+    if (viewdata?.status == "qcPending") {
       return (
         <Box
           sx={{
@@ -157,7 +154,7 @@ function Index() {
           </Box>
         </Box>
       );
-    } else if (viewdata?.approvalStatus == "rejected") {
+    } else if (viewdata?.status == "rejected") {
       return (
         <Box
           sx={{
@@ -184,12 +181,12 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Vendor is Rejected
+              QC Rejected the Product
             </Typography>
           </Box>
         </Box>
       );
-    } else if (viewdata?.approvalStatus == "approved") {
+    } else if (viewdata?.status == "draft") {
       return (
         <Box
           sx={{
@@ -207,7 +204,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Approved Reason
+              {/* Draft Reason */}
             </Typography>
             <Typography
               sx={{
@@ -216,7 +213,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Vendor is Approved
+              Product is in Draft Mode
             </Typography>
           </Box>
         </Box>
@@ -227,17 +224,17 @@ function Index() {
   return (
     <Container>
       <ConfirmDialogBox
-        title="Are you sure you want to approve the vendor?"
-        body="If you Approved the vendor, then a mail will be sent to the vendor about the approval and he will be able to login into the vendor dashboard."
+        title="Are you sure you want to approve the Product?"
+        body="If you Approved the product, then a mail will be sent to the vendor about the approval and he will be able to see this product on our platform."
         cancel="Cancel"
         confirm="Confirm"
         fncHandleDialog={fncHandleDialog}
         isopen={open}
       />
 
-      <VendorApprovalDialogBox
-        title="Are you sure you want to approve the vendor?"
-        body="If you Approved the vendor, then a mail will be sent to the vendor about the approval and he will be able to login into the vendor dashboard."
+      <ProductApprovalDialogBox
+        title="Are you sure you want to reject the Product?"
+        body="If you reject the product, then a mail will be sent to the vendor about the rejection of the product."
         cancel="Cancel"
         confirm="Confirm"
         fncHandleDialog={fncRejectionHandleDialog}
@@ -256,9 +253,9 @@ function Index() {
         <Header title="Product" subtitle="Manage Product" />
 
         <Box>
-          {viewdata?.approvalStatus == "approved" ? (
+          {viewdata?.status == "approved" ? (
             <Chip
-              label={viewdata?.approvalStatus}
+              label={viewdata?.status}
               sx={{
                 fontWeight: "600",
                 background: "rgb(229, 245, 238)",
@@ -270,7 +267,7 @@ function Index() {
             />
           ) : (
             <Chip
-              label={viewdata?.approvalStatus}
+              label={viewdata?.status}
               sx={{
                 fontWeight: "600",
                 background: "rgb(255, 236, 236)",
@@ -283,6 +280,261 @@ function Index() {
           )}
         </Box>
       </Box>
+
+      {/* /////////////////////-------------------------Vendor information---------------------------/////////////////////////////// */}
+
+      <Box
+        sx={{
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",
+          minHeight: { xs: "30vh", sm: "30vh", md: "30vh", lg: "30vh" },
+          margin: "15px",
+          paddingBottom: "3rem",
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+      >
+        <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            paddingTop: "1rem",
+            paddingBottom: ".5rem",
+          }}
+        >
+          <Box sx={{ width: "100%" }}>
+            <Typography
+              sx={{
+                color: colors.grey[100],
+                fontWeight: "bold",
+                fontSize: "20px",
+              }}
+            >
+              Vendor Basic Information
+            </Typography>
+            <Typography>Vendor Details Verification</Typography>
+          </Box>
+        </Box>
+        <Divider sx={{ marginBottom: "1rem" }} />
+        <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+          }}
+        >
+          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Vendor Name
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.vendorId?.fullName}
+            </Typography>
+          </Box>
+
+          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Email
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.vendorId?.email}
+            </Typography>
+          </Box>
+          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Mobile No
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.vendorId?.mobile}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+          }}
+        >
+          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              GST No
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.vendorId?.gstNumber}
+            </Typography>
+          </Box>
+
+          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Company Name
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.gstData?.legalName}
+            </Typography>
+          </Box>
+          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Pan Number
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.gstData?.panNumber}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            display: "flex",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+          }}
+        >
+          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              TAN NO
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.gstData?.gstIn}
+            </Typography>
+          </Box>
+
+          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              GST Registered Mobile
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.gstData?.mobile}
+            </Typography>
+          </Box>
+          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              GST Registered Email
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {viewdata?.gstData?.email}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      {/* /////////////////////-------------------------Mobile and Email Verification Ends----------------------------/////////////////////////////// */}
       {/* /////////////////////-------------------------Mobile and Email Verification Starts----------------------------/////////////////////////////// */}
 
       <Box
@@ -366,7 +618,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.categoryId?.name}
+              {viewdata?.productDescription?.subCategory?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 , mb:2 }}>
@@ -386,7 +638,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.categoryId?.name}
+              {viewdata?.brandId?.brandName}
             </Typography>
           </Box>
         </Box>
@@ -465,7 +717,9 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              SK00001
+              
+              {viewdata?.stockAndShippingInformation?.skuId}
+              
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -485,7 +739,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.listingStatus?.name}
+               {viewdata?.stockAndShippingInformation?.listingStatus?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -505,7 +759,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.procurementType?.name}
+               {viewdata?.stockAndShippingInformation?.procurementType?.name}
             </Typography>
           </Box>
         </Box>
@@ -537,7 +791,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              5
+               {viewdata?.stockAndShippingInformation?.procurementSLA}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -557,7 +811,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              STOCK 1000
+               {viewdata?.stockAndShippingInformation?.stock}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -577,7 +831,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              hI THERE IS S AKLJSDFLKSJF SKJFSFJS KLSDJFLKSJ
+               {viewdata?.stockAndShippingInformation?.manufacturerDetails}
             </Typography>
           </Box>
         </Box>
@@ -608,7 +862,8 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.dimensions?.length}
+               {viewdata?.stockAndShippingInformation?.dimensions?.length}
+  
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -628,7 +883,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.dimensions?.breadth}
+                  {viewdata?.stockAndShippingInformation?.dimensions?.breadth}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -648,7 +903,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.dimensions?.height}
+                  {viewdata?.stockAndShippingInformation?.dimensions?.height}
             </Typography>
           </Box>
         </Box>
@@ -680,7 +935,8 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.dimensions?.weight}
+                  {viewdata?.stockAndShippingInformation?.dimensions?.weight}
+         
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -700,7 +956,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.hsn?.name}
+              {viewdata?.stockAndShippingInformation?.hsn?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -720,7 +976,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.taxCode?.name}
+              {viewdata?.stockAndShippingInformation?.taxCode?.name}
             </Typography>
           </Box>
         </Box>
@@ -898,7 +1154,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.size?.name}
+              {viewdata?.productDescription?.size?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -918,7 +1174,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.styleCode}
+                        {viewdata?.productDescription?.styleCode}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -938,7 +1194,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.occasion)}
+              {renderArrayColumns(viewdata?.productDescription?.occasion)}
             </Typography>
           </Box>
         </Box>
@@ -970,7 +1226,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.fabric)}
+              {renderArrayColumns(viewdata?.productDescription?.fabric)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -990,7 +1246,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.pattern)}
+              {renderArrayColumns(viewdata?.productDescription?.pattern)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1010,7 +1266,8 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Kanschivaram
+               {viewdata?.productDescription?.type?.name}
+     
             </Typography>
           </Box>
         </Box>
@@ -1033,7 +1290,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Tag
+              Tags
             </Typography>
             <Typography
               sx={{
@@ -1042,7 +1299,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.tags)}
+              {renderArrayColumns(viewdata?.productDescription?.tags)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1062,7 +1319,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.purity?.name}
+              {viewdata?.productDescription?.purity?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1082,7 +1339,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.color)}
+              {renderArrayColumns(viewdata?.productDescription?.color)}
             </Typography>
           </Box>
         </Box>
@@ -1114,7 +1371,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.idealFor?.name}
+              {viewdata?.productDescription?.idealFor?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1134,7 +1391,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.blousePieceType?.name}
+              {viewdata?.productDescription?.blousePieceType?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1154,7 +1411,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.fabricCare)}
+              {renderArrayColumns(viewdata?.productDescription?.fabricCare)}
             </Typography>
           </Box>
         </Box>
@@ -1186,7 +1443,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.sariLength?.name}
+              {viewdata?.productDescription?.sariLength?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1206,7 +1463,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.blousePieceLength}
+              {viewdata?.productDescription?.blousePieceLength}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1226,7 +1483,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {viewdata?.sariStyle?.name}
+              {viewdata?.productDescription?.sariStyle?.name}
             </Typography>
           </Box>
         </Box>
@@ -1295,7 +1552,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Product Title Test
+              {viewdata?.additionalDescription?.productTitle}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1315,7 +1572,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Product Description Test
+               {viewdata?.additionalDescription?.description}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1335,7 +1592,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Handloom Product test
+                   {viewdata?.additionalDescription?.handloomProduct?.name}
             </Typography>
           </Box>
         </Box>
@@ -1367,7 +1624,8 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Hand Embroidery TEST
+                {viewdata?.additionalDescription?.handEmbroidery?.name}
+              
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1387,7 +1645,8 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Type of Embroidery TEST
+              {viewdata?.additionalDescription?.typeOfEmbroidery?.name}
+              
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1407,7 +1666,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Embroidery Method TEST
+                 {viewdata?.additionalDescription?.embroideryMethod?.name}
             </Typography>
           </Box>
         </Box>
@@ -1439,7 +1698,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.trend)}
+                        {renderArrayColumns(viewdata?.additionalDescription?.trend)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1459,7 +1718,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.patternPrintType)}
+              {renderArrayColumns(viewdata?.additionalDescription?.patternPrintType)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1479,7 +1738,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.borderDetails)}
+              {renderArrayColumns(viewdata?.additionalDescription?.borderDetails)}
             </Typography>
           </Box>
         </Box>
@@ -1511,7 +1770,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.blousePattern)}
+              {renderArrayColumns(viewdata?.additionalDescription?.blousePattern)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1531,7 +1790,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.decorativeMaterial)}
+              {renderArrayColumns(viewdata?.additionalDescription?.decorativeMaterial)}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1551,7 +1810,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.blouseFabric)}
+              {renderArrayColumns(viewdata?.additionalDescription?.blouseFabric)}
             </Typography>
           </Box>
         </Box>
@@ -1582,7 +1841,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Single Sari Weight
+           {viewdata?.additionalDescription?.singleSariWeight}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}>
@@ -1602,7 +1861,7 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              Border Length
+            {viewdata?.additionalDescription?.borderLength?.name}
             </Typography>
           </Box>
           <Box sx={{  flex: 1, mb:2 }}></Box>

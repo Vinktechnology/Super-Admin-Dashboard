@@ -79,6 +79,8 @@ export const updateProductApi="/v1/product"
 export const getAllProductsApi="/v1/product/all"
 export const getProductsByIdApi="/v1/product/details"
 export const updateProductStatusApi="/v1/product/active-status"
+export const approvalProductApi="/v1/vendor/qc"
+
 
 //Users
 export const userApi = "/user";

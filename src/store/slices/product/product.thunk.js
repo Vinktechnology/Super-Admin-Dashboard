@@ -1,5 +1,5 @@
 import {
-  updateProductApi,getAllProductsApi,getProductsByIdApi,updateProductStatusApi
+  updateProductApi,getAllProductsApi,getProductsByIdApi,updateProductStatusApi, approvalProductApi
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import {
@@ -150,6 +150,39 @@ export const updateProductStatusData = async (data, thunkApi) => {
     );
     return responseData;
 
+  } catch (err) {
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
+
+
+export const approveProductData = async (data, thunkApi) => {
+  try {
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    const response = await userAxios.put(`${approvalProductApi}/${data.id}`,{...data});
+    const responseData = response?.data;
+
+    thunkApi.dispatch(
+      showSuccessToast({
+        message: response.message,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );    
+    return responseData;
+   
   } catch (err) {
     thunkApi.dispatch(
       showFailureToast({

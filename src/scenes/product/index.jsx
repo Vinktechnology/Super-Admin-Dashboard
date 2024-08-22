@@ -69,12 +69,18 @@ const Product = () => {
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "name",
+      field: "productTitle",
       headerName: "Name",
       flex: 1,
       minWidth:100,
       cellClassName: "name-column--cell",
-      valueGetter: (params) => "first product",
+    },
+    {
+      field: "skuId",
+      headerName: "SKU Id",
+      flex: 1,
+      minWidth:100,
+      cellClassName: "name-column--cell",
     },
     {
       field: "categoryId",
@@ -83,6 +89,13 @@ const Product = () => {
       minWidth:100,
       cellClassName: "name-column--cell", 
       valueGetter: (params) => params?.row?.categoryId?.name,
+    },
+    {
+      field: "status",
+      headerName: "Product Status",
+      flex: 1,
+      minWidth:100,
+      cellClassName: "name-column--cell",
     },
     {
       field: "procurementType",

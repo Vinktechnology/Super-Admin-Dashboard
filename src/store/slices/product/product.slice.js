@@ -5,7 +5,7 @@ import {
   getAllProductsData,
   getProductsByIdData,
   updateProductStatusData,
-  // getAllCategoryData,addNewCategoryData,getCategoryByIdData,updateCategoryData,updateCategoryStatusData
+  approveProductData
 } from "./product.thunk";
 
 const INIT_STATE = {
@@ -16,6 +16,10 @@ const INIT_STATE = {
   },
 };
 
+export const approveProductDataThunk = createAsyncThunk(
+  "approveProduct",
+  approveProductData
+);
 
 
 export const getAllProductsThunk = createAsyncThunk(
@@ -95,6 +99,15 @@ const productSlice = createSlice({
         return state;
       })
       .addCase(updateProductStatusThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(approveProductDataThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(approveProductDataThunk.fulfilled, (state, action) => {
+        return state;
+      })
+      .addCase(approveProductDataThunk.rejected, (state) => {
         return state;
       });
   },
