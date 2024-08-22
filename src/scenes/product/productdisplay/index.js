@@ -253,7 +253,7 @@ function Index() {
       />
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Vendor Profile" subtitle="Manage Vendor Profile" />
+        <Header title="Product" subtitle="Manage Product" />
 
         <Box>
           {viewdata?.approvalStatus == "approved" ? (
