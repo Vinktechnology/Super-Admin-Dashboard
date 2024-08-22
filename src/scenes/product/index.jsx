@@ -98,12 +98,12 @@ const Product = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "procurementType",
+      field: "subCategory",
       headerName: "Sub-Category",
       flex: 1,
       minWidth:100,
       cellClassName: "name-column--cell", 
-      valueGetter: (params) => "test",
+      valueGetter: (params) => params?.row?.subCategory?.name,
     },
     {
       field: "hsn",
@@ -115,7 +115,7 @@ const Product = () => {
     },
     {
       field: "taxCode",
-      headerName: "HSN Code",
+      headerName: "GST Code",
       flex: 1,
       minWidth:100,
       cellClassName: "name-column--cell", 

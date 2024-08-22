@@ -20,6 +20,13 @@ export const LoginWithOTPSchema = yup.object().shape({
 
 export const ReasonSchema = yup.object().shape({
   reason: yup.string().required("*Reason is required"),
+  section: yup.array().of(
+    yup.object().shape({
+      label: yup.string().required(),
+      value: yup.string().required(),
+      id: yup.string().required(),
+    }).required("*Seaction is required")
+  ).min(1, "*At least one section value is required"),
 });
 
 
@@ -104,22 +111,22 @@ export const SubCatgorySchema = yup.object().shape({
 
 export const TagSchema = yup.object().shape({
   tag: yup.string().required("*Tag is required"),
-  category:yup.array().of(
-    yup.object().shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-      name: yup.string().required(),
-      id: yup.string().required(),
-    }).required("*Category object is required")
-  ).min(1, "*At least one category is required"),
-  subcategory: yup.array().of(
-    yup.object().shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-      name: yup.string().required(),
-      id: yup.string().required(),
-    }).required("*SubCategory object is required")
-  ).min(1, "*At least one subcategory is required"),
+  // category:yup.array().of(
+  //   yup.object().shape({
+  //     label: yup.string().required(),
+  //     value: yup.string().required(),
+  //     name: yup.string().required(),
+  //     id: yup.string().required(),
+  //   }).required("*Category object is required")
+  // ).min(1, "*At least one category is required"),
+  // subcategory: yup.array().of(
+  //   yup.object().shape({
+  //     label: yup.string().required(),
+  //     value: yup.string().required(),
+  //     name: yup.string().required(),
+  //     id: yup.string().required(),
+  //   }).required("*SubCategory object is required")
+  // ).min(1, "*At least one subcategory is required"),
   description: yup.string().required("*Description is required"),
   thumbnail: yup.mixed().required("*Thumbnail is required"),
   slug: yup.string().required("*Slug is required"),

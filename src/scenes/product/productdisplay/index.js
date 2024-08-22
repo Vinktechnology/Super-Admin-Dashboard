@@ -18,7 +18,10 @@ import {
   getVendorByIdThunk,
 } from "../../../store/slices/vendor/vendor.slice";
 import ConfirmDialogBox from "../../../components/ConfirmDialogBox/ConfirmDialogBox.js";
-import { approveProductDataThunk, getProductsIdThunk } from "../../../store/slices/product/product.slice.js";
+import {
+  approveProductDataThunk,
+  getProductsIdThunk,
+} from "../../../store/slices/product/product.slice.js";
 import { renderArrayColumns } from "../../../utils/utilityfunction.js";
 import ImageSlider from "../../../components/ImageSlider/ImageSlider.js";
 import ProductApprovalDialogBox from "../../../modals/ProductApprovalDialogBox.js";
@@ -65,11 +68,26 @@ function Index() {
   };
 
   const fncRejectionHandleDialog = (isConfirmed) => {
+
+
+    const conObject = isConfirmed?.section?.reduce((acc, obj) => {
+      acc[obj.value] =true;
+      return acc;
+    }, {});
+
     const apprData = {
       approveStatus: isConfirmed?.isSubmit && "rejected",
       reason: isConfirmed.reason,
+      rejectedSections: {
+        stockAndShippingInformation: conObject?.stockAndShippingInformation ==undefined?false:conObject?.stockAndShippingInformation,
+        priceInfo: conObject?.priceInfo==undefined?false:conObject?.priceInfo,
+        productDescription: conObject?.productDescription==undefined?false:conObject?.productDescription,
+        additionalDescription: conObject?.additionalDescription==undefined?false:conObject?.additionalDescription,
+        productImages:conObject?.productImages==undefined?false:conObject?.productImages,
+      },
       id: params.Id,
     };
+
 
     if (isConfirmed?.isSubmit) {
       dispatch(approveProductDataThunk(apprData))
@@ -323,10 +341,10 @@ function Index() {
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -347,7 +365,7 @@ function Index() {
             </Typography>
           </Box>
 
-          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -367,7 +385,7 @@ function Index() {
               {viewdata?.vendorId?.email}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -395,10 +413,10 @@ function Index() {
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -419,7 +437,7 @@ function Index() {
             </Typography>
           </Box>
 
-          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -439,7 +457,7 @@ function Index() {
               {viewdata?.gstData?.legalName}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -467,10 +485,10 @@ function Index() {
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -491,7 +509,7 @@ function Index() {
             </Typography>
           </Box>
 
-          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -511,7 +529,7 @@ function Index() {
               {viewdata?.gstData?.mobile}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -577,10 +595,10 @@ function Index() {
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -601,7 +619,7 @@ function Index() {
             </Typography>
           </Box>
 
-          <Box sx={{  flex: 1, mb:2, mb:2  }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -621,7 +639,7 @@ function Index() {
               {viewdata?.productDescription?.subCategory?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 , mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -697,10 +715,10 @@ function Index() {
             display: "flex",
             justifyContent: "space-around",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -717,12 +735,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              
               {viewdata?.stockAndShippingInformation?.skuId}
-              
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -739,10 +755,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.listingStatus?.name}
+              {viewdata?.stockAndShippingInformation?.listingStatus?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -759,22 +775,22 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.procurementType?.name}
+              {viewdata?.stockAndShippingInformation?.procurementType?.name}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -791,10 +807,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.procurementSLA}
+              {viewdata?.stockAndShippingInformation?.procurementSLA}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -811,10 +827,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.stock}
+              {viewdata?.stockAndShippingInformation?.stock}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -831,21 +847,21 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.manufacturerDetails}
+              {viewdata?.stockAndShippingInformation?.manufacturerDetails}
             </Typography>
           </Box>
         </Box>
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -862,11 +878,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.stockAndShippingInformation?.dimensions?.length}
-  
+              {viewdata?.stockAndShippingInformation?.dimensions?.length}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -883,10 +898,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                  {viewdata?.stockAndShippingInformation?.dimensions?.breadth}
+              {viewdata?.stockAndShippingInformation?.dimensions?.breadth}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -903,22 +918,22 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                  {viewdata?.stockAndShippingInformation?.dimensions?.height}
+              {viewdata?.stockAndShippingInformation?.dimensions?.height}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -935,11 +950,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                  {viewdata?.stockAndShippingInformation?.dimensions?.weight}
-         
+              {viewdata?.stockAndShippingInformation?.dimensions?.weight}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -959,7 +973,7 @@ function Index() {
               {viewdata?.stockAndShippingInformation?.hsn?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1020,15 +1034,15 @@ function Index() {
         <Divider sx={{ marginBottom: "1rem" }} />
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1048,7 +1062,7 @@ function Index() {
               {viewdata?.priceInfo?.mrp}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1068,7 +1082,7 @@ function Index() {
               {viewdata?.priceInfo?.sellingPrice}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1129,15 +1143,15 @@ function Index() {
         <Divider sx={{ marginBottom: "1rem" }} />
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1157,7 +1171,7 @@ function Index() {
               {viewdata?.productDescription?.size?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1174,10 +1188,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                        {viewdata?.productDescription?.styleCode}
+              {viewdata?.productDescription?.styleCode}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1201,15 +1215,15 @@ function Index() {
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1229,7 +1243,7 @@ function Index() {
               {renderArrayColumns(viewdata?.productDescription?.fabric)}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1249,7 +1263,7 @@ function Index() {
               {renderArrayColumns(viewdata?.productDescription?.pattern)}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1266,23 +1280,22 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.productDescription?.type?.name}
-     
+              {viewdata?.productDescription?.type?.name}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1302,7 +1315,7 @@ function Index() {
               {renderArrayColumns(viewdata?.productDescription?.tags)}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1322,7 +1335,7 @@ function Index() {
               {viewdata?.productDescription?.purity?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1346,15 +1359,15 @@ function Index() {
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1374,7 +1387,7 @@ function Index() {
               {viewdata?.productDescription?.idealFor?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1394,7 +1407,7 @@ function Index() {
               {viewdata?.productDescription?.blousePieceType?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1418,15 +1431,15 @@ function Index() {
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1446,7 +1459,7 @@ function Index() {
               {viewdata?.productDescription?.sariLength?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1466,7 +1479,7 @@ function Index() {
               {viewdata?.productDescription?.blousePieceLength}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1527,15 +1540,15 @@ function Index() {
         <Divider sx={{ marginBottom: "1rem" }} />
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1555,7 +1568,7 @@ function Index() {
               {viewdata?.additionalDescription?.productTitle}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1572,10 +1585,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-               {viewdata?.additionalDescription?.description}
+              {viewdata?.additionalDescription?.description}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1592,22 +1605,22 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                   {viewdata?.additionalDescription?.handloomProduct?.name}
+              {viewdata?.additionalDescription?.handloomProduct?.name}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1624,11 +1637,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                {viewdata?.additionalDescription?.handEmbroidery?.name}
-              
+              {viewdata?.additionalDescription?.handEmbroidery?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1646,10 +1658,9 @@ function Index() {
               }}
             >
               {viewdata?.additionalDescription?.typeOfEmbroidery?.name}
-              
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1666,22 +1677,22 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                 {viewdata?.additionalDescription?.embroideryMethod?.name}
+              {viewdata?.additionalDescription?.embroideryMethod?.name}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1698,10 +1709,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-                        {renderArrayColumns(viewdata?.additionalDescription?.trend)}
+              {renderArrayColumns(viewdata?.additionalDescription?.trend)}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1718,10 +1729,12 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.additionalDescription?.patternPrintType)}
+              {renderArrayColumns(
+                viewdata?.additionalDescription?.patternPrintType
+              )}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1738,22 +1751,24 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.additionalDescription?.borderDetails)}
+              {renderArrayColumns(
+                viewdata?.additionalDescription?.borderDetails
+              )}
             </Typography>
           </Box>
         </Box>
 
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1770,10 +1785,12 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.additionalDescription?.blousePattern)}
+              {renderArrayColumns(
+                viewdata?.additionalDescription?.blousePattern
+              )}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1790,10 +1807,12 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.additionalDescription?.decorativeMaterial)}
+              {renderArrayColumns(
+                viewdata?.additionalDescription?.decorativeMaterial
+              )}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1810,21 +1829,23 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {renderArrayColumns(viewdata?.additionalDescription?.blouseFabric)}
+              {renderArrayColumns(
+                viewdata?.additionalDescription?.blouseFabric
+              )}
             </Typography>
           </Box>
         </Box>
         <Box
           sx={{
-           paddingLeft: "1rem",
+            paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            flexDirection:{xs:"column", sm:"row", md:"row", lg:"row"}
+            flexDirection: { xs: "column", sm: "row", md: "row", lg: "row" },
           }}
         >
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1841,10 +1862,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-           {viewdata?.additionalDescription?.singleSariWeight}
+              {viewdata?.additionalDescription?.singleSariWeight}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}>
+          <Box sx={{ flex: 1, mb: 2 }}>
             <Typography
               sx={{
                 color: colors.grey[700],
@@ -1861,10 +1882,10 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-            {viewdata?.additionalDescription?.borderLength?.name}
+              {viewdata?.additionalDescription?.borderLength?.name}
             </Typography>
           </Box>
-          <Box sx={{  flex: 1, mb:2 }}></Box>
+          <Box sx={{ flex: 1, mb: 2 }}></Box>
         </Box>
       </Box>
       {/* /////////////////////------------------------- BANK DETAILS STARTS----------------------------/////////////////////////////// */}

@@ -13,6 +13,34 @@ import { useFormik } from "formik";
 import { useTheme } from "@mui/material/styles";
 import { ReasonSchema } from "../utils/validation.js";
 
+
+const ddlData = [{
+  id:"1",
+  label :"Stock & Shipping Information",
+  value:"stockAndShippingInformation"
+},
+{
+  id:"2",
+  label :"Price Info",
+  value:"priceInfo"
+},
+{
+  id:"3",
+  label :"Product Description",
+  value:"productDescription"
+},
+{
+  id:"4",
+  label :"Additional Description",
+  value:"additionalDescription"
+},
+{
+  id:"5",
+  label :"Product Images",
+  value:"productImages"
+}
+]
+
 export default function ProductApprovalDialogBox({
   title,
   body,
@@ -24,6 +52,7 @@ export default function ProductApprovalDialogBox({
   const theme = useTheme();
   const [initialValues, setInitialValues] = React.useState({
     reason: "",
+    section:[]
   });
 
   const formik = useFormik({
@@ -40,10 +69,11 @@ export default function ProductApprovalDialogBox({
     formik;
 
   async function handleSubmitVendor(data) {
-
+    console.log("section",values.section)
     const reData = {
       reason: values.reason,
       isSubmit: data,
+      section:values.section,
     };
     fncHandleDialog(reData)
   }
@@ -66,6 +96,21 @@ export default function ProductApprovalDialogBox({
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
+          <Element
+              eletype={inputType.multiselect}
+              label="*Please select a Section for Reason"
+              placeholder="*Please select a Section for Reason"
+              inputProps={{
+                onChange: handleChange,
+                onBlur: handleBlur,
+                name: "section",
+              }}
+              errorText={touched.section && errors.section}
+              value={values.section}
+              styles={{ gridColumn: "span 12" }}
+              options={ddlData}
+            />
+            <br/>
             <Element
               eletype={inputType.textarea}
               label="Please Enter the Rejection Reason"
