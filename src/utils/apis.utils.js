@@ -17,6 +17,9 @@ export const getAllActiveCategoryApi="/v1/category/active"
 export const getAllActiveGenericMasterDataApi="/v1/generic-product-master/active"
 
 
+//dashboard
+export const getDashboardDataApi="/v1/dashboard/admin"
+
 
 // SUBCategory
 

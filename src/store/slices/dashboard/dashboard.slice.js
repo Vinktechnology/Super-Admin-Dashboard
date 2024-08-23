@@ -1,11 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-// import { fetchProjectMatrixHandler } from "./dashboard.thunk";
+import { getDashboardDataSlice } from "./dashboard.thunk";
 
 const INIT_STATE = {
   main: {},
   isLoading: false,
+  dashboardData:null
 };
 
+
+export const getDashboardDataThunk = createAsyncThunk(
+  "getDashboardDataSlice",
+  getDashboardDataSlice
+);
 
 const dashboardSlice = createSlice({
   name: "dashboard",
@@ -17,7 +23,20 @@ const dashboardSlice = createSlice({
     stopDashboardLoader: (state) => {
       state.isLoading = false;
     },
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getDashboardDataThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(getDashboardDataThunk.fulfilled, (state, action) => {
+        state.dashboardData = action.payload;
+        return state;
+      })
+      .addCase(getDashboardDataThunk.rejected, (state) => {
+        return state;
+      })
+  },
 });
 
 export const { startDashboardLoader, stopDashboardLoader } =
