@@ -10,7 +10,16 @@ export const getAllVendorData = async (data, thunkApi) => {
   try { 
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(`${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}`);
+    var url="";
+    console.log("datasdfsdfs",data)
+    if(data.status == null)
+      {
+        url = `${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}`
+      }
+      else{
+        url = `${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}&status=${data.status}`
+      }
+    const response = await userAxios.get(url);
     const responseData = response?.data;
     return responseData;
    

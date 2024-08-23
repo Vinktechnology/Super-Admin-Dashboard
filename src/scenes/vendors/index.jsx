@@ -4,7 +4,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -21,13 +21,17 @@ const Vendor = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const status = query.get("status");
+
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllVendorsDataThunk({ page, pageSize }));
-  }, [page, pageSize, dispatch]);
+    dispatch(getAllVendorsDataThunk({ page, pageSize,status }));
+  }, [page, pageSize, dispatch, status]);
 
   //--------------- For Pagination ends here--------------------------
 

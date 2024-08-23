@@ -4,7 +4,7 @@ import { getDashboardDataSlice } from "./dashboard.thunk";
 const INIT_STATE = {
   main: {},
   isLoading: false,
-  dashboardData:null
+  dashboardData:{}
 };
 
 

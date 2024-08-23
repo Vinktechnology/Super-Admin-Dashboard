@@ -13,7 +13,15 @@ export const getAllProductsData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(`${getAllProductsApi}?page=${data.page}&limit=${data.pageSize}`);
+    var url="";
+    if(data.status == null)
+      {
+        url = `${getAllProductsApi}?page=${data.page}&limit=${data.pageSize}`
+      }
+      else{
+        url = `${getAllProductsApi}?page=${data.page}&limit=${data.pageSize}&status=${data.status}`
+      }
+    const response = await userAxios.get(url);
     const responseData = response?.data;
     return responseData;
 

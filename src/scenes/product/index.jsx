@@ -5,7 +5,7 @@ import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useEffect, useState } from "react";
@@ -25,7 +25,10 @@ const Product = () => {
     ({ product }) => product?.productsdata
   );
 
-  console.log("products", products);
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const status = query.get("status");
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [toggleDATA, setToggleData] = useState(null);
@@ -38,8 +41,8 @@ const Product = () => {
   const [page, setPage] = useState(0); // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(50);
   useEffect(() => {
-    dispatch(getAllProductsThunk({ page, pageSize }));
-  }, [page, pageSize, dispatch]);
+    dispatch(getAllProductsThunk({ page, pageSize ,status}));
+  }, [page, pageSize, dispatch, status]);
 
   //--------------- For Pagination ends here--------------------------
   const handleView = (id) => {
