@@ -273,6 +273,39 @@ function Index() {
         </Box>
       );
     }
+    else if (viewdata?.status == "approved") {
+      return (
+        <Box
+          sx={{
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box>
+            <Typography
+              sx={{
+                color: colors.grey[700],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              {/* Draft Reason */}
+            </Typography>
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+              }}
+            >
+              Product is already Approved.
+            </Typography>
+          </Box>
+        </Box>
+      );
+    }
   };
 
   console.log("Viewdata", viewdata)
