@@ -37,6 +37,44 @@ const Vendor = () => {
     navigate(`/dashboard/vendors/${id}`)
   };
 
+  const approvalStatusColor = (da) => {
+    console.log("da", da);
+    if (da == "pending") {
+      return (
+        <Chip
+          label={da}
+          sx={{
+            fontWeight: "600",
+            background: "rgb(213, 222, 120)",
+            color: "rgb(40, 41, 40)",
+          }}
+        />
+      );
+    } else if (da == "approved") {
+      return (
+        <Chip
+          label={da}
+          sx={{
+            fontWeight: "600",
+            background: "rgb(139, 237, 109)",
+            color: "rgb(40, 41, 40)",
+          }}
+        />
+      );
+    } else if (da == "rejected") {
+     return <Chip
+        label={da}
+        sx={{
+          fontWeight: "600",
+          background: "rgb(237, 140, 140)",
+          color: "rgb(40, 41, 40)",
+        }}
+      />
+    } 
+    
+    return da;
+  };
+
 
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
@@ -106,23 +144,7 @@ const Vendor = () => {
       headerName: "Approval Status",
       flex: 2,
       width: 250,
-      renderCell: (params) => params.value=="approved"?  <Chip
-      label={ params.value}
-      sx={{
-        fontWeight: "600",
-        background: "rgb(229, 245, 238)",
-        color: "rgb(39, 172, 112)",
-      }}
-    /> :
-
-    <Chip
-    label={ params.value}
-    sx={{
-      fontWeight: "600",
-      background: "rgb(255, 236, 236)",
-      color: "rgb(232, 92, 92)",
-    }}
-  />
+      renderCell: (params) =>approvalStatusColor(params.value) 
     },
     {
       field: "createdAt",

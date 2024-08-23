@@ -109,7 +109,7 @@ function Index() {
   };
 
   const fncRenderApprovalSection = () => {
-    if (viewdata?.status == "qcPending") {
+    if (viewdata?.status == "QCPending") {
       return (
         <Box
           sx={{

@@ -23,7 +23,6 @@ export const fncBindMultiSelectdata = (data) => {
 };
 export const renderArrayColumns=(data=[])=>
   { 
-    console.log("renderArrayColumns",data);
     const da = data.map((d)=>d.name);
     return da.join(" , ")
   }
