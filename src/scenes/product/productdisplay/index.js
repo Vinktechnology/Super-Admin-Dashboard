@@ -291,7 +291,6 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              {/* Draft Reason */}
             </Typography>
             <Typography
               sx={{
