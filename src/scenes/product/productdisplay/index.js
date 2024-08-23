@@ -25,6 +25,7 @@ import {
 import { renderArrayColumns } from "../../../utils/utilityfunction.js";
 import ImageSlider from "../../../components/ImageSlider/ImageSlider.js";
 import ProductApprovalDialogBox from "../../../modals/ProductApprovalDialogBox.js";
+import { rejectionReasonsEnum } from "../../../utils/enum.js";
 
 function Index() {
   const theme = useTheme();
@@ -206,8 +207,36 @@ function Index() {
                 fontWeight: "600",
               }}
             >
-              QC Rejected the Product
+             {viewdata?.reasonsOfRejection?.[0]?.reason}
+           
             </Typography>
+
+            <Typography
+              sx={{
+                color: colors.grey[400],
+                fontSize: "15px",
+                fontWeight: "600",
+                mt:2
+              }}
+            >
+              We Found Issues in Following Sections:
+           
+            </Typography>
+            <Box>
+           
+             {rejArray(viewdata?.reasonsOfRejection?.[0]?.rejectedSections).map((da,i)=>
+             <Typography
+             sx={{
+               color: colors.grey[400],
+               fontSize: "15px",
+               fontWeight: "600",
+             }}
+           >{i+1} :   {da}
+               </Typography>
+            )}
+           
+           </Box>
+   
           </Box>
         </Box>
       );
@@ -244,6 +273,28 @@ function Index() {
         </Box>
       );
     }
+  };
+
+  console.log("Viewdata", viewdata)
+
+  const rejArray = (da) => {
+    let arr = [];
+    if (da?.stockAndShippingInformation) {
+      arr.push(rejectionReasonsEnum.stockAndShippingInformation);
+    }
+    if (da?.priceInfo) {
+      arr.push(rejectionReasonsEnum.priceInfo);
+    }
+    if (da?.productDescription) {
+      arr.push(rejectionReasonsEnum.productDescription);
+    }
+    if (da?.additionalDescription) {
+      arr.push(rejectionReasonsEnum.additionalDescription);
+    }
+    if (da?.productImages) {
+      arr.push(rejectionReasonsEnum.productImages);
+    }
+    return arr;
   };
 
   return (

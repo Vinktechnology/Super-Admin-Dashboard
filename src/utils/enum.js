@@ -82,3 +82,11 @@ export const transactionType = {
   debit: "debit",
   credit: "credit",
 };
+
+export const rejectionReasonsEnum = {
+  stockAndShippingInformation: "Stock & Shipping Information",
+  priceInfo: "Price",
+  productDescription: "Product Description",
+  additionalDescription: "Additional Description",
+  productImages: "Product Images",
+};
