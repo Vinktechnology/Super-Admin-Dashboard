@@ -68,7 +68,7 @@ const Product = () => {
 
   const approvalStatusColor = (da) => {
     console.log("da", da);
-    if (da == "qcPending") {
+    if (da == "QCPending") {
       return (
         <Chip
           label={da}

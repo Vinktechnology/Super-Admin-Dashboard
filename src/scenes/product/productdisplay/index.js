@@ -33,10 +33,10 @@ function Index() {
   const dispatch = useDispatch();
   const [viewdata, setViewData] = useState(null);
   const [open, setOpen] = useState(false);
-  const [isVendorDialogOpen, setIsVendorDialogOpen] = useState(false);
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
 
   const handleRejection = () => {
-    setIsVendorDialogOpen(true);
+    setIsProductDialogOpen(true);
   };
 
   const handleApproval = () => {
@@ -55,14 +55,21 @@ function Index() {
   }, [params.Id]);
 
   const fncHandleDialog = (isConfirmed) => {
+
+    console.log("isConfirmed",isConfirmed)
     const apprData = {
-      approveStatus: isConfirmed ? "approved" : "rejected",
+      approveStatus: isConfirmed ? "approved":"rejected",
       reason: "",
       id: params.Id,
     };
+    console.log("apprData",apprData)
 
     if (isConfirmed) {
-      dispatch(approveVendorDataThunk(apprData));
+      dispatch(approveProductDataThunk(apprData))
+      .unwrap()
+      .then((da) => {
+        window.location.reload();
+      });
     }
     setOpen(false);
   };
@@ -96,7 +103,7 @@ function Index() {
           window.location.reload();
         });
     }
-    setIsVendorDialogOpen(false);
+    setIsProductDialogOpen(false);
   };
 
   const [openImage, setOpenImage] = useState(false);
@@ -256,7 +263,7 @@ function Index() {
         cancel="Cancel"
         confirm="Confirm"
         fncHandleDialog={fncRejectionHandleDialog}
-        isopen={isVendorDialogOpen}
+        isopen={isProductDialogOpen}
       />
 
       <ImageSlider

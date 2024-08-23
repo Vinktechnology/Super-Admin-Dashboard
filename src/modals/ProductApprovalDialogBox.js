@@ -69,7 +69,6 @@ export default function ProductApprovalDialogBox({
     formik;
 
   async function handleSubmitVendor(data) {
-    console.log("section",values.section)
     const reData = {
       reason: values.reason,
       isSubmit: data,
