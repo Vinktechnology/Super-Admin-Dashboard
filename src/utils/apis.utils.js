@@ -37,6 +37,7 @@ export const getAllTagApi ="/v1/tags/all"
 export const getTagByIdApi ="/v1/tags"
 export const addNewTagApi="/v1/tags"
 export const updateTagStatusApi="/v1/tags/active-status"
+export const getAllActiveTagsApi="/v1/tags/active"
 
 // generic-product-master
 

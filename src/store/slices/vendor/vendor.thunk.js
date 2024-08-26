@@ -10,15 +10,49 @@ export const getAllVendorData = async (data, thunkApi) => {
   try { 
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    var url="";
-    console.log("datasdfsdfs",data)
-    if(data.status == null)
-      {
-        url = `${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}`
-      }
-      else{
-        url = `${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}&status=${data.status}`
-      }
+    let ddStatus = "";
+    if (data.status == "" || data.status == null) {
+      ddStatus = "all";
+    } else {
+      ddStatus=data.status;
+    }
+
+    let ddstatae = "";
+    if (data.state == "" || data.state == null) {
+      ddstatae = "";
+    } else {
+      ddstatae=data.state;
+    }
+
+    let ddcity = "";
+    if (data.city == "" || data.city == null) {
+      ddcity = "";
+    } else {
+      ddcity=data.city;
+    }
+
+    let ddmobile = "";
+    if (data.mobile == "" || data.mobile == null) {
+      ddmobile = "";
+    } else {
+      ddmobile=data.mobile;
+    }
+
+    let ddemail = "";
+    if (data.email == "" || data.email == null) {
+      ddemail = "";
+    } else {
+      ddemail=data.email;
+    }
+    
+    let ddfullname = "";
+    if (data.fullName == "" || data.fullName == null) {
+      ddfullname = "";
+    } else {
+      ddfullname=data.fullName;
+    }
+
+    const url = `${getAllVendorsApi}?page=${data.page}&limit=${data.pageSize}&status=${ddStatus}&state=${ddstatae}&city=${ddcity}&email=${ddemail}&fullName=${ddfullname}&mobile=${ddmobile}`
     const response = await userAxios.get(url);
     const responseData = response?.data;
     return responseData;

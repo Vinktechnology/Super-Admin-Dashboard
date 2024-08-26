@@ -19,6 +19,8 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox
 import Switch from "@mui/material/Switch";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { renderArrayColumns } from "../../utils/utilityfunction";
+import BottomDrawer from "../bottomdrawer/BottomDrawer";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 const Product = () => {
   const { products, totalCount } = useSelector(
@@ -28,10 +30,15 @@ const Product = () => {
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const status = query.get("status");
+  const category = query.get("category");
+  const tags = query.get("tags");
+  const subCategory = query.get("subCategory");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [toggleDATA, setToggleData] = useState(null);
+  const [isBottomDrawer, setIsBottomDrawer] = useState(false);
+
   const [switchChecked, setSwitchChecked] = useState({}); // Keep track of switch states
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -41,8 +48,17 @@ const Product = () => {
   const [page, setPage] = useState(0); // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(50);
   useEffect(() => {
-    dispatch(getAllProductsThunk({ page, pageSize ,status}));
-  }, [page, pageSize, dispatch, status]);
+    dispatch(
+      getAllProductsThunk({
+        page,
+        pageSize,
+        status,
+        category,
+        tags,
+        subCategory,
+      })
+    );
+  }, [page, pageSize, dispatch, status, category, tags, subCategory]);
 
   //--------------- For Pagination ends here--------------------------
   const handleView = (id) => {
@@ -94,23 +110,27 @@ const Product = () => {
         />
       );
     } else if (da == "rejected") {
-     return <Chip
-        label={da}
-        sx={{
-          fontWeight: "600",
-          background: "rgb(237, 140, 140)",
-          color: "rgb(40, 41, 40)",
-        }}
-      />
+      return (
+        <Chip
+          label={da}
+          sx={{
+            fontWeight: "600",
+            background: "rgb(237, 140, 140)",
+            color: "rgb(40, 41, 40)",
+          }}
+        />
+      );
     } else if (da == "approved") {
-      return  <Chip
-      label={da}
-      sx={{
-        fontWeight: "600",
-        background: "rgb(50, 146, 219)",
-        color: "rgb(40, 41, 40)",
-      }}
-    />
+      return (
+        <Chip
+          label={da}
+          sx={{
+            fontWeight: "600",
+            background: "rgb(50, 146, 219)",
+            color: "rgb(40, 41, 40)",
+          }}
+        />
+      );
     }
     return da;
   };
@@ -331,8 +351,21 @@ const Product = () => {
     setOpen(false);
   };
 
+  const fncOpenBottomDrawer = () => {
+    setIsBottomDrawer(true);
+  };
+
+  const toggleBottomDrawer = () => {
+    setIsBottomDrawer(false);
+  };
+
   return (
     <Box p={2}>
+      <BottomDrawer
+        isBottomDrawer={isBottomDrawer}
+        toggleBottomDrawer={toggleBottomDrawer}
+      />
+    
       <ConfirmDialogBox
         title="Do you want to change the status?"
         body="If you change the status then it may not be visible to some cases"
@@ -377,6 +410,12 @@ const Product = () => {
           },
         }}
       >
+        <Box sx={{display:"flex", justifyContent:"flex-end"}}>
+        <Button variant="outlined" onClick={fncOpenBottomDrawer} startIcon={<FilterListIcon />}>
+        Filter
+        </Button>
+        </Box>
+       
         <DataGrid
           getRowId={(row) => row._id}
           rows={products}

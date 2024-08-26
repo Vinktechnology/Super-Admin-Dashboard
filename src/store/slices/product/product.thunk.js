@@ -1,5 +1,9 @@
 import {
-  updateProductApi,getAllProductsApi,getProductsByIdApi,updateProductStatusApi, approvalProductApi
+  updateProductApi,
+  getAllProductsApi,
+  getProductsByIdApi,
+  updateProductStatusApi,
+  approvalProductApi,
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import {
@@ -8,25 +12,28 @@ import {
 } from "../dashboard/dashboard.slice";
 import { gridColumnsTotalWidthSelector } from "@mui/x-data-grid";
 
-
 export const getAllProductsData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
+    console.log("dsfsdfsdfs  data  ", data);
     const { user: userAxios } = thunkApi.extra.apiService;
-    var url="";
-    if(data.status == null)
-      {
-        url = `${getAllProductsApi}?page=${data.page}&limit=${data.pageSize}`
-      }
-      else{
-        url = `${getAllProductsApi}?page=${data.page}&limit=${data.pageSize}&status=${data.status}`
-      }
+    let ddStatus = "";
+    if (data.status == "" || data.status == null) {
+      ddStatus = "all";
+    } else {
+      ddStatus=data.status;
+    }
+    let url = `${getAllProductsApi}?page=${data.page}&limit=${
+      data.pageSize
+    }&status=${ddStatus}&category=${
+      data.category==null?"": data.category
+    }&subCategory=${data.subCategory==null ?"":data.subCategory }&tags=${data.tags==null?"":data.tags}`;
+
+    console.log("dsfsdfsdfs  url  ", url);
     const response = await userAxios.get(url);
     const responseData = response?.data;
     return responseData;
-
   } catch (err) {
-
     console.log("err", err);
     thunkApi.dispatch(
       showFailureToast({
@@ -36,9 +43,7 @@ export const getAllProductsData = async (data, thunkApi) => {
       })
     );
     return Promise.reject();
-  }
-  finally
-  {
+  } finally {
     thunkApi.dispatch(stopDashboardLoader());
   }
 };
@@ -92,7 +97,6 @@ export const getProductsByIdData = async (data, thunkApi) => {
     const response = await userAxios.get(`${getProductsByIdApi}/${data}`);
     const responseData = response?.data?.productDetails;
     return responseData;
-
   } catch (err) {
     thunkApi.dispatch(
       showFailureToast({
@@ -102,23 +106,20 @@ export const getProductsByIdData = async (data, thunkApi) => {
       })
     );
     return Promise.reject();
-  }
-  finally
-  {
+  } finally {
     thunkApi.dispatch(stopDashboardLoader());
   }
 };
 
 export const updateProductData = async (data, thunkApi) => {
   try {
-
-    const {productId, ...rest} = {...data}
+    const { productId, ...rest } = { ...data };
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
     const response = await userAxios.put(`${updateProductApi}/${productId}`, {
       ...rest,
     });
-    console.log("data", response)
+    console.log("data", response);
     const responseData = response?.data;
     thunkApi.dispatch(
       showSuccessToast({
@@ -146,7 +147,10 @@ export const updateProductStatusData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.put(`${updateProductStatusApi}/${data.id}`,{...data});
+    const response = await userAxios.put(
+      `${updateProductStatusApi}/${data.id}`,
+      { ...data }
+    );
     const responseData = response?.data;
 
     thunkApi.dispatch(
@@ -157,7 +161,6 @@ export const updateProductStatusData = async (data, thunkApi) => {
       })
     );
     return responseData;
-
   } catch (err) {
     thunkApi.dispatch(
       showFailureToast({
@@ -167,19 +170,18 @@ export const updateProductStatusData = async (data, thunkApi) => {
       })
     );
     return Promise.reject();
-  }
-  finally
-  {
+  } finally {
     thunkApi.dispatch(stopDashboardLoader());
   }
 };
-
 
 export const approveProductData = async (data, thunkApi) => {
   try {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.put(`${approvalProductApi}/${data.id}`,{...data});
+    const response = await userAxios.put(`${approvalProductApi}/${data.id}`, {
+      ...data,
+    });
     const responseData = response?.data;
 
     thunkApi.dispatch(
@@ -188,9 +190,8 @@ export const approveProductData = async (data, thunkApi) => {
         vertical: "top",
         horizontal: "right",
       })
-    );    
+    );
     return responseData;
-   
   } catch (err) {
     thunkApi.dispatch(
       showFailureToast({
@@ -200,9 +201,7 @@ export const approveProductData = async (data, thunkApi) => {
       })
     );
     return Promise.reject();
-  }
-  finally
-  {
+  } finally {
     thunkApi.dispatch(stopDashboardLoader());
   }
 };

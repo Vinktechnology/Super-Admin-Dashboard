@@ -1,7 +1,11 @@
 import { defaultAxios } from "../axios/default.axios";
 import { userAxios } from "../axios/user.axios";
-import { getAllActiveCategoryApi, getAllActiveSubCategoryApi,getAllActiveGenericMasterDataApi } from "../apis.utils";
-
+import {
+  getAllActiveCategoryApi,
+  getAllActiveSubCategoryApi,
+  getAllActiveGenericMasterDataApi,
+  getAllActiveTagsApi,
+} from "../apis.utils";
 
 export const formatUserResponse = (response) => {
   return {
@@ -25,18 +29,18 @@ export const formatUserResponse = (response) => {
   };
 };
 
-export const getAllCategoriesGlobalApi=()=>
-  {
-      return userAxios.get(getAllActiveCategoryApi);
-  }
+export const getAllCategoriesGlobalApi = () => {
+  return userAxios.get(getAllActiveCategoryApi);
+};
 
-  export const getAllGenericMasterNamesGlobalApi=()=>
-    {
-        return userAxios.get(getAllActiveGenericMasterDataApi);
-    }
+export const getAllTagsGlobalApi = () => {
+  return userAxios.get(getAllActiveTagsApi);
+};
 
-export const getAllSubCategoriesGlobalApi=(api)=>
-    {
-        const CategoryId = api.map((d,i)=> d.id)
-        return userAxios.get(getAllActiveSubCategoryApi+"?categoryIds="+CategoryId.toString());
-    }
+export const getAllGenericMasterNamesGlobalApi = () => {
+  return userAxios.get(getAllActiveGenericMasterDataApi);
+};
+
+export const getAllSubCategoriesGlobalApi = (api) => {
+  return userAxios.get(getAllActiveSubCategoryApi + "?categoryIds=" + api);
+};

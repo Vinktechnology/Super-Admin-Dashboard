@@ -13,6 +13,8 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
 import { getAllVendorsDataThunk, updateVendorStatusThunk } from "../../store/slices/vendor/vendor.slice.js";
+import BottomDrawerVendor from "../bottomdrawervendor/BottomDrawerVendor.js";
+import FilterListIcon from "@mui/icons-material/FilterList";
 
 const Vendor = () => {
   const dispatch = useDispatch();
@@ -20,18 +22,25 @@ const Vendor = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [isBottomDrawer, setIsBottomDrawer] = useState(false);
 
   const { search } = useLocation();
   const query = new URLSearchParams(search);
   const status = query.get("status");
+  const fullName = query.get("fullName");
+  const email = query.get("email");
+  const city = query.get("city");
+  const state = query.get("state");
+  const mobile = query.get("mobile");
+
 
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllVendorsDataThunk({ page, pageSize,status }));
-  }, [page, pageSize, dispatch, status]);
+    dispatch(getAllVendorsDataThunk({ page, pageSize,status,city,state,email,fullName ,mobile}));
+  }, [page, pageSize, dispatch, status,state,city,email,fullName,mobile]);
 
   //--------------- For Pagination ends here--------------------------
 
@@ -194,10 +203,21 @@ const Vendor = () => {
       ],
     },
   ];
+  const toggleBottomDrawer = () => {
+    setIsBottomDrawer(false);
+  };
+
+  const fncOpenBottomDrawer = () => {
+    setIsBottomDrawer(true);
+  };
 
 
   return (
     <Box p={2}>
+      <BottomDrawerVendor
+        isBottomDrawer={isBottomDrawer}
+        toggleBottomDrawer={toggleBottomDrawer}
+      />
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Vendors" subtitle="Manage Vendors" />
 
@@ -235,6 +255,11 @@ const Vendor = () => {
           },
         }}
       >
+        <Box sx={{display:"flex", justifyContent:"flex-end"}}>
+        <Button variant="outlined" onClick={fncOpenBottomDrawer} startIcon={<FilterListIcon />}>
+        Filter
+        </Button>
+        </Box>
         <DataGrid
           getRowId={(row) => row._id}
           rows={vendor}
