@@ -62,6 +62,9 @@ import ViewSubCategory from "./scenes/subcategory/ViewSubCategory";
 import withAuth from "./hooks/withAuth";
 import ViewTag from "./scenes/tag/ViewTag";
 import MultipleSelectPlaceholder from "./NewForm/Test";
+import SectionName from "./scenes/section";
+import ViewSectionName from "./scenes/section/ViewSectionName";
+import AddSectionName from "./scenes/section/AddSectionName";
 
 
 function AppRoutes() {
@@ -181,6 +184,16 @@ function AppRoutes() {
             { path: "view/:Id", element: <ViewHSNTaxCode /> },
             { path: "addhsntaxcode", element: <AddHSNTaxCode /> },
             { path: "addhsntaxcode/:Id", element: <AddHSNTaxCode /> },
+          ],
+        },
+        {
+          path: "section",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <SectionName /> },
+            { path: "view/:Id", element: <ViewSectionName /> },
+            { path: "addsection", element: <AddSectionName /> },
+            { path: "addsection/:Id", element: <AddSectionName /> },
           ],
         },
         {

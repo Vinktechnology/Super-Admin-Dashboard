@@ -112,13 +112,21 @@ export const SidebarData =[
     typography :"",
     slug:"hsntaxcode"
 },
-// {
-//     title:"Attribute",
-//     to:"/dashboard/attribute",
-//     icon:<ContactsOutlinedIcon />,
-//     typography :"",
-//     slug:"attribute"
-// },
+{
+    title:"Section Name Master",
+    to:"/dashboard/section",
+    icon:<ContactsOutlinedIcon />,
+    typography :"Category Product Template",
+    slug:"categorytemplate"
+},
+
+{
+    title:"Attribute",
+    to:"/dashboard/attribute",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"attribute"
+},
 // {
 //     title:"Profile Form",
 //     to:"/dashboard/form",
