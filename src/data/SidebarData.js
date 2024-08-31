@@ -113,11 +113,11 @@ export const SidebarData =[
     slug:"hsntaxcode"
 },
 {
-    title:"Section Name Master",
+    title:"Home Section",
     to:"/dashboard/section",
     icon:<ContactsOutlinedIcon />,
-    typography :"Category Product Template",
-    slug:"categorytemplate"
+    typography :"Home Data Master",
+    slug:"section"
 },
 
 {

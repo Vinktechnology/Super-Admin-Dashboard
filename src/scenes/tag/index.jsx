@@ -19,8 +19,10 @@ import { getAllTagsThunk, updateTagStatusThunk } from "../../store/slices/tags/t
 
 const Tag = () => {
   const dispatch = useDispatch();
+  debugger;
 
   const { tags, totalCount } = useSelector(({ tag }) => tag?.tagsdata);
+  console.log("tag data", tags)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();

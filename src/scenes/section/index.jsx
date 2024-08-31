@@ -10,19 +10,17 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  getAllCategoryDataThunk,
-  updateCategoryStatusThunk,
-} from "../../store/slices/category/category.slice.js";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
+import { getAllHomeSectionThunk, updateHomeSectionStatusThunk } from "../../store/slices/homesection/homesection.slice.js";
+import { renderArrayColumns } from "../../utils/utilityfunction.js";
 
 const SectionName = () => {
   const dispatch = useDispatch();
-  const { category, totalCount } = useSelector(({ category }) => category?.categorydata);
+  const { homesection, totalCount } = useSelector(({ homesection }) => homesection?.homesectiondata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -35,7 +33,7 @@ const SectionName = () => {
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllCategoryDataThunk({ page, pageSize }));
+    dispatch(getAllHomeSectionThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -85,34 +83,56 @@ const SectionName = () => {
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "imageLink",
-      headerName: "Image",
-      renderCell: (params) => (
-        <Box onClick={()=>handleClickSingleImageOpen(params.value)}>
-          <img
-            style={{ borderRadius: "50%", height: "50px", width: "50px" }}
-            src={params.value}
-          />
-        </Box>
-      ),
+      field: "sectionName",
+      headerName: "Section Name"
     },
     {
-      field: "name",
-      headerName: "Name",
+      field: "sectionHeading",
+      headerName: "Heading",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "slug",
-      headerName: "Slug",
+      field: "sectionSubHeading",
+      headerName: "Sub Heading",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "description",
+      field: "sectionDescription",
       headerName: "Description",
       flex: 1,
       cellClassName: "name-column--cell",
+    },
+    {
+      field: "subCategory",
+      headerName: "Sub Category",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      valueGetter: (params) => renderArrayColumns(params?.row?.subCategory) 
+    },
+    {
+      field: "tag",
+      headerName: "Tag",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      valueGetter: (params) =>(params?.row?.tag?.name) 
+    },
+    {
+      field: "brand",
+      headerName: "Brand",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      valueGetter: (params) =>(params?.row?.brand?"Yes" :"No") 
+    },
+
+    
+    {
+      field: "category",
+      headerName: "Category",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      valueGetter: (params) => params?.row?.category?.name,
     },
     {
       field: "isActive",
@@ -174,7 +194,7 @@ const SectionName = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
+      dispatch(updateHomeSectionStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -248,7 +268,7 @@ const SectionName = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={category}
+          rows={homesection}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

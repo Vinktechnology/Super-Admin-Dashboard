@@ -12,6 +12,15 @@ export const updateCategoryStatusApi="/v1/category/active-status"
 export const getAllActiveCategoryApi="/v1/category/active"
 
 
+// HomeSection
+
+export const getAllHomeSectionApi ="/v1/home-section/all"
+export const getHomeSectionByIdApi ="/v1/home-section"
+export const addNewHomeSectionApi="/v1/home-section"
+export const updateHomeSectionStatusApi="/v1/home-section/active-status"
+
+
+
 // Master name
 
 export const getAllActiveGenericMasterDataApi="/v1/generic-product-master/active"

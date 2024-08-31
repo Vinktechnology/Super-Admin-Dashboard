@@ -1,29 +1,21 @@
-import { Box, Button, Grid, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { tokens } from "../../theme.js";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header.jsx";
-import { inputType } from "../../utils/enum.js";
-import Element from "../../Form/Element.js";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import { useFormik } from "formik";
-import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import {
-  addNewCategoryThunk,
-  getCategoryByIdThunk,
-  updateCategoryThunk,
-} from "../../store/slices/category/category.slice.js";
 import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
-
-
-
-
-
+import { getHomeSectionByIdThunk } from "../../store/slices/homesection/homesection.slice.js";
+import { renderArrayColumns } from "../../utils/utilityfunction.js";
 
 const ViewSectionName = () => {
   const dispatch = useDispatch();
@@ -34,21 +26,12 @@ const ViewSectionName = () => {
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = (index) => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-
   useEffect(() => {
     if (params.Id) {
-      dispatch(getCategoryByIdThunk(params.Id))
+      dispatch(getHomeSectionByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
+          console.log("setViewData",da)
           setViewData(da);
         });
     }
@@ -56,9 +39,6 @@ const ViewSectionName = () => {
 
   return (
     <Box m="20px">
-        <ImageSlider title="Sample Images" sampleImages={viewdata?.sampleImages} handleClickOpen={handleClickOpen} handleClose={handleClose} open={open} />
-
-        
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="SECTION DATA" subtitle="View a Section" />
 
@@ -89,69 +69,131 @@ const ViewSectionName = () => {
         }}
       >
         <Box
-          sx={{ padding: "1rem",
-            display:"flex",
-            justifyContent:"space-between",
-            alignItems:"top",
-            flexDirection:{xs:"column",sm:"column",md:"row",lg:"row", xl:"row" }
-
-           }}
-         
+          sx={{
+            padding: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "top",
+            flexDirection: {
+              xs: "column",
+              sm: "column",
+              md: "row",
+              lg: "row",
+              xl: "row",
+            },
+          }}
         >
-          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"40%",lg:"40%",xl:"40%",} }}>
-        <Box>
-            <Typography sx={{
-                    color: colors.grey[400],
-                    fontSize: "1.3rem",
-                    fontWeight: "600",
-                    textAlign:"center",
-                    margin:"0px 0px 10px 0px"
-                  }}>
-            {viewdata?.name}</Typography>
+          <Box
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "40%",
+                lg: "40%",
+                xl: "40%",
+              },
+            }}
+          >
+            <Box>
+              <Typography
+                sx={{
+                  color: colors.grey[400],
+                  fontSize: "1.3rem",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  margin: "0px 0px 10px 0px",
+                }}
+              >
+                {viewdata?.sectionName}
+              </Typography>
             </Box>
-        <Box sx={{
-                    textAlign:"center"
-                  }}>
-            <img src={viewdata?.imageLink}     style={{ width: "100%", maxHeight: "100%" }} />
-        </Box>
-
+            <Box
+              sx={{
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={viewdata?.imageLink}
+                style={{ width: "100%", maxHeight: "100%" }}
+              />
+            </Box>
           </Box>
-          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"60%",lg:"60%",xl:"60%",} }}>
+          <Box
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "60%",
+                lg: "60%",
+                xl: "60%",
+              },
+            }}
+          >
             <Box
               sx={{ padding: "1rem" }}
               display="flex"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                  Slug
+                  Section Heading
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.slug}
+                  {viewdata?.sectionHeading}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Section Sub Heading
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {viewdata?.sectionSubHeading}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
                 >
                   Description
@@ -161,10 +203,32 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.description}
+                  {viewdata?.sectionDescription}
+                </Typography>
+              </Box>
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Brand
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {viewdata?.brand==true?"Yes":"No"}
                 </Typography>
               </Box>
             </Box>
@@ -175,100 +239,49 @@ wordWrap:"break-word"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                  Created By
+                  Category
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.createdBy?.fullName}
+                  {viewdata?.category?.name?viewdata?.category?.name :"--"}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                  Created On
+                  Sub Category
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {globalFormatDate(viewdata?.createdAt)}
-                </Typography>
-              </Box>
-            </Box>
-
-            <Box
-              sx={{ padding: "1rem" }}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
-              <Box sx={{width:"50%"}}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap:"break-word"
-                  }}
-                >
-                  Updated By
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap:"break-word"
-                  }}
-                >
-                 {viewdata?.updatedBy?.fullName}
-                </Typography>
-              </Box>
-              <Box sx={{width:"50%"}}>
-                <Typography
-                  sx={{
-                    color: colors.grey[700],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap:"break-word"
-                  }}
-                >
-                  Updated On
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.grey[400],
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    wordWrap:"break-word"
-                  }}
-                >
-                 {globalFormatDate(viewdata?.updatedAt)}
+                          {viewdata?.subCategory?.length>0 ?renderArrayColumns(viewdata?.subCategory):"--"}
+                          
                 </Typography>
               </Box>
             </Box>
@@ -279,13 +292,34 @@ wordWrap:"break-word"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+            
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                  }}
+                >
+                Tag
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {viewdata?.tag?.name?viewdata?.tag?.name:"--"}
+                </Typography>
+              </Box>
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
                 >
                   Is Active
@@ -295,54 +329,120 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.isActive?"Active":"In-Active"}
+                  {viewdata?.isActive ? "Active" : "In-Active"}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+            </Box>
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
                 >
-                  {/* Is Active */}
+                  Created By
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
+                    wordWrap: "break-word",
                   }}
                 >
-                 {/* {viewdata?.isActive?"Active":"In-Active"} */}
+                  {viewdata?.createdBy?.fullName}
                 </Typography>
               </Box>
-            
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Created On
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {globalFormatDate(viewdata?.createdAt)}
+                </Typography>
+              </Box>
             </Box>
 
+            <Box
+              sx={{ padding: "1rem" }}
+              display="flex"
+              justifyContent="space-around"
+              alignItems="center"
+            >
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Updated By
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {viewdata?.updatedBy?.fullName}
+                </Typography>
+              </Box>
+              <Box sx={{ width: "50%" }}>
+                <Typography
+                  sx={{
+                    color: colors.grey[700],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  Updated On
+                </Typography>
+                <Typography
+                  sx={{
+                    color: colors.grey[400],
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {globalFormatDate(viewdata?.updatedAt)}
+                </Typography>
+              </Box>
+            </Box>
 
+           
           </Box>
         </Box>
-                  {/* ----for sample images-- */}
-                  <Box sx={{marginTop:"1rem"}}>
-                    <Typography sx={{    color: colors.grey[400],
-                    fontSize: "1.3rem",
-                    padding:"0px 0px 0px .8rem",
-                    fontWeight: "600",}}>Sample Images</Typography>
-                    <hr />
-                  <Grid container spacing={0}>
-
-                    {viewdata?.sampleImages?.map((da,i)=>
-                     <Grid xs={12} sm={6} md={4} sx={{ padding: "10px" }} onClick={() => handleClickOpen()}>
-                     <img src={da}     style={{ width: "100%", maxHeight: "100%" }} />
-                       </Grid>
-                    )}
-                </Grid>
-                </Box>
       </Box>
     </Box>
   );
