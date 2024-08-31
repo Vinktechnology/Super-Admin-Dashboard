@@ -44,8 +44,8 @@ import AddHSNTaxCode from "./scenes/hsntaxcode/AddHSNTaxCode";
 import ViewHSNTaxCode from "./scenes/hsntaxcode/ViewHSNTaxCode";
 import AddProcurement from "./scenes/procurement/AddProcurement";
 import ViewProcurement from "./scenes/procurement/ViewProcurement";
-import Attribute from "./scenes/attribute";
-import AddAttribute from "./scenes/attribute/AddAttribute";
+import Banner from "./scenes/banner";
+import AddBanner from "./scenes/banner/AddBanner";
 import Product from "./scenes/product";
 import AddTeam from "./scenes/team/AddTeam";
 import VendorDisplay from "./scenes/vendors/vendordisplay";
@@ -197,12 +197,12 @@ function AppRoutes() {
           ],
         },
         {
-          path: "attribute",
+          path: "banner",
           element: <Outlet />,
           children: [
-            { path: "", element: <Attribute /> },
-            { path: "addattribute", element: <AddAttribute /> },
-            { path: "addattribute/:Id", element: <AddAttribute /> },
+            { path: "", element: <Banner /> },
+            { path: "addbanner", element: <AddBanner /> },
+            { path: "addbanner/:Id", element: <AddBanner /> },
           ],
         },
         // {

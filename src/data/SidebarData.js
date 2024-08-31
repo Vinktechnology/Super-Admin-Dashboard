@@ -121,11 +121,11 @@ export const SidebarData =[
 },
 
 {
-    title:"Attribute",
-    to:"/dashboard/attribute",
+    title:"Banner",
+    to:"/dashboard/banner",
     icon:<ContactsOutlinedIcon />,
     typography :"",
-    slug:"attribute"
+    slug:"banner"
 },
 // {
 //     title:"Profile Form",
