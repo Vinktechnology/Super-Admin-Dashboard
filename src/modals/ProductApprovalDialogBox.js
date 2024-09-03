@@ -77,6 +77,8 @@ export default function ProductApprovalDialogBox({
     fncHandleDialog(reData)
   }
 
+  
+console.log("valuessss", values.section)
   return (
     <React.Fragment>
       <Dialog

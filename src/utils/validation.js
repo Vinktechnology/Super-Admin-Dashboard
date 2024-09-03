@@ -21,11 +21,7 @@ export const LoginWithOTPSchema = yup.object().shape({
 export const ReasonSchema = yup.object().shape({
   reason: yup.string().required("*Reason is required"),
   section: yup.array().of(
-    yup.object().shape({
-      label: yup.string().required(),
-      value: yup.string().required(),
-      id: yup.string().required(),
-    }).required("*Seaction is required")
+    yup.string().required("*Value is required")
   ).min(1, "*At least one section value is required"),
 });
 
