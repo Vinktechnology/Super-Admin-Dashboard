@@ -76,10 +76,9 @@ function Index() {
   };
 
   const fncRejectionHandleDialog = (isConfirmed) => {
-
-
-    const conObject = isConfirmed?.section?.reduce((acc, obj) => {
-      acc[obj.value] =true;
+   
+    const obj = isConfirmed?.section?.reduce((acc, item, index) => {
+      acc[item] = item;
       return acc;
     }, {});
 
@@ -87,11 +86,11 @@ function Index() {
       approveStatus: isConfirmed?.isSubmit && "rejected",
       reason: isConfirmed.reason,
       rejectedSections: {
-        stockAndShippingInformation: conObject?.stockAndShippingInformation ==undefined?false:conObject?.stockAndShippingInformation,
-        priceInfo: conObject?.priceInfo==undefined?false:conObject?.priceInfo,
-        productDescription: conObject?.productDescription==undefined?false:conObject?.productDescription,
-        additionalDescription: conObject?.additionalDescription==undefined?false:conObject?.additionalDescription,
-        productImages:conObject?.productImages==undefined?false:conObject?.productImages,
+        stockAndShippingInformation: obj?.stockAndShippingInformation ==undefined?false:true,
+        priceInfo: obj?.priceInfo==undefined?false:true,
+        productDescription: obj?.productDescription==undefined?false:true,
+        additionalDescription: obj?.additionalDescription==undefined?false:true,
+        productImages:obj?.productImages==undefined?false:true,
       },
       id: params.Id,
     };
@@ -116,18 +115,82 @@ function Index() {
     setOpenImage(false);
   };
 
+  const fncReasonOfRejection=()=>
+    {
+      return viewdata?.reasonsOfRejection?.map((data)=>
+  <>
+        <Grid xs={12} sm={12} md={6} lg={6} sx={{mt:2,  p:2,  boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;",}}>
+        <Typography
+          sx={{
+            color: colors.grey[700],
+            fontSize: "15px",
+            fontWeight: "600",
+          }}
+        >
+          Rejection Reason
+        </Typography>
+        <Typography
+          sx={{
+            color: colors.grey[400],
+            fontSize: "15px",
+            fontWeight: "600",
+          }}
+        >
+         {data?.reason}
+       
+        </Typography>
+
+        <Typography
+          sx={{
+            color: colors.grey[700],
+            fontSize: "15px",
+            fontWeight: "600",
+            mt:2
+          }}
+        >
+          We Found Issues in Following Sections:
+       
+        </Typography>
+       
+       
+         {rejArray(data.rejectedSections).map((da,i)=>
+         <Typography
+         sx={{
+           color: colors.grey[400],
+           fontSize: "15px",
+           fontWeight: "600",
+         }}
+       >{i+1} :   {da}
+           </Typography>
+        )}
+       
+       
+      </Grid>
+   
+      </>
+          )
+       
+    }
+
   const fncRenderApprovalSection = () => {
     if (viewdata?.status == "QCPending") {
       return (
-        <Box
+        <>
+       
+          <Box
           sx={{
             paddingLeft: "1rem",
             paddingRight: "1rem",
             display: "flex",
-            justifyContent: "end",
+            justifyContent: "space-between",
+            flexDirection:{xs:"column", sm:"column", md:"row", lg:"row"}
           }}
         >
-          <Box sx={{ margin: ".6rem" }}>
+          <Box sx={{width:{xs:"100%", sm:"100%", md:"60%", lg:"60%"}}}>
+          
+        {fncReasonOfRejection()}
+        </Box>
+          <Box sx={{ margin: ".6rem" ,width:{xs:"100%", sm:"100%", md:"40%", lg:"40%"} }}>
             <Chip
               label="Reject"
               onClick={handleRejection}
@@ -149,11 +212,9 @@ function Index() {
                 },
                 background: "rgb(255, 236, 236)",
                 color: "rgb(232, 92, 92)",
+                margin:".2rem"
               }}
             />
-          </Box>
-
-          <Box sx={{ marginTop: ".6rem" }}>
             <Chip
               label="Approve"
               onClick={handleApproval}
@@ -178,7 +239,10 @@ function Index() {
               }}
             />
           </Box>
+
         </Box>
+        </>
+      
       );
     } else if (viewdata?.status == "rejected") {
       return (
@@ -188,56 +252,13 @@ function Index() {
             paddingRight: "1rem",
             display: "flex",
             justifyContent: "space-between",
+            flexDirection:{xs:"column", sm:"column", md:"row", lg:"row"}
           }}
         >
-          <Box>
-            <Typography
-              sx={{
-                color: colors.grey[700],
-                fontSize: "15px",
-                fontWeight: "600",
-              }}
-            >
-              Rejection Reason
-            </Typography>
-            <Typography
-              sx={{
-                color: colors.grey[400],
-                fontSize: "15px",
-                fontWeight: "600",
-              }}
-            >
-             {viewdata?.reasonsOfRejection?.[0]?.reason}
-           
-            </Typography>
+          <Grid container>
+         {fncReasonOfRejection()}
 
-            <Typography
-              sx={{
-                color: colors.grey[400],
-                fontSize: "15px",
-                fontWeight: "600",
-                mt:2
-              }}
-            >
-              We Found Issues in Following Sections:
-           
-            </Typography>
-            <Box>
-           
-             {rejArray(viewdata?.reasonsOfRejection?.[0]?.rejectedSections).map((da,i)=>
-             <Typography
-             sx={{
-               color: colors.grey[400],
-               fontSize: "15px",
-               fontWeight: "600",
-             }}
-           >{i+1} :   {da}
-               </Typography>
-            )}
-           
-           </Box>
-   
-          </Box>
+         </Grid>
         </Box>
       );
     } else if (viewdata?.status == "draft") {
@@ -307,7 +328,6 @@ function Index() {
     }
   };
 
-  console.log("Viewdata", viewdata)
 
   const rejArray = (da) => {
     let arr = [];
