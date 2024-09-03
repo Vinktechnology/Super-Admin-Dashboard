@@ -61,10 +61,11 @@ import ViewCategory from "./scenes/category/ViewCategory";
 import ViewSubCategory from "./scenes/subcategory/ViewSubCategory";
 import withAuth from "./hooks/withAuth";
 import ViewTag from "./scenes/tag/ViewTag";
-import MultipleSelectPlaceholder from "./NewForm/Test";
 import SectionName from "./scenes/section";
 import ViewSectionName from "./scenes/section/ViewSectionName";
 import AddSectionName from "./scenes/section/AddSectionName";
+import ViewBanner from "./scenes/banner/ViewBanner";
+import Home from "./scenes/home";
 
 
 function AppRoutes() {
@@ -201,10 +202,20 @@ function AppRoutes() {
           element: <Outlet />,
           children: [
             { path: "", element: <Banner /> },
+            { path: "view/:Id", element: <ViewBanner /> },
             { path: "addbanner", element: <AddBanner /> },
             { path: "addbanner/:Id", element: <AddBanner /> },
           ],
         },
+
+        {
+          path: "home",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <Home /> },
+          ],
+        },
+        
         // {
         //   path: "product",
         //   element: <Outlet />,
@@ -248,7 +259,6 @@ function AppRoutes() {
       ),
     },
     { path: "register", element: <Register /> },
-    { path: "test", element: <MultipleSelectPlaceholder /> },
     
     // { path: "forgot-password", element: <ForgotPassword /> },
     // { path: "reset-password", element: <NewPassword /> },

@@ -22,16 +22,27 @@ import {
 import { useDispatch } from "react-redux";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {
-  addNewCategoryThunk,
-  getCategoryByIdThunk,
-  updateCategoryThunk,
-} from "../../store/slices/category/category.slice.js";
+
 import Header from "../../components/Header.jsx";
 import { inputType } from "../../utils/enum";
 import Element from "../../Form/Element";
+import { fncGetDate, fncGetTime, fncMakeDateTimeAsPerDayJs } from "../../utils/utilityfunction.js";
+import { addNewBannerThunk, getBannerByIdThunk, updateBannerThunk } from "../../store/slices/banner/banner.slice.js";
+import dayjs from "dayjs";
 
-// ['', 'Advertisement'],- marketing type
+
+// ['', ''],- marketing type
+
+const ddlTypeOfMarketing = [
+  {
+    value: "Generic",
+    label: "Generic",
+  },
+  {
+    value: "Advertisement",
+    label: "Advertisement",
+  },
+];
 const ddlScrollingType = [
   {
     value: "Carousel",
@@ -87,12 +98,8 @@ const AddBanner = () => {
       {
         imageUrl: "",
         navigationUrl: "",
-        timeSlots: {
-          from: "",
-          to: "",
-        },
-        startDate: "",
-        endDate: "",
+        startDate: null,
+        endDate: null,
         companiesname: "",
         typeOfMarketing: "",
       },
@@ -101,18 +108,30 @@ const AddBanner = () => {
 
   useEffect(() => {
     if (params.Id) {
-      dispatch(getCategoryByIdThunk(params.Id))
+      dispatch(getBannerByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
-          console.log(" data of id", da);
+          const imageData = da.image?.map((dd)=>
+          {
+            return   {
+                imageUrl: dd?.imageUrl || "",
+                navigationUrl: dd?.navigationUrl || "",
+                startDate:fncMakeDateTimeAsPerDayJs(dd?.startDate) || "",
+                endDate: fncMakeDateTimeAsPerDayJs(dd?.endDate) || "",
+                companiesname: dd?.companiesname || "",
+                typeOfMarketing: dd?.typeOfMarketing || "",
+              }
+            
+          })
 
-          // setInitialValues({
-          //   category: da.name || "",
-          //   slug: da.slug || "",
-          //   description: da.description || "",
-          //   thumbnail: da.imageLink || "",
-          //   sampleimages: da.sampleimages || [],
-          // });
+          console.log("ImageEditing",imageData);
+
+          setInitialValues({
+            title: da?.title || "",
+            onScreenToBeDisplayed: da?.onScreenToBeDisplayed || "",
+            scrollingType: da?.scrollingType || "",
+            image: imageData,
+          });
         });
     }
   }, [params.Id]);
@@ -132,12 +151,7 @@ const AddBanner = () => {
     image: Yup.array()
       .of(
         Yup.object().shape({
-          imageUrl: Yup.string().url("Invalid URL").required("Required"),
           navigationUrl: Yup.string().url("Invalid URL").required("Required"),
-          timeSlots: Yup.object().shape({
-            from: Yup.string().required("Required"),
-            to: Yup.string().required("Required"),
-          }),
           startDate: Yup.date().required("Required"),
           endDate: Yup.date().required("Required"),
           companiesname: Yup.string().required("Required"),
@@ -148,34 +162,60 @@ const AddBanner = () => {
   });
 
   async function onSubmit(data) {
-    console.log("data from components", data);
+
+
+    const imageData = data?.image?.map((da) => {
+      return {
+        imageUrl: da.imageUrl,
+        navigationUrl: da.navigationUrl,
+        startDate: fncGetDate(da.startDate),
+        endDate: fncGetDate(da.endDate),
+        companiesname: da.companiesname,
+        typeOfMarketing: da.typeOfMarketing,
+        timeSlots: {
+          from:fncGetTime(da.startDate),
+          to: fncGetTime(da.endDate),
+        },
+      };
+    });
+
+
+
+    const dataApi = {
+      title: data.title,
+      onScreenToBeDisplayed: data.onScreenToBeDisplayed,
+      scrollingType: data.scrollingType,
+      image: imageData,
+    };
     if (params.Id) {
       dispatch(
-        updateCategoryThunk({
-          ...data,
+        updateBannerThunk({
+          dataApi,
           id: params.Id,
         })
       )
         .unwrap()
         .then(() => {
           navigate({
-            pathname: "/dashboard/category",
+            pathname: "/dashboard/banner",
           });
         });
     } else {
       dispatch(
-        addNewCategoryThunk({
-          ...data,
+        addNewBannerThunk({
+          dataApi,
         })
       )
         .unwrap()
         .then(() => {
           navigate({
-            pathname: "/dashboard/category",
+            pathname: "/dashboard/banner",
           });
         });
     }
   }
+
+
 
   return (
     <Box m="20px">
@@ -197,6 +237,7 @@ const AddBanner = () => {
       >
         <CardContent>
           <Formik
+            enableReinitialize= {true}
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
@@ -343,25 +384,6 @@ const AddBanner = () => {
                                 </Grid>
                               </Box>
                               <Grid container spacing={2} alignItems="center">
-                                {/* <Grid item xs={6}>
-                                  <Element
-                                    eletype={inputType.input}
-                                    label="*Please enter Image Url"
-                                    placeholder="Please enter Image Url"
-                                    inputProps={{
-                                      onChange: handleChange,
-                                      onBlur: handleBlur,
-                                      name: `image[${index}].imageUrl`,
-                                    }}
-                                    errorText={
-                                      touched.image?.[index]?.imageUrl &&
-                                      errors.image?.[index]?.imageUrl
-                                    }
-                                    value={values.image[index].imageUrl}
-                                    styles={{ gridColumn: "span 2" }}
-                                  />
-                                </Grid> */}
-
                                 <Grid item xs={6}>
                                   <Element
                                     eletype={inputType.input}
@@ -373,7 +395,7 @@ const AddBanner = () => {
                                       name: `image[${index}].navigationUrl`,
                                     }}
                                     errorText={
-                                      touched.image?.[index]?.navigationUrl  &&
+                                      touched.image?.[index]?.navigationUrl &&
                                       errors.image?.[index]?.navigationUrl
                                     }
                                     value={values.image[index].navigationUrl}
@@ -382,128 +404,100 @@ const AddBanner = () => {
                                 </Grid>
 
                                 <Grid item xs={6}>
-                                  <TextField
-                                    fullWidth
-                                    label="Time Slot From"
-                                    name={`image[${index}].timeSlots.from`}
-                                    value={values.image[index].timeSlots.from}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.timeSlots?.from &&
-                                      Boolean(
-                                        errors.image?.[index]?.timeSlots?.from
-                                      )
-                                    }
-                                    helperText={
-                                      touched.image?.[index]?.timeSlots?.from &&
-                                      errors.image?.[index]?.timeSlots?.from
-                                    }
-                                  />
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                  <TextField
-                                    fullWidth
-                                    label="Time Slot To"
-                                    name={`image[${index}].timeSlots.to`}
-                                    value={values.image[index].timeSlots.to}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.timeSlots?.to &&
-                                      Boolean(
-                                        errors.image?.[index]?.timeSlots?.to
-                                      )
-                                    }
-                                    helperText={
-                                      touched.image?.[index]?.timeSlots?.to &&
-                                      errors.image?.[index]?.timeSlots?.to
-                                    }
-                                  />
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                  <TextField
-                                    fullWidth
-                                    label="Start Date"
-                                    name={`image[${index}].startDate`}
-                                    type="date"
-                                    InputLabelProps={{ shrink: true }}
-                                    value={values.image[index].startDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.startDate &&
-                                      Boolean(errors.image?.[index]?.startDate)
-                                    }
-                                    helperText={
-                                      touched.image?.[index]?.startDate &&
-                                      errors.image?.[index]?.startDate
-                                    }
-                                  />
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                  <TextField
-                                    fullWidth
-                                    label="End Date"
-                                    name={`image[${index}].endDate`}
-                                    type="date"
-                                    InputLabelProps={{ shrink: true }}
-                                    value={values.image[index].endDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.endDate &&
-                                      Boolean(errors.image?.[index]?.endDate)
-                                    }
-                                    helperText={
-                                      touched.image?.[index]?.endDate &&
-                                      errors.image?.[index]?.endDate
-                                    }
-                                  />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                  <TextField
-                                    fullWidth
-                                    label="Company Name"
-                                    name={`image[${index}].companiesname`}
-                                    value={values.image[index].companiesname}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.companiesname &&
-                                      Boolean(
-                                        errors.image?.[index]?.companiesname
-                                      )
-                                    }
-                                    helperText={
+                                  <Element
+                                    eletype={inputType.input}
+                                    label="*Please enter Company Name"
+                                    placeholder="Please enter Company Name"
+                                    inputProps={{
+                                      onChange: handleChange,
+                                      onBlur: handleBlur,
+                                      name: `image[${index}].companiesname`,
+                                    }}
+                                    errorText={
                                       touched.image?.[index]?.companiesname &&
                                       errors.image?.[index]?.companiesname
                                     }
+                                    value={values.image[index].companiesname}
+                                    styles={{ gridColumn: "span 2" }}
                                   />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                  <TextField
-                                    fullWidth
-                                    label="Type of Marketing"
-                                    name={`image[${index}].typeOfMarketing`}
-                                    value={values.image[index].typeOfMarketing}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={
-                                      touched.image?.[index]?.typeOfMarketing &&
-                                      Boolean(
-                                        errors.image?.[index]?.typeOfMarketing
-                                      )
+                                <Grid item xs={6}>
+                                  <Element
+                                    eletype={inputType.datetime}
+                                    label="*Please select Start Date Time"
+                                    placeholder="Please  select Start Date Time"
+                                    inputProps={{
+                                      onChange: handleChange,
+                                      onBlur: handleBlur,
+                                      name: `image[${index}].startDate`,
+                                    }}
+                                    errorText={
+                                      touched.image?.[index]?.startDate &&
+                                      errors.image?.[index]?.startDate
                                     }
-                                    helperText={
+                                    value={values.image[index].startDate}
+                                    styles={{ width: "100%" }}
+                                  />
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                  <Element
+                                    eletype={inputType.datetime}
+                                    label="*Please select End Date Time"
+                                    placeholder="Please  select End Date Time"
+                                    inputProps={{
+                                      onChange: handleChange,
+                                      onBlur: handleBlur,
+                                      name: `image[${index}].endDate`,
+                                    }}
+                                    errorText={
+                                      touched.image?.[index]?.endDate &&
+                                      errors.image?.[index]?.endDate
+                                    }
+                                    value={values.image[index].endDate}
+                                    styles={{ width: "100%" }}
+                                  />
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                  <Element
+                                    eletype={inputType.select}
+                                    label="*Please select Display Type"
+                                    placeholder="*Please select a Display Type"
+                                    inputProps={{
+                                      onChange: handleChange,
+                                      onBlur: handleBlur,
+                                      name: `image[${index}].typeOfMarketing`,
+                                    }}
+                                    errorText={
                                       touched.image?.[index]?.typeOfMarketing &&
                                       errors.image?.[index]?.typeOfMarketing
                                     }
+                                    value={values.image[index].typeOfMarketing}
+                                    styles={{ minWidth: "100%" }}
+                                    options={ddlTypeOfMarketing}
+                                  />
+                                </Grid>
+                                <Grid item xs={6}>
+                                  <Element
+                                    eletype={inputType.dropzonewithapi}
+                                    label="Please select a image for Banner"
+                                    placeholder="Please select a image for Banner"
+                                    inputProps={{
+                                      onChange:handleChange,
+                                      onBlur: handleBlur,
+                                      name: `image[${index}].imageUrl`,
+                                    }}
+                                    errorText={
+                                      touched.image?.[index]?.imageUrl &&
+                                      errors.image?.[index]?.imageUrl
+                                    }
+                                    value={values.image[index].imageUrl}
+                                    styles={{
+                                      gridColumn: "span 2",
+                                      backgroundColor: "rgba(0, 0, 0, 0.06)",
+                                    }}
                                   />
                                 </Grid>
                               </Grid>

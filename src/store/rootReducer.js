@@ -15,6 +15,9 @@ import hsntaxcodeReducer from "./slices/hsntaxcode/hsntaxcode.slice";
 import vendorReducer from "./slices/vendor/vendor.slice";
 import productReducer from "./slices/product/product.slice";
 import homesectionReducer from "./slices/homesection/homesection.slice";
+import bannerReducer from "./slices/banner/banner.slice";
+import homeRenderReducer from "./slices/home/home.slice";
+
 const rootReducer = combineReducers({
   staticProduct: staticProdcutReducer,
   auth: authReducer,
@@ -32,6 +35,8 @@ const rootReducer = combineReducers({
   vendor:vendorReducer,
   product:productReducer,
   homesection:homesectionReducer,
+  banner:bannerReducer,
+  homerender:homeRenderReducer,
 });
 
 export default rootReducer;

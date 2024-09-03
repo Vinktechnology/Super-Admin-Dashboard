@@ -23,7 +23,9 @@ export const inputType = {
   editor:"editor",
   multiselect: "multiselect",
   autocompletewithsearch:"autocompletewithsearch",
-  otpinput:"otpinput"
+  otpinput:"otpinput",
+  datetime:"datetime",
+  dropzonewithapi:"dropzonewithapi",
 };
 
 export const projectServices = {

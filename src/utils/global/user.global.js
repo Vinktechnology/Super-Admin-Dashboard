@@ -5,6 +5,7 @@ import {
   getAllActiveSubCategoryApi,
   getAllActiveGenericMasterDataApi,
   getAllActiveTagsApi,
+  fileUploadApi
 } from "../apis.utils";
 
 export const formatUserResponse = (response) => {
@@ -43,4 +44,11 @@ export const getAllGenericMasterNamesGlobalApi = () => {
 
 export const getAllSubCategoriesGlobalApi = (api) => {
   return userAxios.get(getAllActiveSubCategoryApi + "?categoryIds=" + api);
+};
+
+export const productFileUploadGlobalApi = (data) => {
+  return userAxios.post(fileUploadApi, data,{
+    headers: {
+      "Content-Type": undefined
+    }});
 };

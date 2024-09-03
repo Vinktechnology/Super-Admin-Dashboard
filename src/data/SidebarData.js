@@ -113,7 +113,7 @@ export const SidebarData =[
     slug:"hsntaxcode"
 },
 {
-    title:"Home Section",
+    title:"Sections",
     to:"/dashboard/section",
     icon:<ContactsOutlinedIcon />,
     typography :"Home Data Master",
@@ -126,6 +126,14 @@ export const SidebarData =[
     icon:<ContactsOutlinedIcon />,
     typography :"",
     slug:"banner"
+},
+
+{
+    title:"Home Driver",
+    to:"/dashboard/home",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"home"
 },
 // {
 //     title:"Profile Form",

@@ -19,10 +19,11 @@ import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox
 import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
+import { getAllBannerThunk, updateBannerStatusThunk } from "../../store/slices/banner/banner.slice.js";
 
 const Banner = () => {
   const dispatch = useDispatch();
-  const { category, totalCount } = useSelector(({ category }) => category?.categorydata);
+  const { bannerArr, totalCount } = useSelector(({ banner }) => banner?.bannerdata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Banner = () => {
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllCategoryDataThunk({ page, pageSize }));
+    dispatch(getAllBannerThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -85,32 +86,20 @@ const Banner = () => {
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "imageLink",
-      headerName: "Image",
-      renderCell: (params) => (
-        <Box onClick={()=>handleClickSingleImageOpen(params.value)}>
-          <img
-            style={{ borderRadius: "50%", height: "50px", width: "50px" }}
-            src={params.value}
-          />
-        </Box>
-      ),
-    },
-    {
-      field: "name",
+      field: "title",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "slug",
-      headerName: "Slug",
+      field: "onScreenToBeDisplayed",
+      headerName: "Screen",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "description",
-      headerName: "Description",
+      field: "scrollingType",
+      headerName: "Scroll Type",
       flex: 1,
       cellClassName: "name-column--cell",
     },
@@ -174,7 +163,7 @@ const Banner = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updateCategoryStatusThunk({ ...toggleDATA }));
+      dispatch(updateBannerStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -248,7 +237,7 @@ const Banner = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={category}
+          rows={bannerArr}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

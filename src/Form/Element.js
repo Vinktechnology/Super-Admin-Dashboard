@@ -18,6 +18,8 @@ import MuiMultiSelect from "../NewForm/MuiMultiSelect";
 import MuiMultiSelectWithAutocomplete from "../NewForm/MuiMultiSelectWithAutocomplete";
 import CustomOtpInput from "./CustomOtpInput";
 import NumberInput from "./NumberInput";
+import MuiDateTimePicker from "../NewForm/MuiDateTimePicker";
+import DropZoneWithApi from "../NewForm/DropZoneWithApi";
 
 
 function Element({
@@ -53,6 +55,23 @@ function Element({
       />
     );
   }
+
+  function renderDateTimePicker() {
+    return (
+      <MuiDateTimePicker
+        label={label}
+        errorText={errorText}
+        {...inputProps}
+        value={value}
+        placeholder={placeholder}
+        {...rest}
+        styles={styles}
+      />
+    );
+  }
+
+
+  
 
   function renderNumberInput()
   {
@@ -175,6 +194,20 @@ function Element({
     )
   }
 
+  function renderDropZoneWithApi()
+  {
+    return(
+      <DropZoneWithApi 
+      label={label}
+      {...inputProps}
+      {...rest}
+      errorText={errorText}
+      value={value}
+      />
+    )
+  }
+
+
   function renderMuiCKEditor()
   {
     return(
@@ -250,6 +283,7 @@ function Element({
       {eletype === inputType.autocompletewithsearch && renderAutoCompleteWithSearch()}
       {eletype === inputType.multiselect && renderMultiSelect()}
       {eletype === inputType.dropzone && renderDropZone()}
+      {eletype === inputType.dropzonewithapi && renderDropZoneWithApi()}
       {eletype === inputType.editor && renderMuiCKEditor()}
       {eletype === inputType.input && renderInput()}
       {eletype === inputType.passwordinput && renderPasswordInput()}
@@ -259,6 +293,8 @@ function Element({
       {eletype === inputType.autocomplete && renderAutoComplete()}
       {eletype === inputType.date && renderDatePicker()}
       {eletype === inputType.checkboxgroup && renderCheckBoxGroup()}
+      {eletype === inputType.datetime && renderDateTimePicker()}
+      
       {eletype === inputType.switch && (
         <Switch label={label} {...inputProps} {...rest} value={value} />
       )}

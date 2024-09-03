@@ -29,6 +29,10 @@ export const ReasonSchema = yup.object().shape({
   ).min(1, "*At least one section value is required"),
 });
 
+export const PositionSchema = yup.object().shape({
+  position: yup.string().required("*position is required"),
+});
+
 
 
 

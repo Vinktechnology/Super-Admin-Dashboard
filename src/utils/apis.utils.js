@@ -19,7 +19,21 @@ export const getHomeSectionByIdApi ="/v1/home-section"
 export const addNewHomeSectionApi="/v1/home-section"
 export const updateHomeSectionStatusApi="/v1/home-section/active-status"
 
+// Home
 
+export const getAllHomeRenderingApi ="/v1/home-rendering"
+export const getAllHomeRSetPositionApi ="/v1/home-rendering/set-position"
+
+// banner
+
+export const getAllBannerApi ="/v1/banner/all"
+export const getBannerByIdApi ="/v1/banner"
+export const addNewBannerApi="/v1/banner"
+export const updateBannerStatusApi="/v1/banner/active-status"
+
+
+// file upload
+export const fileUploadApi="/file/upload"
 
 // Master name
 
