@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { globalFormatDate } from "../../utils/formatTime.js";
 import { getAllHomeRenderThunk , getHomeRenderByIdThunk} from "../../store/slices/home/home.slice.js";
 import ModalSectionPosition from "../../modals/ModalSectionPosition.js";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,7 @@ const Home = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [position, setPosition] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
+  const navigate = useNavigate();
 
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
@@ -37,6 +39,19 @@ const Home = () => {
   };
 
 
+
+  const handleView = (param) => {
+    console.log("row",param)
+    if(param?.row?.sectionType=="banner")
+      {
+    navigate(`/dashboard/banner/view/${param?.id}?comesFrom=home`);
+
+      }
+      else{
+    navigate(`/dashboard/section/view/${param?.id}?comesFrom=home`);
+
+      }
+  };
 
 
 
@@ -101,7 +116,13 @@ const Home = () => {
           icon={<EditIcon />}
           label="Edit"
           onClick={() => handleEdit(params)}
-        />
+        />,
+        <GridActionsCellItem
+        icon={<VisibilityIcon />}
+        label="Delete"
+        onClick={() => handleView(params)}
+        // showInMenu
+      />,
       ],
     },
   ];

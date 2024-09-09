@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { tokens } from "../../../theme";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Header from "../../../components/Header";
 import { useDispatch } from "react-redux";
 import {
@@ -35,7 +35,12 @@ function Index() {
   const [viewdata, setViewData] = useState(null);
   const [open, setOpen] = useState(false);
   const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
-
+  const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const comesFrom = query.get('comesFrom');
+  const sectionpage = query.get('sectionpage');
+  const sectionid = query.get('sectionid');
   const handleRejection = () => {
     setIsProductDialogOpen(true);
   };
@@ -376,6 +381,33 @@ function Index() {
         handleClose={handleClose}
         open={openImage}
       />
+    <Box display="flex" justifyContent="end" alignItems="center">
+    {
+            comesFrom==="section"?    <Button
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => navigate(`/dashboard/section/view/${sectionid}?sectionpage=${sectionpage}`)}
+          >
+            Back to Section
+          </Button>:   <Button
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => navigate("/dashboard/product")}
+          >
+            Back to Product
+          </Button>
+          }
+     </Box>
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Product" subtitle="Manage Product" />

@@ -18,6 +18,8 @@ export const getAllHomeSectionApi ="/v1/home-section/all"
 export const getHomeSectionByIdApi ="/v1/home-section"
 export const addNewHomeSectionApi="/v1/home-section"
 export const updateHomeSectionStatusApi="/v1/home-section/active-status"
+export const getAllHomeSectionProductApi="/v1/home-section"
+
 
 // Home
 

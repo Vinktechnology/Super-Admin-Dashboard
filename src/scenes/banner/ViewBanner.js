@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { tokens } from "../../../src/theme.js";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
@@ -37,6 +37,10 @@ const ViewBanner = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const comesFrom = query.get('comesFrom');
+
 
   const [open, setOpen] = useState(false);
   const handleClickOpen = (index) => {
@@ -73,7 +77,19 @@ const ViewBanner = () => {
         <Header title="BANNER DATA" subtitle="View a Banner" />
 
         <Box>
-          <Button
+          {
+            comesFrom==="home"?    <Button
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => navigate("/dashboard/home")}
+          >
+            Back to Home
+          </Button>:   <Button
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -85,6 +101,8 @@ const ViewBanner = () => {
           >
             Back to Banner
           </Button>
+          }
+       
         </Box>
       </Box>
 

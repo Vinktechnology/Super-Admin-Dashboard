@@ -1,15 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
-  getAllHomeSectionData,addNewHomeSectionData,getHomeSectionByIdData,updateHomeSectionData,updateHomeSectionStatusData 
+  getAllHomeSectionData,addNewHomeSectionData,getHomeSectionByIdData,updateHomeSectionData,updateHomeSectionStatusData,getAllHomeSectionProductsData
 } from "./homesection.thunk";
 
 const INIT_STATE = {
   homesectiondata :{
     homesection:[],
-    totalCount:0
+    totalCount:0,
+    homesectionproduct:[],
+    totalcountproduct:0
   }
 };
+
+export const getAllHomeSectionProductsThunk = createAsyncThunk(
+  "getAllHomeSectionProducts",
+  getAllHomeSectionProductsData
+);
 
 
 export const getAllHomeSectionThunk = createAsyncThunk(
@@ -56,6 +63,17 @@ const homeSectionSlice = createSlice({
         return state;
       })
       .addCase(getAllHomeSectionThunk.rejected, (state) => {
+        return state;
+      })
+      .addCase(getAllHomeSectionProductsThunk.pending, (state) => {
+        return state;
+      })
+      .addCase(getAllHomeSectionProductsThunk.fulfilled, (state, action) => {
+        state.homesectiondata.homesectionproduct = action.payload.productList;
+        state.homesectiondata.totalcountproduct = action.payload.noOfEntries;
+        return state;
+      })
+      .addCase(getAllHomeSectionProductsThunk.rejected, (state) => {
         return state;
       })
       .addCase(addNewHomeSectionhunk.pending, (state) => {

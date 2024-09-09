@@ -1,11 +1,39 @@
 import {
-  getAllHomeSectionApi,addNewHomeSectionApi,updateHomeSectionStatusApi,getHomeSectionByIdApi
+  getAllHomeSectionApi,addNewHomeSectionApi,updateHomeSectionStatusApi,getHomeSectionByIdApi,getAllHomeSectionProductApi
 } from "../../../utils/apis.utils";
 import { showFailureToast, showSuccessToast } from "../toast/toast.slice";
 import { startDashboardLoader, stopDashboardLoader } from "../dashboard/dashboard.slice";
 import { gridColumnsTotalWidthSelector } from "@mui/x-data-grid";
 
 
+
+
+export const getAllHomeSectionProductsData = async (data, thunkApi) => {
+  try { 
+    console.log("Data",data)
+    thunkApi.dispatch(startDashboardLoader());
+    const { user: userAxios } = thunkApi.extra.apiService;
+    const response = await userAxios.get(`${getAllHomeSectionProductApi}/${data?.id}?page=${data.page}&limit=${data.pageSize}`);
+    const responseData = response?.data;
+    return responseData;
+   
+  } catch (err) {
+
+    console.log("err", err);
+    thunkApi.dispatch(
+      showFailureToast({
+        message: err,
+        vertical: "top",
+        horizontal: "right",
+      })
+    );
+    return Promise.reject();
+  }
+  finally
+  {
+    thunkApi.dispatch(stopDashboardLoader());
+  }
+};
 
 export const getAllHomeSectionData = async (data, thunkApi) => {
   try { 

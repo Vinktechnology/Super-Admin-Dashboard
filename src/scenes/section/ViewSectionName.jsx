@@ -1,13 +1,14 @@
 import {
   Box,
   Button,
+  Divider,
   Grid,
   TextField,
   Typography,
   useTheme,
 } from "@mui/material";
 import { tokens } from "../../theme.js";
-import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header.jsx";
@@ -16,6 +17,7 @@ import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
 import { getHomeSectionByIdThunk } from "../../store/slices/homesection/homesection.slice.js";
 import { renderArrayColumns } from "../../utils/utilityfunction.js";
+import ProductSectionView from "./ProductSectionView.js";
 
 const ViewSectionName = () => {
   const dispatch = useDispatch();
@@ -25,13 +27,15 @@ const ViewSectionName = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const query = new URLSearchParams(search);
+  const comesFrom = query.get('comesFrom');
 
   useEffect(() => {
     if (params.Id) {
       dispatch(getHomeSectionByIdThunk(params.Id))
         .unwrap()
         .then((da) => {
-          console.log("setViewData",da)
           setViewData(da);
         });
     }
@@ -43,18 +47,33 @@ const ViewSectionName = () => {
         <Header title="SECTION DATA" subtitle="View a Section" />
 
         <Box>
+          {comesFrom ==="home"?
           <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-            onClick={() => navigate("/dashboard/section")}
-          >
-            Back to Section
-          </Button>
+          sx={{
+            backgroundColor: colors.blueAccent[700],
+            color: colors.grey[100],
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}
+          onClick={() => navigate("/dashboard/home")}
+        >
+          Back to Home
+        </Button>:
+             <Button
+             sx={{
+               backgroundColor: colors.blueAccent[700],
+               color: colors.grey[100],
+               fontSize: "14px",
+               fontWeight: "bold",
+               padding: "10px 20px",
+             }}
+             onClick={() => navigate("/dashboard/section")}
+           >
+             Back to Section
+           </Button>
+          }
+       
         </Box>
       </Box>
 
@@ -442,7 +461,11 @@ const ViewSectionName = () => {
 
            
           </Box>
+          
         </Box>
+        <Box sx={{borderTop:"1px solid grey"}}>
+        <ProductSectionView/>
+          </Box>
       </Box>
     </Box>
   );
