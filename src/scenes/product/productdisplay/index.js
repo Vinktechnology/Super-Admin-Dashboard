@@ -381,33 +381,7 @@ function Index() {
         handleClose={handleClose}
         open={openImage}
       />
-    <Box display="flex" justifyContent="end" alignItems="center">
-    {
-            comesFrom==="section"?    <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-            onClick={() => navigate(`/dashboard/section/view/${sectionid}?sectionpage=${sectionpage}`)}
-          >
-            Back to Section
-          </Button>:   <Button
-            sx={{
-              backgroundColor: colors.blueAccent[700],
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-            onClick={() => navigate("/dashboard/product")}
-          >
-            Back to Product
-          </Button>
-          }
-     </Box>
+   
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="Product" subtitle="Manage Product" />
@@ -439,6 +413,33 @@ function Index() {
             />
           )}
         </Box>
+        <Box>
+    {
+            comesFrom==="section"?    <Button
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => navigate(`/dashboard/section/view/${sectionid}?sectionpage=${sectionpage}&comesFrom=home`)}
+          >
+            Back to Section
+          </Button>:   <Button
+            sx={{
+              backgroundColor: colors.blueAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => navigate("/dashboard/product")}
+          >
+            Back to Product
+          </Button>
+          }
+     </Box>
       </Box>
 
       {/* /////////////////////-------------------------Vendor information---------------------------/////////////////////////////// */}
