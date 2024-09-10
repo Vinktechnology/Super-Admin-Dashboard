@@ -121,4 +121,8 @@ export const editBusinessProfile = "/client/business_profile";
 export const addBusinessAddress = "/client/business_address";
 export const editBusinessAddress = "/client/business_address";
 
+//usefullinks and header/footer
+export const addGlobalUsefulLinksApi = "/v1/footer";
+
+
 

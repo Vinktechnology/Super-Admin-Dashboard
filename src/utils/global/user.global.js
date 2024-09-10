@@ -5,7 +5,8 @@ import {
   getAllActiveSubCategoryApi,
   getAllActiveGenericMasterDataApi,
   getAllActiveTagsApi,
-  fileUploadApi
+  fileUploadApi,
+  addGlobalUsefulLinksApi
 } from "../apis.utils";
 
 export const formatUserResponse = (response) => {
@@ -51,4 +52,8 @@ export const productFileUploadGlobalApi = (data) => {
     headers: {
       "Content-Type": undefined
     }});
+};
+
+export const addUsefulLinksGlobalApi = (data) => {
+  return userAxios.post(addGlobalUsefulLinksApi, { ...data });
 };

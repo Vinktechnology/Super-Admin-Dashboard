@@ -66,6 +66,7 @@ import ViewSectionName from "./scenes/section/ViewSectionName";
 import AddSectionName from "./scenes/section/AddSectionName";
 import ViewBanner from "./scenes/banner/ViewBanner";
 import Home from "./scenes/home";
+import Index from "./scenes/utilitysection";
 
 
 function AppRoutes() {
@@ -214,6 +215,12 @@ function AppRoutes() {
           children: [
             { path: "", element: <Home /> },
           ],
+        },
+
+        {
+          path: "utilitysection",
+          element: <Index />,
+         
         },
         
         // {
