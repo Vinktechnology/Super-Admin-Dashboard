@@ -18,7 +18,15 @@ import UtilityYoutube from "./UtilityYoutube";
 import UtilityAppStoreButton from "./UtilityAppStoreButton";
 import UtilityGooglePlayButton from "./UtilityGooglePlayButton";
 import UtilityAddress from "./UtilityAddress";
+import { useDispatch } from "react-redux";
+import { getAllUtilityThunk } from "../../store/slices/websiteutility/websiteutility.slice";
 const UtilitySection = () => {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(getAllUtilityThunk())
+  },[])
+
   return (
     <Box
       sx={{ m: { xs: "5px", sm: "5px", md: "20px", lg: "20px", xl: "20px" } }}

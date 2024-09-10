@@ -18,7 +18,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUsefulLinksGlobalApi } from "../../utils/global/user.global.js";
 import { showFailureToast, showSuccessToast } from "../../store/slices/toast/toast.slice.js";
 
@@ -30,9 +30,19 @@ const UtilityPhone = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const {utility} = useSelector(({ utilityrender }) => utilityrender?.utitlitydata);
   const [initialValues, setInitialValues] = useState({
     phone: "",
   });
+
+  useEffect(() => {
+    if (utility) {
+          setInitialValues({
+            phone: utility?.phone || "",
+          });
+    }
+  }, [utility]);
+
 
   const navigate = useNavigate();
 

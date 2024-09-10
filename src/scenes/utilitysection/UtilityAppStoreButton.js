@@ -18,7 +18,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUsefulLinksGlobalApi } from "../../utils/global/user.global.js";
 import { showFailureToast, showSuccessToast } from "../../store/slices/toast/toast.slice.js";
 
@@ -33,6 +33,16 @@ const UtilityAppStoreButton = () => {
   const [initialValues, setInitialValues] = useState({
     appStoreButton: "",
   });
+
+  const {utility} = useSelector(({ utilityrender }) => utilityrender?.utitlitydata);
+  
+  useEffect(() => {
+    if (utility) {
+          setInitialValues({
+            appStoreButton: utility?.appStoreButton || "",
+          });
+    }
+  }, [utility]);
 
   const navigate = useNavigate();
 

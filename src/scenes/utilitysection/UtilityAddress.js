@@ -18,7 +18,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import { useFormik } from "formik";
 import { CatgorySchema } from "../../utils/validation.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUsefulLinksGlobalApi } from "../../utils/global/user.global.js";
 import { showFailureToast, showSuccessToast } from "../../store/slices/toast/toast.slice.js";
 
@@ -30,9 +30,19 @@ const UtilityAddress = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+ 
+
+  const {utility} = useSelector(({ utilityrender }) => utilityrender?.utitlitydata);
   const [initialValues, setInitialValues] = useState({
     address: "",
   });
+  useEffect(() => {
+    if (utility) {
+          setInitialValues({
+            address: utility?.address || "",
+          });
+    }
+  }, [utility]);
 
   const navigate = useNavigate();
 
@@ -46,8 +56,8 @@ const UtilityAddress = () => {
 
   async function onSubmit(data) {
     const dd ={
-      value:data.email,
-      type:"email"
+      value:data.address,
+      type:"address"
     }
     addUsefulLinksGlobalApi(dd)
     .then((result) => {
@@ -96,15 +106,15 @@ const UtilityAddress = () => {
             <Grid xs={9} sm={8} md={8} lg={8} xl={8} sx={{ p: 1 }}>
               <Element
                 eletype={inputType.input}
-                label="Please enter the website official mail id"
-                placeholder="Please enter the website official mail id"
+                label="Please enter website Address"
+                placeholder="Please enter website Address"
                 inputProps={{
                   onChange: handleChange,
                   onBlur: handleBlur,
-                  name: "email",
+                  name: "address",
                 }}
-                errorText={touched.email && errors.email}
-                value={values.email}
+                errorText={touched.address && errors.address}
+                value={values.address}
                 styles={{ gridColumn: "span 2" }}
               />
             </Grid>
