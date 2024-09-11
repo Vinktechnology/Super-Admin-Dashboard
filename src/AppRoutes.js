@@ -67,6 +67,9 @@ import AddSectionName from "./scenes/section/AddSectionName";
 import ViewBanner from "./scenes/banner/ViewBanner";
 import Home from "./scenes/home";
 import Index from "./scenes/utilitysection";
+import HeaderAndFooter from "./scenes/headerandfooter";
+import ViewHeaderAndFooter from "./scenes/headerandfooter/ViewHeaderAndFooter";
+import AddHeaderAndFooter from "./scenes/headerandfooter/AddHeaderAndFooter";
 
 
 function AppRoutes() {
@@ -220,7 +223,16 @@ function AppRoutes() {
         {
           path: "utilitysection",
           element: <Index />,
-         
+        },
+        {
+          path: "headerfooter",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <HeaderAndFooter /> },
+            { path: "view/:Id", element: <ViewHeaderAndFooter /> },
+            { path: "addheaderfooter", element: <AddHeaderAndFooter /> },
+            { path: "addheaderfooter/:Id", element: <AddHeaderAndFooter /> },
+          ],
         },
         
         // {

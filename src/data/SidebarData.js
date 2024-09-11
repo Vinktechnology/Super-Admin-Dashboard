@@ -135,13 +135,19 @@ export const SidebarData =[
     typography :"",
     slug:"home"
 },
-
 {
     title:"Useful Links",
     to:"/dashboard/utilitysection",
     icon:<ContactsOutlinedIcon />,
     typography :"Utility Section",
     slug:"utilitysection"
+},
+{
+    title:"Header And Footer",
+    to:"/dashboard/headerfooter",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"headerfooter"
 },
 // {
 //     title:"Profile Form",

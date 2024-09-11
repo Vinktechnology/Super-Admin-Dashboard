@@ -18,6 +18,7 @@ import homesectionReducer from "./slices/homesection/homesection.slice";
 import bannerReducer from "./slices/banner/banner.slice";
 import homeRenderReducer from "./slices/home/home.slice";
 import utilityReducer from "./slices/websiteutility/websiteutility.slice";
+import headerandfooterReducer from "./slices/headerfooter/headerfooter.slice";
 
 
 const rootReducer = combineReducers({
@@ -39,7 +40,8 @@ const rootReducer = combineReducers({
   homesection:homesectionReducer,
   banner:bannerReducer,
   homerender:homeRenderReducer,
-  utilityrender : utilityReducer
+  utilityrender : utilityReducer,
+  headerfooter : headerandfooterReducer
 });
 
 export default rootReducer;

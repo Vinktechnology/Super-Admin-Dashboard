@@ -124,5 +124,10 @@ export const editBusinessAddress = "/client/business_address";
 //usefullinks and header/footer
 export const addGlobalUsefulLinksApi = "/v1/footer";
 
+// header and footer
+export const getAllheaderandfooterApi ="/v1/weblink"
+export const getheaderandfooterByIdApi ="/v1/weblink"
+export const addNewheaderandfooterApi="/v1/weblink"
+export const updateheaderandfooterStatusApi="/v1/weblink/active-status"
 
 
