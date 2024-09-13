@@ -12,19 +12,7 @@ import { Link as RouterLink, useLocation, useNavigate, useParams } from "react-r
 import React, { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import { inputType } from "../../utils/enum";
-import Element from "../../Form/Element";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import { useFormik } from "formik";
-import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
-import {
-  addNewCategoryThunk,
-  getCategoryByIdThunk,
-  updateCategoryThunk,
-} from "../../store/slices/category/category.slice.js";
 import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
 import { getBannerByIdThunk } from "../../store/slices/banner/banner.slice.js";
@@ -593,12 +581,12 @@ const ViewBanner = () => {
                   sm={6}
                   md={4}
                   sx={{ padding: "10px" }}
-                  onClick={() => handleClickOpen()}
                 >
                   <Box sx={{height:"500px"}}>
                   <img
                     src={da?.imageUrl}
                     style={{ width: "100%", maxHeight: "100%" }}
+                    onClick={() => handleClickOpen()}
                   />
                   </Box>
                   <Box sx={{mt:2, border:"1px  grey"}}>

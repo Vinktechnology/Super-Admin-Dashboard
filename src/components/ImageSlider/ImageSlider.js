@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   });
 
 
-function ImageSlider({sampleImages ,handleClose, open, title}) {
+function ImageSlider({sampleImages ,handleClose, open, title, isCarousel}) {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     
@@ -116,7 +116,30 @@ function ImageSlider({sampleImages ,handleClose, open, title}) {
     </AppBar>
 
       <Slider {...settings}>
-            {sampleImages?.map((image, index) => (
+          {
+            isCarousel?
+            sampleImages?.map((image, index) => (
+              <Box key={index}>
+                     <Box
+                        key={index}
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            height: "80vh",
+                            overflow:"hidden",
+                            padding:"20px"
+                        }}
+                    >
+                        <img
+                            src={image?.imageUrl}
+                            style={{ width: "100%", maxHeight: "100%" }}
+                            alt={`Sample ${index}`}
+                        />
+                    </Box>
+              </Box>
+            ))
+            :    sampleImages?.map((image, index) => (
               <Box key={index}>
                      <Box
                         key={index}
@@ -136,7 +159,8 @@ function ImageSlider({sampleImages ,handleClose, open, title}) {
                         />
                     </Box>
               </Box>
-            ))}
+            ))
+          }
           </Slider>
   </Dialog>
   );
