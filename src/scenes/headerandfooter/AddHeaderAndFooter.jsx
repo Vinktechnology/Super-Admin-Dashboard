@@ -187,7 +187,7 @@ const AddHeaderAndFooter = () => {
                 >
                   <CardContent>
                     <Grid container spacing={2}>
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                         <Element
                           eletype={inputType.input}
                           label="*Please enter Title"
@@ -203,7 +203,7 @@ const AddHeaderAndFooter = () => {
                         />
                       </Grid>
 
-                      <Grid item xs={6}>
+                      <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                         <Element
                           eletype={inputType.select}
                           label="*Please select Type"
@@ -288,7 +288,7 @@ const AddHeaderAndFooter = () => {
                                 </Grid>
                               </Box>
                               <Grid container spacing={2} alignItems="center">
-                              <Grid item xs={6}>
+                              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                                   <Element
                                     eletype={inputType.input}
                                     label="*Please enter Header/Footer Name"
@@ -306,7 +306,7 @@ const AddHeaderAndFooter = () => {
                                     styles={{ gridColumn: "span 2" }}
                                   />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                                   <Element
                                     eletype={inputType.input}
                                     label="*Please enter Page Url"
