@@ -70,6 +70,9 @@ import Index from "./scenes/utilitysection";
 import HeaderAndFooter from "./scenes/headerandfooter";
 import ViewHeaderAndFooter from "./scenes/headerandfooter/ViewHeaderAndFooter";
 import AddHeaderAndFooter from "./scenes/headerandfooter/AddHeaderAndFooter";
+import FilterMaster from "./scenes/filtermaster";
+import ViewFilterMaster from "./scenes/filtermaster/ViewFilterMaster";
+import AddFilterMaster from "./scenes/filtermaster/AddFilterMaster";
 
 
 function AppRoutes() {
@@ -189,6 +192,16 @@ function AppRoutes() {
             { path: "view/:Id", element: <ViewHSNTaxCode /> },
             { path: "addhsntaxcode", element: <AddHSNTaxCode /> },
             { path: "addhsntaxcode/:Id", element: <AddHSNTaxCode /> },
+          ],
+        },
+        {
+          path: "filter",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <FilterMaster /> },
+            { path: "view/:Id", element: <ViewFilterMaster /> },
+            { path: "addfilter", element: <AddFilterMaster /> },
+            { path: "addfilter/:Id", element: <AddFilterMaster /> },
           ],
         },
         {

@@ -113,6 +113,13 @@ export const SidebarData =[
     slug:"hsntaxcode"
 },
 {
+    title:"Fliter",
+    to:"/dashboard/filter",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"filter"
+},
+{
     title:"Sections",
     to:"/dashboard/section",
     icon:<ContactsOutlinedIcon />,
@@ -149,6 +156,7 @@ export const SidebarData =[
     typography :"",
     slug:"headerfooter"
 },
+
 // {
 //     title:"Profile Form",
 //     to:"/dashboard/form",
