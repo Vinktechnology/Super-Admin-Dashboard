@@ -17,7 +17,7 @@ import { getAllFilterThunk, updateFilterStatusThunk } from "../../store/slices/f
 
 const FilterMaster = () => {
   const dispatch = useDispatch();
-  const { procurement, totalCount } = useSelector(({ procurement }) => procurement?.procurementdata);
+  const { filter, totalCount } = useSelector(({ filterReducer }) => filterReducer?.filterdata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -229,7 +229,7 @@ const FilterMaster = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={procurement}
+          rows={filter}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
