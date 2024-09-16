@@ -1,4 +1,11 @@
-import { Box, Button, Grid, TextField, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { tokens } from "../../../src/theme.js";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -15,7 +22,6 @@ const ViewFilterMaster = () => {
   const [viewdata, setViewData] = useState(null);
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (params.Id) {
       dispatch(getFilterByIdThunk(params.Id))
@@ -28,9 +34,6 @@ const ViewFilterMaster = () => {
 
   return (
     <Box m="20px">
-     
-
-        
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="FILTER DATA" subtitle="View a Filter" />
 
@@ -61,37 +64,66 @@ const ViewFilterMaster = () => {
         }}
       >
         <Box
-          sx={{ padding: "1rem",
-            display:"flex",
-            justifyContent:"space-between",
-            alignItems:"top",
-            flexDirection:{xs:"column",sm:"column",md:"row",lg:"row", xl:"row" }
-
-           }}
-         
+          sx={{
+            padding: "1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "top",
+            flexDirection: {
+              xs: "column",
+              sm: "column",
+              md: "row",
+              lg: "row",
+              xl: "row",
+            },
+          }}
         >
-          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"40%",lg:"40%",xl:"40%",} ,    display:"flex", alignItems:"center",justifyContent:"center",}}>
-        <Box>
-            <Typography sx={{
-                    color: colors.grey[400],
-                    fontSize: "1.3rem",
-                    fontWeight: "600",
-                    textAlign:"center",
-                    margin:"0px 0px 10px 0px"
-                  }}>
-            {viewdata?.name}</Typography>
-            </Box>
-
-          </Box>
-          <Box  sx={{ width:{xs:"100%",sm:"100%",md:"60%",lg:"60%",xl:"60%",} }}>
-
           <Box
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "40%",
+                lg: "40%",
+                xl: "40%",
+              },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box>
+              <Typography
+                sx={{
+                  color: colors.grey[400],
+                  fontSize: "1.3rem",
+                  fontWeight: "600",
+                  textAlign: "center",
+                  margin: "0px 0px 10px 0px",
+                }}
+              >
+                {viewdata?.categoryType?.name}
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "60%",
+                lg: "60%",
+                xl: "60%",
+              },
+            }}
+          >
+            <Box
               sx={{ padding: "1rem" }}
               display="flex"
               justifyContent="space-around"
               alignItems="center"
             >
-                  <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
@@ -99,7 +131,7 @@ const ViewFilterMaster = () => {
                     fontWeight: "600",
                   }}
                 >
-                  Master Name
+                  Category Name
                 </Typography>
                 <Typography
                   sx={{
@@ -108,16 +140,16 @@ const ViewFilterMaster = () => {
                     fontWeight: "600",
                   }}
                 >
-                 {viewdata?.type?.masterName}
+                  {viewdata?.categoryType?.name}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Is Active
@@ -127,14 +159,12 @@ const ViewFilterMaster = () => {
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.isActive?"Active":"In-Active"}
+                  {viewdata?.isActive ? "Active" : "In-Active"}
                 </Typography>
               </Box>
-          
-            
             </Box>
             <Box
               sx={{ padding: "1rem" }}
@@ -142,35 +172,35 @@ const ViewFilterMaster = () => {
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                  Slug
+                  Filter Added
                 </Typography>
                 <Typography
                   sx={{
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.slug}
+                  {viewdata?.isFilter ? "Yes" : "No"}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Description
@@ -180,10 +210,10 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.description}
+                  {viewdata?.description}
                 </Typography>
               </Box>
             </Box>
@@ -194,13 +224,13 @@ wordWrap:"break-word"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Created By
@@ -210,19 +240,19 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.createdBy?.fullName}
+                  {viewdata?.createdBy?.fullName}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Created On
@@ -232,10 +262,10 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {globalFormatDate(viewdata?.createdAt)}
+                  {globalFormatDate(viewdata?.createdAt)}
                 </Typography>
               </Box>
             </Box>
@@ -246,13 +276,13 @@ wordWrap:"break-word"
               justifyContent="space-around"
               alignItems="center"
             >
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Updated By
@@ -262,19 +292,19 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {viewdata?.updatedBy?.fullName}
+                  {viewdata?.updatedBy?.fullName}
                 </Typography>
               </Box>
-              <Box sx={{width:"50%"}}>
+              <Box sx={{ width: "50%" }}>
                 <Typography
                   sx={{
                     color: colors.grey[700],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
                   Updated On
@@ -284,17 +314,13 @@ wordWrap:"break-word"
                     color: colors.grey[400],
                     fontSize: "14px",
                     fontWeight: "600",
-                    wordWrap:"break-word"
+                    wordWrap: "break-word",
                   }}
                 >
-                 {globalFormatDate(viewdata?.updatedAt)}
+                  {globalFormatDate(viewdata?.updatedAt)}
                 </Typography>
               </Box>
             </Box>
-
-            
-
-
           </Box>
         </Box>
       </Box>
