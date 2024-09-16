@@ -3,6 +3,10 @@
 export const emailLoginApi = "/auth/login";
 export const checkusertokenvalidityApi= "/auth/validate-token"
 
+// Register
+export const sentOTPMobileApi = "/auth/send-mobile-otp"
+export const validateOTPMobileApi = "/auth/verify-mobile-otp"
+
 // Category
 
 export const getAllCategoryApi ="/v1/category/all"

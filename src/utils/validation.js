@@ -11,7 +11,7 @@ export const LoginSchema = yup.object().shape({
 });
 
 export const LoginWithOTPSchema = yup.object().shape({
-  mobileno: yup
+  mobile: yup
   .string()
   .matches(phoneRegExp, "*Contact Number is not valid")
   .required("*Contact Number is required"),

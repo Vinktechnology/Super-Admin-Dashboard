@@ -5,10 +5,12 @@ import Element from "../../Form/Element.js";
 import { inputType } from "../../utils/enum.js";
 import { useFormik } from "formik";
 import { debounce } from "../../utils/global/global.js";
+import { sendOTPMobile } from "../../utils/global/user.global.js";
 
-function OtpForm({isResendVisible, handleOTPSucess}) {
+function OtpForm({ handleChange,otp, isOTPVisible, mobile}) {
     const [seconds, setSeconds] = useState(60);
     const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+    const [isResendVisible, setIsResendVisible] = useState(false);
 
   const INIT_STATE = {
     otp: "",
@@ -25,41 +27,41 @@ function OtpForm({isResendVisible, handleOTPSucess}) {
     }
   }, [seconds]);
 
-  const handleResendOtp = () => {
-    setSeconds(60);
-    setIsButtonEnabled(false);
-  };
+
 
   const { values, touched, errors, handleBlur, handleSubmit } =
     useFormik({
       enableReinitialize: true,
       initialValues: INIT_STATE,
-      onSubmit: onSubmit,
+      // onSubmit: onSubmit,
     //   validationSchema: RegisterStep1Schema,
     });
 
-     // Debounced function
-     const fetchData = useCallback(
-        debounce(async (searchQuery) => {
-            if (searchQuery) {
-                // const response = await fetch(`https://api.example.com/search?q=${searchQuery}`);
-                const response = await fetch("https://jsonplaceholder.typicode.com/todos/1"); // replace with axio and redux-toolkit
-                const data = await response.json();
-                     
-                handleOTPSucess({data, isSuccess:true})
-            }
-        }, 500),
-        [] // Dependencies for useCallback, empty means it only initializes once
-    );
-
-    const handleChange = event => {
-              
-        if(event.target.value.length===6)
-         {   
-                 
-            fetchData("sdf")
+    const resendMobileOtp =()=>
+      {
+        const da ={
+          mobile:mobile ,
+          verificationFor: 'login'
         }
-        
+        sendOTPMobile(da)
+        .then((result) => {
+          setSeconds(60);
+          setIsButtonEnabled(false);
+        })
+        .catch((e) => {
+          console.log("error",e)
+           
+        });
+      }
+
+    const handleChangeOtp=(e)=>
+      {
+        handleChange({
+          target: {
+            name: otp,
+            value: e.target.value,
+          },
+        });
       }
 
   async function onSubmit(data) {
@@ -80,7 +82,6 @@ function OtpForm({isResendVisible, handleOTPSucess}) {
     //   pathname: "/dashboard",
     // });
   }
-  console.log("values",values)
   return (
     <Box>
       <Element
@@ -88,7 +89,7 @@ function OtpForm({isResendVisible, handleOTPSucess}) {
         label="OTP"
         placeholder="Enter OTP sent to your mobile number"
         inputProps={{
-          onChange: handleChange,
+          onChange: handleChangeOtp,
           onBlur: handleBlur,
           name: "otp",
         }}
@@ -96,10 +97,10 @@ function OtpForm({isResendVisible, handleOTPSucess}) {
         value={values.otp}
       />
 
-{isResendVisible && (
+{isOTPVisible && (
         <Typography sx={{ marginTop: "20px", marginBottom: "20Ppx" }}>
           Didn't receive OTP?{" "}
-          <Button disabled={!isButtonEnabled} onClick={handleResendOtp} style={{ fontSize: "14px", color: "rgb(2, 124, 213)" }}>
+          <Button disabled={!isButtonEnabled} onClick={resendMobileOtp} style={{ fontSize: "14px", color: "rgb(2, 124, 213)" }}>
             {isButtonEnabled?" Resend OTP" :   `Resend OTP in  ${seconds}`}
           </Button>
         </Typography>

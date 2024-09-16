@@ -6,7 +6,9 @@ import {
   getAllActiveGenericMasterDataApi,
   getAllActiveTagsApi,
   fileUploadApi,
-  addGlobalUsefulLinksApi
+  addGlobalUsefulLinksApi,
+  validateOTPMobileApi,
+  sentOTPMobileApi
 } from "../apis.utils";
 
 export const formatUserResponse = (response) => {
@@ -56,4 +58,18 @@ export const productFileUploadGlobalApi = (data) => {
 
 export const addUsefulLinksGlobalApi = (data) => {
   return userAxios.post(addGlobalUsefulLinksApi, { ...data });
+};
+
+export const sendOTPMobile = (mobileOTPData) => {
+  return defaultAxios.post(sentOTPMobileApi, {
+    mobile: mobileOTPData.mobile,
+    verificationFor: mobileOTPData.verificationFor,
+  });
+};
+
+export const verifyOTPMobile = (verifyMobileOtp) => {
+  return defaultAxios.post(validateOTPMobileApi, {
+    mobile: verifyMobileOtp.mobile,
+    mobileOTP: verifyMobileOtp.mobileOTP,
+  });
 };

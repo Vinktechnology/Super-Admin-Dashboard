@@ -4,7 +4,7 @@ import {
   storeAccessToken,
 } from "../../../utils/global/auth.global";
 import {
-  signInWithEmail,
+  signInWithEmail,signInWithOTP
 } from "./auth.thunk";
 
 const INIT_STATE = {
@@ -16,6 +16,11 @@ const INIT_STATE = {
 export const loginByEmailAsyncThunk = createAsyncThunk(
   "emailLogin",
   signInWithEmail
+);
+
+export const loginByOTPAsyncThunk = createAsyncThunk(
+  "otplogin",
+  signInWithOTP
 );
 
 const authSlice = createSlice({
@@ -58,6 +63,22 @@ const authSlice = createSlice({
         return state;
       })
       .addCase(loginByEmailAsyncThunk.rejected, (state) => {
+        state.isLoading = false;
+        return state;
+      })
+      .addCase(loginByOTPAsyncThunk.pending, (state) => {
+        state.isLoading = true;
+        return state;
+      })
+      .addCase(loginByOTPAsyncThunk.fulfilled, (state, action) => {
+        
+        const token = action.payload?.token;
+        storeAccessToken(token);
+        state.isLoading = false;
+        state.isLoggedIn = true;
+        return state;
+      })
+      .addCase(loginByOTPAsyncThunk.rejected, (state) => {
         state.isLoading = false;
         return state;
       })

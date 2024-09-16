@@ -18,14 +18,21 @@ import { tokens } from "../../../src/theme.js";
 import Header from "../../components/SellerHome/Header.js";
 import Footer from "../../components/SellerHome/Footer.js";
 import OtpForm from "./OtpForm.js";
+import { debounce } from "../../utils/global/global.js";
+import { sendOTPMobile, verifyOTPMobile } from "../../utils/global/user.global.js";
+import { loginByOTPAsyncThunk } from "../../store/slices/auth/auth.slice.js";
+import { useDispatch } from "react-redux";
 
 function LoginWithOTP() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [isOTPVisible, setOTPVisible] = React.useState(false);
+  const dispatch = useDispatch();
+  
   const INIT_STATE = {
-    mobileno: "",
+    mobile: "",
+    otp:"",
   };
 
   const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
@@ -36,23 +43,62 @@ function LoginWithOTP() {
       validationSchema: LoginWithOTPSchema,
     });
 
-  async function onSubmit(data) {
-    // dispatch(
-    //   loginByEmailAsyncThunk({
-    //     ...values,
-    //   })
-    // )
-    //   .unwrap()
-    //   .then(() => {
-    //     navigate({
-    //       pathname: "/",
-    //     });
-    //   });
 
-    setOTPVisible(true);
-    //   navigate({
-    //     pathname: "/dashboard",
-    //   });
+     // Debounced function
+     const fetchData = React.useCallback(
+      debounce(async (searchQuery) => {
+        if (searchQuery) {
+            const da ={
+              mobile: searchQuery,
+              verificationFor: 'login'
+            }
+            sendOTPMobile(da)
+            .then((result) => {
+              setOTPVisible(true)
+            })
+            .catch((e) => {
+              console.log("error",e)
+               
+            });
+        }
+    }, 500),
+      [] // Dependencies for useCallback, empty means it only initializes once
+  );
+
+  const handleChangeMobile = event => {
+
+    handleChange({
+      target: {
+        name: event.currentTarget.name,
+        value: event.target.value,
+      },
+    });
+            
+      if(event.target.value.length===10)
+       {   
+               
+          fetchData(event.target.value)
+      }
+      
+    }
+  async function onSubmit(da) {
+    console.log("data",da)
+    const {mobile,...rest} = da;
+    dispatch(
+      loginByOTPAsyncThunk({
+        mobile ,mobileOTP:da?.otp,authType: "otp-based"
+      })
+    )
+      .unwrap()
+      .then((da) => {
+        navigate({
+          pathname: "/dashboard",
+        });
+      })
+      .catch((error)=>
+      {
+        console.log(error)
+      })
   }
 
   const handleOTPSucess = (data) => {
@@ -75,7 +121,7 @@ function LoginWithOTP() {
         color: colors.grey[100],
       }}
     >
-      {!isOTPVisible ? (
+  
         <>
           <Avatar sx={{ m: 1, mt: 3, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
@@ -96,13 +142,17 @@ function LoginWithOTP() {
               label="Mobile Number"
               placeholder="Please enter Mobile Number"
               inputProps={{
-                onChange: handleChange,
+                onChange: handleChangeMobile,
                 onBlur: handleBlur,
-                name: "mobileno",
+                name: "mobile",
               }}
-              errorText={touched.mobileno && errors.mobileno}
-              value={values.mobileno}
+              errorText={touched.mobile && errors.mobile}
+              value={values.mobile}
             />
+                 {isOTPVisible && (<>
+                   <Box>
+                   <OtpForm otp="otp" mobile={values.mobile} handleChange={handleChange} isOTPVisible={isOTPVisible} />{" "}
+                 </Box>
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <Button
                 type="submit"
@@ -125,22 +175,12 @@ function LoginWithOTP() {
               >
                 Login
               </Button>
-            </Box>
+            </Box></>)}
           </Box>
+       
+     
+     
         </>
-      ) : (
-        <Box sx={{ marginTop: "10px", padding: "10px" }}>
-          <OtpForm isResendVisible={true} handleOTPSucess={handleOTPSucess} />{" "}
-        </Box>
-      )}
-
-      {/* <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box sx={{ width: "100%" }}>
-          <Link href="/register" variant="body2">
-            {"Don't have an account? Sign Up"}
-          </Link>
-        </Box>
-      </Box> */}
     </Box>
   );
 }
