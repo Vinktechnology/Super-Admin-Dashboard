@@ -18,6 +18,7 @@ import { getAllFilterThunk, updateFilterStatusThunk } from "../../store/slices/f
 const FilterMaster = () => {
   const dispatch = useDispatch();
   const { filter, totalCount } = useSelector(({ filterReducer }) => filterReducer?.filterdata);
+  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -29,9 +30,8 @@ const FilterMaster = () => {
   //--------------- For Pagination starts here --------------------------
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
-  const [type, setType] = useState("")
   useEffect(() => {
-    dispatch(getAllFilterThunk({ page, pageSize,type }));
+    dispatch(getAllFilterThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -66,35 +66,27 @@ const FilterMaster = () => {
     setOpen(true);
   };
 
+  const fncMastersName = (params)=>
+    {
+        const data = params.map((data,i)=> {return data.masterName}).join(" , ");
+        return data;
+    }
+
   const columns = [
     { field: "_id", headerName: "ID", flex: 0.5 },
-
-  
-   
     {
-      field: "name",
-      headerName: "Name",
+      field: "categoryType",
+      headerName: "Category",
       flex: 1,
       cellClassName: "name-column--cell",
+      renderCell: (params) =>params?.value?.name
     },
     {
-      field: "slug",
-      headerName: "Slug",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "type",
+      field: "genericMaster",
       headerName: "Master Name",
-      flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: (params) =>params?.value?.masterName
-    },
-    {
-      field: "description",
-      headerName: "Description",
-      flex: 1,
-      cellClassName: "name-column--cell",
+
+      renderCell: (params) =>fncMastersName(params?.row?.genericMaster)
     },
     {
       field: "isActive",

@@ -51,7 +51,7 @@ const filterSlice = createSlice({
         return state;
       })
       .addCase(getAllFilterThunk.fulfilled, (state, action) => {
-        state.filterdata.filter = action.payload.data;
+        state.filterdata.filter = action.payload.filterMasters;
         state.filterdata.totalCount = action.payload.noOfEntries;
         return state;
       })

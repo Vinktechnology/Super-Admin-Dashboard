@@ -43,7 +43,7 @@ const rootReducer = combineReducers({
   homerender:homeRenderReducer,
   utilityrender : utilityReducer,
   headerfooter : headerandfooterReducer,
-  filterReducer : headerandfooterReducer
+  filterReducer : filterReducer
 });
 
 export default rootReducer;

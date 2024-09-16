@@ -11,7 +11,7 @@ export const getAllFilterData = async (data, thunkApi) => {
   try { 
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
-    const response = await userAxios.get(`${getAllFilterApi}?page=${data.page}&limit=${data.pageSize}&type=${data.type}`);
+    const response = await userAxios.get(`${getAllFilterApi}?page=${data.page}&limit=${data.pageSize}`);
     const responseData = response?.data;
     return responseData;
    
@@ -69,7 +69,7 @@ export const getFilterByIdData = async (data, thunkApi) => {
     thunkApi.dispatch(startDashboardLoader());
     const { user: userAxios } = thunkApi.extra.apiService;
     const response = await userAxios.get(`${getFilterByIdApi}/${data}`);
-    const responseData = response?.data?.productMasterData;
+    const responseData = response?.data;
     return responseData;
    
   } catch (err) {

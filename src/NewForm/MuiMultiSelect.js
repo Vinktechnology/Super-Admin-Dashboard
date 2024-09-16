@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
+import Checkbox from "@mui/material/Checkbox"; // Import Checkbox
 import { formErrorStyle } from "../utils/constant";
 
 const ITEM_HEIGHT = 48;
@@ -20,8 +21,6 @@ const MenuProps = {
   },
 };
 
-
-
 function MuiMultiSelect({
   label,
   errorText,
@@ -34,43 +33,34 @@ function MuiMultiSelect({
 }) {
   const theme = useTheme();
 
-   
-  
-  function getStyles(value, selectedData, theme) {
-
+  function getStyles(optionValue, selectedData, theme) {
     return {
       fontWeight:
-        selectedData.some((item) => item.value === value)
+        selectedData.includes(optionValue)
           ? theme.typography.fontWeightMedium
           : theme.typography.fontWeightRegular,
     };
   }
-  // const [selectedData, setSelectedData] = React.useState([]);
 
   const handleChange = (event) => {
-// setSelectedData(value);
-
- 
-
     onChange({
       target: {
         name,
-        value:event.target.value,
+        value: event.target.value,
       },
     });
   };
 
- const fncRenderValue=(selected)=>
-  {
+  const fncRenderValue = (selected) => {
     let matchingOptions = options.filter(opt => selected.includes(opt.value));
-    return  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>  
-          {
-         matchingOptions.map((data) => (
+    return (
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+        {matchingOptions.map((data) => (
           <Chip key={data.value} label={data.label} />
-        ))
-        }
+        ))}
       </Box>
-  }
+    );
+  };
 
   return (
     <Box sx={styles}>
@@ -92,6 +82,9 @@ function MuiMultiSelect({
             value={option.value}
             style={getStyles(option.value, value, theme)}
           >
+            <Checkbox // Checkbox before the option
+              checked={value.includes(option.value)}
+            />
             {option.label}
           </MenuItem>
         ))}

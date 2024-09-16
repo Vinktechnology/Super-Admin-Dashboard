@@ -132,9 +132,9 @@ export const updateheaderandfooterStatusApi="/v1/weblink/active-status"
 
 // filter master
 
-export const getAllFilterApi ="/v1/product-master/procurement-pack/all"
-export const getFilterByIdApi ="/v1/product-master/procurement-pack"
-export const addNewFilterApi="/v1/product-master/procurement-pack"
-export const updateFilterStatusApi="/v1/product-master/procurement-pack/active-status"
+export const getAllFilterApi ="/v1/filter-master"
+export const getFilterByIdApi ="/v1/filter-master"
+export const addNewFilterApi="/v1/filter-master"
+export const updateFilterStatusApi="/v1/filter-master/active-status"
 
 

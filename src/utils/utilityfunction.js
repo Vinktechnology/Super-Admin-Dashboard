@@ -31,7 +31,6 @@ export const renderArrayColumns = (data = []) => {
 export const fncBindMultiSelectdataForEdit = (data) => {
   if (data) {
     const da = data.map((da) => da?._id);
-    console.log("data multi", da);
     return da;
   }
   return [];

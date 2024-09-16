@@ -13,6 +13,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import { getAllCategoriesGlobalApi, getAllGenericMasterNamesGlobalApi } from "../../utils/global/user.global.js";
 import { addNewFilterThunk, getFilterByIdThunk, updateFilterThunk } from "../../store/slices/filter/filter.slice.js";
+import { fncBindMultiSelectdata, fncBindMultiSelectdataForEdit } from "../../utils/utilityfunction.js";
 
 const ddlBothData =[{
   value:"yes",
@@ -32,9 +33,9 @@ const AddFilterMaster = () => {
   const [ddlGenericMasterData, setGenericMasterData] = useState([]);
   const [ddlCategoryData, setDdlCategoryData] = useState([]);
   const [initialValues, setInitialValues] = useState({
-    masters: "",
-    isfilter: "",
-    category:""
+    genericMaster: [],
+    isFilter: "",
+    categoryType:""
   });
 
   const navigate = useNavigate();
@@ -59,9 +60,9 @@ const AddFilterMaster = () => {
           .unwrap()
           .then((da) => {
             setInitialValues({
-              masters:  da.masters || "",
-              isfilter: da.isfilter?._id || "",
-              category: da.category?._id || "",
+              genericMaster:fncBindMultiSelectdataForEdit(da?.genericMaster) ,
+              isFilter: da.isFilter?"yes":"no",
+              categoryType:da?.categoryType ==null? 0:da?.categoryType?._id
             });
           });
       }
@@ -79,11 +80,11 @@ const AddFilterMaster = () => {
           dispatch(getFilterByIdThunk(params.Id))
             .unwrap()
             .then((da) => {
+              console.log("dataaaaa",da);
               setInitialValues({
-                name: da?.name || "",
-                slug:da?.slug||  "",
-                description:da?.description ||"",
-                type:da?.type?._id||""
+                genericMaster:fncBindMultiSelectdataForEdit(da?.genericMaster) ,
+                isFilter: da.isFilter?"yes":"no",
+                categoryType:da?.categoryType ==null? 0:da?.categoryType?._id
               });
             });
         }
@@ -104,7 +105,9 @@ const AddFilterMaster = () => {
       {
         dispatch(
           updateFilterThunk({
-            ...data,id:params.Id
+            ...data,id:params.Id,
+            isFilter:data.isFilter==="yes"?true:false,
+            categoryType:data.categoryType==0?null:data.categoryType
           })
         )
           .unwrap()
@@ -118,13 +121,14 @@ const AddFilterMaster = () => {
       {
         dispatch(
           addNewFilterThunk({
-            ...data,
+            ...data,isFilter:data.isFilter==="yes"?true:false,
+            categoryType:data.categoryType==0?null:data.categoryType
           })
         )
           .unwrap()
           .then(() => {
             navigate({
-              pathname: "/dashboard/filer",
+              pathname: "/dashboard/filter",
             });
           });
       }
@@ -165,10 +169,10 @@ const AddFilterMaster = () => {
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "category",
+                name: "categoryType",
               }}
-              errorText={touched.category && errors.category}
-              value={values.category}
+              errorText={touched.categoryType && errors.categoryType}
+              value={values.categoryType}
               styles={{ gridColumn: "span 2" }}
               options={ddlCategoryData}
             />
@@ -179,25 +183,25 @@ const AddFilterMaster = () => {
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "isfilter",
+                name: "isFilter",
               }}
-              errorText={touched.isfilter && errors.isfilter}
-              value={values.isfilter}
+              errorText={touched.isFilter && errors.isFilter}
+              value={values.isFilter}
               styles={{ gridColumn: "span 2" }}
               options={ddlBothData}
             />
            
         <Element
-              eletype={inputType.select}
+              eletype={inputType.multiselect}
               label="*Please select a Master"
               placeholder="*Please select a Master"
               inputProps={{
                 onChange: handleChange,
                 onBlur: handleBlur,
-                name: "masters",
+                name: "genericMaster",
               }}
-              errorText={touched.masters && errors.masters}
-              value={values.masters}
+              errorText={touched.genericMaster && errors.genericMaster}
+              value={values.genericMaster}
               styles={{ gridColumn: "span 2" }}
               options={ddlGenericMasterData}
             />
