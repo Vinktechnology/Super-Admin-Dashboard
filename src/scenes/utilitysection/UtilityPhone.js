@@ -89,6 +89,7 @@ const UtilityPhone = () => {
           color: colors.grey[100],
           borderRadius: 2,
           boxShadow: 4,
+          m:2
         }}
       >
         <CardContent

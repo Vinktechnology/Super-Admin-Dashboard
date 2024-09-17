@@ -23,56 +23,47 @@ import { getAllUtilityThunk } from "../../store/slices/websiteutility/websiteuti
 const UtilitySection = () => {
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getAllUtilityThunk())
-  },[])
+  useEffect(() => {
+    dispatch(getAllUtilityThunk());
+  }, []);
 
   return (
     <Box
       sx={{ m: { xs: "5px", sm: "5px", md: "20px", lg: "20px", xl: "20px" } }}
     >
       <Header title="Utility Section" subtitle="Manage Utility Section" />
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      <Grid container >
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityEmail />
-      </Box>
-
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityPhone />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4}  sx={{ mb: 2 }}>
         <UtilityFacebook />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid  xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityInstagram />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid  xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityTwitter />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityPInterest />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityYoutube />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityAppStoreButton />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityGooglePlayButton />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        {" "}
+      </Grid>
+      <Grid xs={12} sm={6} md={6} lg={4} sx={{ mb: 2 }}>
         <UtilityAddress />
-      </Box>
+      </Grid>
+      </Grid>
     </Box>
   );
 };
