@@ -81,74 +81,74 @@ const UtilityAddress = () => {
 
   return (
     <Box>
-      <Card
+    <Card
+      sx={{
+        maxWidth: "100%",
+        pt: 5,
+        backgroundColor: colors.primary[400],
+        color: colors.grey[100],
+        borderRadius: 2,
+        boxShadow: 4,
+        m:2
+      }}
+    >
+      <CardContent
         sx={{
           maxWidth: "100%",
-          pt: 5,
+          m:{xs:"5px",sm:"5px",md:"20px",lg:"20px", xl:"20px"},
           backgroundColor: colors.primary[400],
           color: colors.grey[100],
           borderRadius: 2,
           boxShadow: 4,
         }}
       >
-        <CardContent
-          sx={{
-            maxWidth: "100%",
-            m:{xs:"5px",sm:"5px",md:"20px",lg:"20px", xl:"20px"},
-            backgroundColor: colors.primary[400],
-            color: colors.grey[100],
-            borderRadius: 2,
-            boxShadow: 4,
-            m:2
-          }}
-        >
-          <Header title="" subtitle="Manage Website Official Address" />
-          <Grid container>
-            <Grid xs={9} sm={8} md={8} lg={8} xl={8} sx={{ p: 1 }}>
-              <Element
-                eletype={inputType.input}
-                label="Please enter website Address"
-                placeholder="Please enter website Address"
-                inputProps={{
-                  onChange: handleChange,
-                  onBlur: handleBlur,
-                  name: "address",
-                }}
-                errorText={touched.address && errors.address}
-                value={values.address}
-                styles={{ gridColumn: "span 2" }}
-              />
-            </Grid>
-            <Grid
-              xs={3}
-              sm={4}
-              md={4}
-              lg={4}
-              xl={4}
-              container // Add container here to use flex properties
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+        <Header title="" subtitle="Manage Website Address" />
+        <Grid container>
+          <Grid xs={9} sm={8} md={8} lg={8} xl={8} sx={{ p: 1 }}>
+            <Element
+              eletype={inputType.input}
+              label="Please enter the website Address"
+              placeholder="Please enter the website Address"
+              inputProps={{
+                onChange: handleChange,
+                onBlur: handleBlur,
+                name: "address",
               }}
-            >
-              <Button
-                type="submit"
-                onClick={handleSubmit}
-                sx={{
-                  backgroundColor: colors.greenAccent[500],
-                  width: "70%",
-                }}
-                variant="contained"
-              >
-                Save
-              </Button>
-            </Grid>
+              errorText={touched.address && errors.address}
+              value={values.address}
+              styles={{ gridColumn: "span 2" }}
+            />
           </Grid>
-        </CardContent>
-        <CardActions></CardActions>
-      </Card>
-    </Box>
+          <Grid
+            xs={3}
+            sm={4}
+            md={4}
+            lg={4}
+            xl={4}
+            container // Add container here to use flex properties
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              sx={{
+                backgroundColor: colors.greenAccent[500],
+                width: "70%",
+              }}
+              variant="contained"
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </CardContent>
+      <CardActions></CardActions>
+    </Card>
+  </Box>
   );
 };
 
