@@ -32,6 +32,17 @@ import dayjs from "dayjs";
 
 
 // ['', ''],- marketing type
+const ddlTarget = [
+  {
+    value: "External",
+    label: "External",
+  },
+  {
+    value: "Internal",
+    label: "Internal",
+  },
+];
+
 
 const ddlTypeOfMarketing = [
   {
@@ -94,6 +105,7 @@ const AddBanner = () => {
     title: "",
     onScreenToBeDisplayed: "",
     scrollingType: "",
+    target:"",
     image: [
       {
         imageUrl: "",
@@ -127,6 +139,7 @@ const AddBanner = () => {
           console.log("ImageEditing",imageData);
 
           setInitialValues({
+            target:da?.target || "",
             title: da?.title || "",
             onScreenToBeDisplayed: da?.onScreenToBeDisplayed || "",
             scrollingType: da?.scrollingType || "",
@@ -139,6 +152,9 @@ const AddBanner = () => {
   // Validation Schema
   const validationSchema = Yup.object({
     title: Yup.string().required("Banner Name is required."),
+    target:Yup.mixed()
+    .oneOf(["External", "Internal"], "Please select an option")
+    .required("Please select an option"),
     onScreenToBeDisplayed: Yup.mixed()
       .oneOf(
         ["Home", "PDP", "PLP", "CART", "WISHLIST", "Checkout"],
@@ -185,6 +201,7 @@ const AddBanner = () => {
       title: data.title,
       onScreenToBeDisplayed: data.onScreenToBeDisplayed,
       scrollingType: data.scrollingType,
+      target:data.target,
       image: imageData,
     };
     if (params.Id) {
@@ -242,7 +259,7 @@ const AddBanner = () => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {({ values, handleChange, handleBlur, touched, errors }) => (
+            {({ values, handleChange, handleBlur, touched, errors,setFieldValue }) => (
               <Form>
                 <Card
                   sx={{
@@ -299,7 +316,19 @@ const AddBanner = () => {
                           label="*Please select Scrolling Type"
                           placeholder="*Please select a Scrolling Type"
                           inputProps={{
-                            onChange: handleChange,
+                            onChange:  (e) => {
+                              handleChange(e); // Handle form value change for scrollingType
+                              setFieldValue("image", [
+                                {
+                                  imageUrl: "",
+                                  navigationUrl: "",
+                                  startDate: null,
+                                  endDate: null,
+                                  companiesname: "",
+                                  typeOfMarketing: "",
+                                },
+                              ]); // Reset the image field array
+                            },
                             onBlur: handleBlur,
                             name: "scrollingType",
                           }}
@@ -309,6 +338,24 @@ const AddBanner = () => {
                           value={values.scrollingType}
                           styles={{ minWidth: "100%" }}
                           options={ddlScrollingType}
+                        />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Element
+                          eletype={inputType.select}
+                          label="*Please select Target Url "
+                          placeholder="*Please select a Target URL"
+                          inputProps={{
+                            onChange: handleChange,
+                            onBlur: handleBlur,
+                            name: "target",
+                          }}target
+                          errorText={
+                            touched.target && errors.target
+                          }
+                          value={values.target}
+                          styles={{ minWidth: "100%" }}
+                          options={ddlTarget}
                         />
                       </Grid>
                     </Grid>
