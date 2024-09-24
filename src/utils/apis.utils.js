@@ -16,6 +16,17 @@ export const updateCategoryStatusApi="/v1/category/active-status"
 export const getAllActiveCategoryApi="/v1/category/active"
 
 
+
+// Payment Method
+
+export const getAllPaymentMethodApi ="/v1/payment/method"
+export const getPaymentMethodByIdApi ="/v1/payment/method"
+export const addNewPaymentMethodApi="/v1/payment/method"
+export const updatePaymentMethodStatusApi="/v1/payment/method/active-status"
+export const getAllActivePaymentMethodApi="/v1/payment/method/active"
+
+
+
 // HomeSection
 
 export const getAllHomeSectionApi ="/v1/home-section/all"

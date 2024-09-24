@@ -156,6 +156,20 @@ export const SidebarData =[
     typography :"",
     slug:"headerfooter"
 },
+{
+    title:"Payments Methods",
+    to:"/dashboard/paymentmethod",
+    icon:<ContactsOutlinedIcon />,
+    typography :"Payment",
+    slug:"paymentmethod"
+},
+{
+    title:"Payments Banks",
+    to:"/dashboard/banks",
+    icon:<ContactsOutlinedIcon />,
+    typography :"",
+    slug:"banks"
+},
 
 // {
 //     title:"Profile Form",

@@ -26,7 +26,7 @@ export const getClientByIdThunk = createAsyncThunk(
 
 
 
-const vendorSlice = createSlice({
+const clientsSlice = createSlice({
   name: "clients",
   initialState: INIT_STATE,
   reducers: {
@@ -59,6 +59,6 @@ const vendorSlice = createSlice({
   },
 });
 
-export const {} = vendorSlice.actions;
+export const {} = clientsSlice.actions;
 
-export default vendorSlice.reducer;
+export default clientsSlice.reducer;

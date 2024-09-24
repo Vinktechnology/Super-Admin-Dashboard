@@ -74,6 +74,9 @@ import AddHeaderAndFooter from "./scenes/headerandfooter/AddHeaderAndFooter";
 import FilterMaster from "./scenes/filtermaster";
 import ViewFilterMaster from "./scenes/filtermaster/ViewFilterMaster";
 import AddFilterMaster from "./scenes/filtermaster/AddFilterMaster";
+import PaymentMethod from "./scenes/paymentmethod";
+import ViewPaymentMethod from "./scenes/paymentmethod/ViewPaymentMethod";
+import AddPaymentMethod from "./scenes/paymentmethod/AddPaymentMethod";
 
 
 function AppRoutes() {
@@ -255,22 +258,28 @@ function AppRoutes() {
             { path: "addheaderfooter/:Id", element: <AddHeaderAndFooter /> },
           ],
         },
-        
-        // {
-        //   path: "product",
-        //   element: <Outlet />,
-        //   children: [
-        //     { path: "", element: <Product /> },
-        //     { path: "addproduct", element: <AddProduct />,
-        //       children:[
-        //         {path:"productcategory", element:<ProductCategory /> },
-        //         {path:"productbrand", element:<ProductBrand /> },
-        //         {path:"productfeatures", element:<ProductFeatures /> },
-        //       ]
-        //      },
-        //     { path: "addproduct/:Id", element: <AddProduct /> },
-        //   ],
-        // },
+
+        {
+          path: "paymentmethod",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <PaymentMethod /> },
+            { path: "view/:Id", element: <ViewPaymentMethod /> },
+            { path: "addpaymentmethod", element: <AddPaymentMethod /> },
+            { path: "addpaymentmethod/:Id", element: <AddPaymentMethod /> },
+          ],
+        },
+
+        {
+          path: "banks",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <Category /> },
+            { path: "view/:Id", element: <ViewCategory /> },
+            { path: "addbanks", element: <AddCategory /> },
+            { path: "addbanks/:Id", element: <AddCategory /> },
+          ],
+        },
         {
           path: "product",
           element: <Outlet />,
