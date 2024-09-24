@@ -20,6 +20,8 @@ import homeRenderReducer from "./slices/home/home.slice";
 import utilityReducer from "./slices/websiteutility/websiteutility.slice";
 import headerandfooterReducer from "./slices/headerfooter/headerfooter.slice";
 import filterReducer from "./slices/filter/filter.slice";
+import clientReducer from "./slices/client/client.slice";
+
 
 
 const rootReducer = combineReducers({
@@ -43,7 +45,8 @@ const rootReducer = combineReducers({
   homerender:homeRenderReducer,
   utilityrender : utilityReducer,
   headerfooter : headerandfooterReducer,
-  filterReducer : filterReducer
+  filterReducer : filterReducer,
+  client:clientReducer
 });
 
 export default rootReducer;

@@ -49,6 +49,7 @@ import AddBanner from "./scenes/banner/AddBanner";
 import Product from "./scenes/product";
 import AddTeam from "./scenes/team/AddTeam";
 import VendorDisplay from "./scenes/vendors/vendordisplay";
+import ClientDisplay from "./scenes/clients/clientdisplay";
 import ProductDisplay from "./scenes/product/productdisplay";
 import Profile from "./scenes/profile";
 import ProfileAccount from "./scenes/profile/profileaccount";
@@ -93,7 +94,6 @@ function AppRoutes() {
           path: "app",
           element: <DashboardApp />,
         },
-        { path: "clients", element: <Client /> },
         {
           path: "profile",
           element: <Outlet />,
@@ -113,6 +113,14 @@ function AppRoutes() {
           children: [
             { path: "", element: <Vendor /> },
             { path: ":Id", element: <VendorDisplay /> },
+          ],
+        },
+        {
+          path: "clients",
+          element: <Outlet />,
+          children: [
+            { path: "", element: <Client /> },
+            { path: ":Id", element: <ClientDisplay /> },
           ],
         },
         { path: "orders", element: <Orders /> },

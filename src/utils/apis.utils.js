@@ -103,6 +103,9 @@ export const addNewVendorsApi="/v1/vendor"
 export const updateVendorsStatusApi="/v1/vendor/active-status"
 export const approvalVendorApi="/v1/vendor/approve-status"
 
+// client
+export const getAllClientsApi ="/v1/customer/all"
+export const getClientsByIdApi ="/v1/customer"
 
 
 // Brand & Product
