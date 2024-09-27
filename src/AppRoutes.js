@@ -77,6 +77,9 @@ import AddFilterMaster from "./scenes/filtermaster/AddFilterMaster";
 import PaymentMethod from "./scenes/paymentmethod";
 import ViewPaymentMethod from "./scenes/paymentmethod/ViewPaymentMethod";
 import AddPaymentMethod from "./scenes/paymentmethod/AddPaymentMethod";
+import Banks from "./scenes/banks";
+import ViewBank from "./scenes/banks/ViewBank";
+import AddBank from "./scenes/banks/AddBank";
 
 
 function AppRoutes() {
@@ -274,10 +277,10 @@ function AppRoutes() {
           path: "banks",
           element: <Outlet />,
           children: [
-            { path: "", element: <Category /> },
-            { path: "view/:Id", element: <ViewCategory /> },
-            { path: "addbanks", element: <AddCategory /> },
-            { path: "addbanks/:Id", element: <AddCategory /> },
+            { path: "", element: <Banks /> },
+            { path: "view/:Id", element: <ViewBank /> },
+            { path: "addbank", element: <AddBank /> },
+            { path: "addbank/:Id", element: <AddBank /> },
           ],
         },
         {

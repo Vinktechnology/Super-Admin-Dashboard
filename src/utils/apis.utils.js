@@ -26,6 +26,16 @@ export const updatePaymentMethodStatusApi="/v1/payment/method/active-status"
 export const getAllActivePaymentMethodApi="/v1/payment/method/active"
 
 
+// Banks 
+
+export const getAllBanksApi ="/v1/payment/bank"
+export const getBanksByIdApi ="/v1/payment/bank"
+export const addNewBanksApi="/v1/payment/bank"
+export const updateBanksStatusApi="/v1/payment/bank/active-status"
+export const getAllActiveBanksApi="/v1/payment/method/active"
+
+
+
 
 // HomeSection
 

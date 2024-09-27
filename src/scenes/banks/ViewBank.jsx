@@ -9,7 +9,7 @@ import ImageSlider from "../../components/ImageSlider/ImageSlider.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
 import { getPaymentMethodByIdThunk } from "../../store/slices/paymentmethods/paymentmethods.slice.js";
 
-const ViewPaymentMethod = () => {
+const ViewBank = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
@@ -317,4 +317,4 @@ wordWrap:"break-word"
   );
 };
 
-export default ViewPaymentMethod;
+export default ViewBank;

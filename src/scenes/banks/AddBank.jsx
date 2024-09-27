@@ -14,7 +14,7 @@ import { CatgorySchema } from "../../utils/validation.js";
 import { useDispatch } from "react-redux";
 import { addNewPaymentMethodThunk, getPaymentMethodByIdThunk, updatePaymentMethodThunk } from "../../store/slices/paymentmethods/paymentmethods.slice.js";
 
-const AddPaymentMethod = () => {
+const AddBank = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const theme = useTheme();
@@ -224,4 +224,4 @@ const AddPaymentMethod = () => {
   );
 };
 
-export default AddPaymentMethod;
+export default AddBank;

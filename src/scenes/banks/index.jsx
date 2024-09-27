@@ -12,14 +12,13 @@ import { useEffect, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Switch from "@mui/material/Switch";
 import ConfirmDialogBox from "../../components/ConfirmDialogBox/ConfirmDialogBox.js";
-import ConfirmDeleteDialogBox from "../../components/ConfirmDeleteDialogBox/ConfirmDeleteDialogBox.js";
 import SingleImageView from "../../components/SingleImageView/SingleImageView.js";
 import { globalFormatDate } from "../../utils/formatTime.js";
-import { getAllPaymentMethodDataThunk, updatePaymentMethodStatusThunk } from "../../store/slices/paymentmethods/paymentmethods.slice.js";
+import { getAllBanksDataThunk, updateBanksStatusThunk } from "../../store/slices/banks/banks.slice.js";
 
-const PaymentMethod = () => {
+const Banks = () => {
   const dispatch = useDispatch();
-  const { paymentmethod, totalCount } = useSelector(({ paymentdata }) => paymentdata?.paymentmethoddata);
+  const { banks, totalCount } = useSelector(({ banks }) => banks?.banksdata);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ const PaymentMethod = () => {
   const [page, setPage] = useState(0);  // Pages are zero-indexed
   const [pageSize, setPageSize] = useState(10);
   useEffect(() => {
-    dispatch(getAllPaymentMethodDataThunk({ page, pageSize }));
+    dispatch(getAllBanksDataThunk({ page, pageSize }));
   }, [page, pageSize, dispatch]);
 
   //--------------- For Pagination ends here--------------------------
@@ -54,11 +53,11 @@ const PaymentMethod = () => {
 
 
   const handleView = (id) => {
-    navigate(`/dashboard/paymentmethod/view/${id}`);
+    navigate(`/dashboard/banks/view/${id}`);
   };
 
   const handleEdit = (id) => {
-    navigate(`/dashboard/paymentmethod/addpaymentmethod/${id}`);
+    navigate(`/dashboard/banks/addbank/${id}`);
   };
 
 
@@ -177,7 +176,7 @@ const PaymentMethod = () => {
 
   const fncHandleDialog = (isConfirmed) => {
     if (isConfirmed) {
-      dispatch(updatePaymentMethodStatusThunk({ ...toggleDATA }));
+      dispatch(updateBanksStatusThunk({ ...toggleDATA }));
     } else {
       setSwitchChecked(prevState => ({
         ...prevState,
@@ -199,7 +198,7 @@ const PaymentMethod = () => {
         isopen={open}
       />
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="Payment Methods" subtitle="Manage Payment Methods" />
+        <Header title="Banks" subtitle="Manage Banks" />
 
         <Box>
           <Button
@@ -210,10 +209,10 @@ const PaymentMethod = () => {
               fontWeight: "bold",
               padding: "10px 20px",
             }}
-            onClick={() => navigate("/dashboard/paymentmethod/addpaymentmethod")}
+            onClick={() => navigate("/dashboard/banks/addbank")}
           >
             <AddIcon sx={{ mr: "10px" }} />
-            Add Payment Method
+            Add Bank
           </Button>
         </Box>
       </Box>
@@ -251,7 +250,7 @@ const PaymentMethod = () => {
       >
         <DataGrid
           getRowId={(row) => row._id}
-          rows={paymentmethod}
+          rows={banks}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -266,4 +265,4 @@ const PaymentMethod = () => {
   );
 };
 
-export default PaymentMethod;
+export default Banks;

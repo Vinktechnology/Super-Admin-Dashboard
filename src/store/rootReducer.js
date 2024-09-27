@@ -22,6 +22,7 @@ import headerandfooterReducer from "./slices/headerfooter/headerfooter.slice";
 import filterReducer from "./slices/filter/filter.slice";
 import clientReducer from "./slices/client/client.slice";
 import paymentdataReducer from "./slices/paymentmethods/paymentmethods.slice";
+import banksReducer from "./slices/banks/banks.slice";
 
 
 
@@ -48,7 +49,8 @@ const rootReducer = combineReducers({
   headerfooter : headerandfooterReducer,
   filterReducer : filterReducer,
   client:clientReducer,
-  paymentdata : paymentdataReducer
+  paymentdata : paymentdataReducer,
+  banks : banksReducer,
 });
 
 export default rootReducer;
